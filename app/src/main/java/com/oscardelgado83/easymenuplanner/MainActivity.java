@@ -1,22 +1,25 @@
 package com.oscardelgado83.easymenuplanner;
 
 import android.app.Activity;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
+import android.app.Dialog;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.content.Context;
-import android.os.Build;
-import android.os.Bundle;
-import android.view.Gravity;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.widget.DrawerLayout;
-import android.widget.ArrayAdapter;
-import android.widget.TextView;
+
+import com.google.android.gms.common.GooglePlayServicesUtil;
+
+import static com.google.android.gms.common.ConnectionResult.SERVICE_DISABLED;
+import static com.google.android.gms.common.ConnectionResult.SERVICE_MISSING;
+import static com.google.android.gms.common.ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED;
+import static com.google.android.gms.common.ConnectionResult.SUCCESS;
 
 
 public class MainActivity extends ActionBarActivity
@@ -134,8 +137,7 @@ public class MainActivity extends ActionBarActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            return rootView;
+            return inflater.inflate(R.layout.fragment_main, container, false);
         }
 
         @Override
@@ -146,4 +148,27 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        ensureGooglePlayServices();
+    }
+
+    // https://developer.android.com/google/play-services/setup.html
+    private void ensureGooglePlayServices() {
+        int returnCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        switch (returnCode) {
+            case SUCCESS:
+                // TODO: then the Google Play services APK is up-to-date and you can continue to make a connection
+                break;
+            case SERVICE_MISSING:
+            case SERVICE_VERSION_UPDATE_REQUIRED:
+            case SERVICE_DISABLED:
+                Dialog errorDialog = GooglePlayServicesUtil.getErrorDialog(returnCode, this, 1);
+                errorDialog.show();
+                break;
+            default:
+                break;
+        }
+    }
 }
