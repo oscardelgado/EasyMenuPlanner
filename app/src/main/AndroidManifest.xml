@@ -19,6 +19,16 @@
 
         <meta-data android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <meta-data android:name="AA_DB_NAME" android:value="EasyMenuPlanner.db" />
+        <meta-data android:name="AA_DB_VERSION" android:value="1" />
+        <!-- TODO:
+        ActiveAndroid will look through all your files to find your Model classes.
+        This process can be very slow if you have a lot of dependencies.
+        To speed up this process, specify your Model classes explicitely in your AndroidManifest:
+         <meta-data
+    android:name="AA_MODELS"
+    android:value="com.myapp.model.Item, com.myapp.model.Category" />-->
     </application>
 
 </manifest>

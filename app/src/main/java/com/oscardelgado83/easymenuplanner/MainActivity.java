@@ -2,6 +2,7 @@ package com.oscardelgado83.easymenuplanner;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,8 +14,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableRow;
+import android.widget.TextView;
 
+import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Select;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.oscardelgado83.easymenuplanner.model.Course;
+
+//import hugo.weaving.DebugLog;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 import static com.google.android.gms.common.ConnectionResult.SERVICE_DISABLED;
 import static com.google.android.gms.common.ConnectionResult.SERVICE_MISSING;
@@ -25,6 +36,7 @@ import static com.google.android.gms.common.ConnectionResult.SUCCESS;
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
+    public static final String DB_STARTED = "dbStarted";
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -36,6 +48,7 @@ public class MainActivity extends ActionBarActivity
     private CharSequence mTitle;
 
     @Override
+//    @DebugLog
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -48,6 +61,67 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        ActiveAndroid.initialize(this);
+
+        // Restore preferences
+        SharedPreferences settings = getPreferences(MODE_PRIVATE);
+        boolean dbStarted = settings.getBoolean(DB_STARTED, false);
+        if (!dbStarted) {
+            prePopulateDB();
+        }
+    }
+
+    //    @DebugLog
+    private void prePopulateDB() {
+        ActiveAndroid.beginTransaction();
+        try {
+            String initialCourseNames[] = {
+                    "Sopa",
+                    "Filetes",
+                    "San jacobos",
+                    "Esárragos",
+                    "Tallarines",
+                    "Ensalada",
+                    "Espinacas",
+                    "Alubias verdes",
+                    "Macarrones",
+                    "Arroz",
+                    "Puré",
+                    "Calamares",
+                    "Pizza",
+                    "Bakalao",
+                    "Gazpacho",
+                    "Patatas",
+                    "Lentejas",
+                    "Pimientos rellenos",
+                    "Pechugas de pollo",
+                    "Trucha",
+                    "Hamburguesa",
+                    "Pollo asado",
+                    "Tortilla",
+                    "Chuletas sajonia",
+                    "Salchichas",
+                    "Alitas de pollo",
+                    "Garbanzos"
+            };
+            for (String courseName : initialCourseNames) {
+                Course course = new Course();
+                course.name = courseName;
+                course.save();
+            }
+            ActiveAndroid.setTransactionSuccessful();
+
+            // We need an Editor object to make preference changes.
+            // All objects are from android.context.Context
+            SharedPreferences settings = getPreferences(MODE_PRIVATE);
+            SharedPreferences.Editor editor = settings.edit();
+            editor.putBoolean(DB_STARTED, true);
+
+            editor.commit();
+        } finally {
+            ActiveAndroid.endTransaction();
+        }
     }
 
     @Override
@@ -113,6 +187,10 @@ public class MainActivity extends ActionBarActivity
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
+
+        @InjectView(R.id.row1)
+        TableRow tableRow1;
+
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -137,7 +215,19 @@ public class MainActivity extends ActionBarActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            return inflater.inflate(R.layout.fragment_main, container, false);
+            View view = inflater.inflate(R.layout.fragment_main, container, false);
+            ButterKnife.inject(this, view);
+
+            Course course = new Select()
+                    .from(Course.class)
+//                    .where("Category = ?", category.getId())
+                    .orderBy("RANDOM()")
+                    .executeSingle();
+
+            TextView tv1 = (TextView) tableRow1.findViewById(R.id.textView1A);
+            tv1.setText(course.name);
+
+            return view;
         }
 
         @Override
@@ -145,6 +235,12 @@ public class MainActivity extends ActionBarActivity
             super.onAttach(activity);
             ((MainActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
+        }
+
+        @Override
+        public void onDestroyView() {
+            super.onDestroyView();
+            ButterKnife.reset(this);
         }
     }
 

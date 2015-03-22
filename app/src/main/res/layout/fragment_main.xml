@@ -17,6 +17,7 @@
         android:layout_alignParentTop="true">
 
         <include
+            android:id="@+id/row1"
             layout="@layout/week_view_row"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
