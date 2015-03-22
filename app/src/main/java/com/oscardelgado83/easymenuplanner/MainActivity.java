@@ -14,11 +14,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Select;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.oscardelgado83.easymenuplanner.model.Course;
 
@@ -80,7 +84,7 @@ public class MainActivity extends ActionBarActivity
                     "Sopa",
                     "Filetes",
                     "San jacobos",
-                    "Esárragos",
+                    "Espárragos",
                     "Tallarines",
                     "Ensalada",
                     "Espinacas",
@@ -100,7 +104,7 @@ public class MainActivity extends ActionBarActivity
                     "Hamburguesa",
                     "Pollo asado",
                     "Tortilla",
-                    "Chuletas sajonia",
+                    "Chuletas Sajonia",
                     "Salchichas",
                     "Alitas de pollo",
                     "Garbanzos"
@@ -191,6 +195,9 @@ public class MainActivity extends ActionBarActivity
         @InjectView(R.id.row1)
         TableRow tableRow1;
 
+        @InjectView(R.id.adView)
+        AdView adView;
+
         /**
          * The fragment argument representing the section number for this
          * fragment.
@@ -226,6 +233,16 @@ public class MainActivity extends ActionBarActivity
 
             TextView tv1 = (TextView) tableRow1.findViewById(R.id.textView1A);
             tv1.setText(course.name);
+
+            // Iniciar una solicitud genérica.
+//            AdRequest adRequest = new AdRequest.Builder().build();
+            AdRequest adRequest = new AdRequest.Builder()
+                    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)       // Emulador
+                    .addTestDevice("980B7CBB4875D26814D3B29D1B669AEB") // Nexus 7
+                    .build();
+
+            // Cargar adView con la solicitud de anuncio.
+            adView.loadAd(adRequest);
 
             return view;
         }

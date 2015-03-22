@@ -22,6 +22,10 @@
 
         <meta-data android:name="AA_DB_NAME" android:value="EasyMenuPlanner.db" />
         <meta-data android:name="AA_DB_VERSION" android:value="1" />
+
+        <activity android:name="com.google.android.gms.ads.AdActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>
+
         <!-- TODO:
         ActiveAndroid will look through all your files to find your Model classes.
         This process can be very slow if you have a lot of dependencies.
@@ -31,4 +35,7 @@
     android:value="com.myapp.model.Item, com.myapp.model.Category" />-->
     </application>
 
+    <!-- https://developers.google.com/mobile-ads-sdk/docs/?hl=es -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 </manifest>
