@@ -25,9 +25,6 @@ public class WeekFragment extends Fragment {
     @InjectView(R.id.row1)
     TableRow tableRow1;
 
-    @InjectView(R.id.adView)
-    AdView adView;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -42,11 +39,6 @@ public class WeekFragment extends Fragment {
 
         TextView tv1 = (TextView) tableRow1.findViewById(R.id.textView1A);
         tv1.setText(course.name);
-
-        adView.loadAd(new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)       // Emulator
-                .addTestDevice("980B7CBB4875D26814D3B29D1B669AEB") // Nexus 7
-                .build());
 
         return view;
     }

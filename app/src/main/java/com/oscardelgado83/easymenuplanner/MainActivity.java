@@ -12,10 +12,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.activeandroid.ActiveAndroid;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.oscardelgado83.easymenuplanner.model.Course;
 
 //import hugo.weaving.DebugLog;
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
 
 import static com.google.android.gms.common.ConnectionResult.SERVICE_DISABLED;
 import static com.google.android.gms.common.ConnectionResult.SERVICE_MISSING;
@@ -25,6 +30,9 @@ import static com.google.android.gms.common.ConnectionResult.SUCCESS;
 
 public class MainActivity extends ActionBarActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+
+    @InjectView(R.id.adView)
+    AdView adView;
 
     public static final String DB_STARTED = "dbStarted";
     /**
@@ -42,6 +50,13 @@ public class MainActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ButterKnife.inject(this);
+
+        adView.loadAd(new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)       // Emulator
+                .addTestDevice("980B7CBB4875D26814D3B29D1B669AEB") // Nexus 7
+                .build());
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);

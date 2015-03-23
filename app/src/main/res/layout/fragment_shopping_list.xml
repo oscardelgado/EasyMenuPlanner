@@ -10,6 +10,4 @@
         android:layout_centerHorizontal="true"
         android:text="Shopping list"
         android:textAppearance="?android:attr/textAppearanceMedium" />
-
-    <include layout="@layout/ad_view" />
 </RelativeLayout>
