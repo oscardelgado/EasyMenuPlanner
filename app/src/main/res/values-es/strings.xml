@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="navigation_drawer_close">Cerrar barra lateral</string>
+    <string name="navigation_drawer_open">Mostrar barra lateral</string>
+    <string name="title_section1">Semana</string>
+    <string name="title_section2">Platos</string>
+    <string name="title_section3">Compra</string>
+    <string name="action_example">Rellenar automáticamente</string>
+    <string name="action_settings">Ajustes</string>
+</resources>

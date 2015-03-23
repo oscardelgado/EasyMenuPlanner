@@ -1,35 +1,20 @@
 package com.oscardelgado83.easymenuplanner;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TextView;
 
 import com.activeandroid.ActiveAndroid;
-import com.activeandroid.query.Select;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdSize;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.oscardelgado83.easymenuplanner.model.Course;
 
 //import hugo.weaving.DebugLog;
-
-import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 import static com.google.android.gms.common.ConnectionResult.SERVICE_DISABLED;
 import static com.google.android.gms.common.ConnectionResult.SERVICE_MISSING;
@@ -133,7 +118,7 @@ public class MainActivity extends ActionBarActivity
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                .replace(R.id.container, WeekFragment.newInstance(position + 1))
                 .commit();
     }
 
@@ -185,80 +170,6 @@ public class MainActivity extends ActionBarActivity
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * A placeholder fragment containing a simple view.
-     */
-    public static class PlaceholderFragment extends Fragment {
-
-        @InjectView(R.id.row1)
-        TableRow tableRow1;
-
-        @InjectView(R.id.adView)
-        AdView adView;
-
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        public PlaceholderFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.fragment_main, container, false);
-            ButterKnife.inject(this, view);
-
-            Course course = new Select()
-                    .from(Course.class)
-//                    .where("Category = ?", category.getId())
-                    .orderBy("RANDOM()")
-                    .executeSingle();
-
-            TextView tv1 = (TextView) tableRow1.findViewById(R.id.textView1A);
-            tv1.setText(course.name);
-
-            // Iniciar una solicitud genérica.
-//            AdRequest adRequest = new AdRequest.Builder().build();
-            AdRequest adRequest = new AdRequest.Builder()
-                    .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)       // Emulador
-                    .addTestDevice("980B7CBB4875D26814D3B29D1B669AEB") // Nexus 7
-                    .build();
-
-            // Cargar adView con la solicitud de anuncio.
-            adView.loadAd(adRequest);
-
-            return view;
-        }
-
-        @Override
-        public void onAttach(Activity activity) {
-            super.onAttach(activity);
-            ((MainActivity) activity).onSectionAttached(
-                    getArguments().getInt(ARG_SECTION_NUMBER));
-        }
-
-        @Override
-        public void onDestroyView() {
-            super.onDestroyView();
-            ButterKnife.reset(this);
-        }
     }
 
     @Override
