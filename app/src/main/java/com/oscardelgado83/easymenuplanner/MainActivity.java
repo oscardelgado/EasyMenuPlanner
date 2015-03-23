@@ -129,7 +129,7 @@ public class MainActivity extends ActionBarActivity
                 frg = new DishesFragment();
                 break;
             case 2:
-
+                frg = new ShoppingListFragment();
                 break;
             default:
                 break;
@@ -145,8 +145,8 @@ public class MainActivity extends ActionBarActivity
             mTitle = getString(R.string.title_section1);
         } else if (frg instanceof DishesFragment) {
             mTitle = getString(R.string.title_section2);
-//        } else if (frg instanceof ) {
-//            mTitle = getString(R.string.title_section3);
+        } else if (frg instanceof ShoppingListFragment) {
+            mTitle = getString(R.string.title_section3);
         }
     }
 
