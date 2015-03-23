@@ -3,6 +3,7 @@ package com.oscardelgado83.easymenuplanner;
 import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -117,22 +118,35 @@ public class MainActivity extends ActionBarActivity
     public void onNavigationDrawerItemSelected(int position) {
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
+
+        Fragment frg = null;
+
+        switch (position) {
+            case 0:
+                frg = new WeekFragment();
+                break;
+            case 1:
+                frg = new DishesFragment();
+                break;
+            case 2:
+
+                break;
+            default:
+                break;
+        }
+
         fragmentManager.beginTransaction()
-                .replace(R.id.container, WeekFragment.newInstance(position + 1))
+                .replace(R.id.container, frg)
                 .commit();
     }
 
-    public void onSectionAttached(int number) {
-        switch (number) {
-            case 1:
-                mTitle = getString(R.string.title_section1);
-                break;
-            case 2:
-                mTitle = getString(R.string.title_section2);
-                break;
-            case 3:
-                mTitle = getString(R.string.title_section3);
-                break;
+    public void onSectionAttached(Fragment frg) {
+        if (frg instanceof WeekFragment) {
+            mTitle = getString(R.string.title_section1);
+        } else if (frg instanceof DishesFragment) {
+            mTitle = getString(R.string.title_section2);
+//        } else if (frg instanceof ) {
+//            mTitle = getString(R.string.title_section3);
         }
     }
 

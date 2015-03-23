@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.activeandroid.query.Select;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.oscardelgado83.easymenuplanner.MainActivity;
+import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Course;
 
 import butterknife.ButterKnife;
@@ -20,10 +22,7 @@ import butterknife.InjectView;
 /**
 * Created by oscar on 23/03/15.
 */
-public class WeekFragment extends Fragment {
-
-    @InjectView(R.id.row1)
-    TableRow tableRow1;
+public class DishesFragment extends Fragment {
 
     @InjectView(R.id.adView)
     AdView adView;
@@ -31,17 +30,8 @@ public class WeekFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_week, container, false);
+        View view = inflater.inflate(R.layout.fragment_dishes, container, false);
         ButterKnife.inject(this, view);
-
-        Course course = new Select()
-                .from(Course.class)
-//                    .where("Category = ?", category.getId())
-                .orderBy("RANDOM()")
-                .executeSingle();
-
-        TextView tv1 = (TextView) tableRow1.findViewById(R.id.textView1A);
-        tv1.setText(course.name);
 
         adView.loadAd(new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)       // Emulator
