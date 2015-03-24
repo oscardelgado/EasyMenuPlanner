@@ -17,8 +17,6 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.oscardelgado83.easymenuplanner.model.Course;
 
-//import hugo.weaving.DebugLog;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -26,6 +24,8 @@ import static com.google.android.gms.common.ConnectionResult.SERVICE_DISABLED;
 import static com.google.android.gms.common.ConnectionResult.SERVICE_MISSING;
 import static com.google.android.gms.common.ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED;
 import static com.google.android.gms.common.ConnectionResult.SUCCESS;
+
+//import hugo.weaving.DebugLog;
 
 
 public class MainActivity extends ActionBarActivity
@@ -204,16 +204,30 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onResume() {
         super.onResume();
-        ensureGooglePlayServices();
+        if (ensureGooglePlayServices()) {
+            adView.resume();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        adView.pause();
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        adView.destroy();
+        super.onDestroy();
     }
 
     // https://developer.android.com/google/play-services/setup.html
-    private void ensureGooglePlayServices() {
+    private boolean ensureGooglePlayServices() {
         int returnCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         switch (returnCode) {
             case SUCCESS:
                 // TODO: then the Google Play services APK is up-to-date and you can continue to make a connection
-                break;
+                return true;
             case SERVICE_MISSING:
             case SERVICE_VERSION_UPDATE_REQUIRED:
             case SERVICE_DISABLED:
@@ -223,5 +237,6 @@ public class MainActivity extends ActionBarActivity
             default:
                 break;
         }
+        return false;
     }
 }
