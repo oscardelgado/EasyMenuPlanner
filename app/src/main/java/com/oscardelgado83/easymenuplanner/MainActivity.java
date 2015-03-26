@@ -25,7 +25,7 @@ import static com.google.android.gms.common.ConnectionResult.SERVICE_MISSING;
 import static com.google.android.gms.common.ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED;
 import static com.google.android.gms.common.ConnectionResult.SUCCESS;
 
-//import hugo.weaving.DebugLog;
+import hugo.weaving.DebugLog;
 
 
 public class MainActivity extends ActionBarActivity
@@ -46,7 +46,7 @@ public class MainActivity extends ActionBarActivity
     private CharSequence mTitle;
 
     @Override
-//    @DebugLog
+    @DebugLog
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -77,7 +77,7 @@ public class MainActivity extends ActionBarActivity
         }
     }
 
-    //    @DebugLog
+    @DebugLog
     private void prePopulateDB() {
         ActiveAndroid.beginTransaction();
         try {
