@@ -2,14 +2,18 @@ package com.oscardelgado83.easymenuplanner;
 
 import android.app.Dialog;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
 import com.google.android.gms.ads.AdRequest;
@@ -17,22 +21,27 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.oscardelgado83.easymenuplanner.model.Course;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import hugo.weaving.DebugLog;
 
 import static com.google.android.gms.common.ConnectionResult.SERVICE_DISABLED;
 import static com.google.android.gms.common.ConnectionResult.SERVICE_MISSING;
 import static com.google.android.gms.common.ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED;
 import static com.google.android.gms.common.ConnectionResult.SUCCESS;
 
-import hugo.weaving.DebugLog;
-
 
 public class MainActivity extends ActionBarActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks, CourseFragment.OnFragmentInteractionListener {
 
     @InjectView(R.id.adView)
     AdView adView;
+
+    private static final String LOG_TAG = MainActivity.class.getSimpleName();
 
     public static final String DB_STARTED = "dbStarted";
     /**
@@ -44,6 +53,7 @@ public class MainActivity extends ActionBarActivity
      * Used to store the last screen title. For use in {@link #restoreActionBar()}.
      */
     private CharSequence mTitle;
+    private Fragment currentFrg;
 
     @Override
     @DebugLog
@@ -72,6 +82,7 @@ public class MainActivity extends ActionBarActivity
         // Restore preferences
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
         boolean dbStarted = settings.getBoolean(DB_STARTED, false);
+
         if (!dbStarted) {
             prePopulateDB();
         }
@@ -81,36 +92,10 @@ public class MainActivity extends ActionBarActivity
     private void prePopulateDB() {
         ActiveAndroid.beginTransaction();
         try {
-            String initialCourseNames[] = {
-                    "Sopa",
-                    "Filetes",
-                    "San jacobos",
-                    "Espárragos",
-                    "Tallarines",
-                    "Ensalada",
-                    "Espinacas",
-                    "Alubias verdes",
-                    "Macarrones",
-                    "Arroz",
-                    "Puré",
-                    "Calamares",
-                    "Pizza",
-                    "Bakalao",
-                    "Gazpacho",
-                    "Patatas",
-                    "Lentejas",
-                    "Pimientos rellenos",
-                    "Pechugas de pollo",
-                    "Trucha",
-                    "Hamburguesa",
-                    "Pollo asado",
-                    "Tortilla",
-                    "Chuletas Sajonia",
-                    "Salchichas",
-                    "Alitas de pollo",
-                    "Garbanzos"
-            };
-            for (String courseName : initialCourseNames) {
+            TextUtils.StringSplitter splitter = new TextUtils.SimpleStringSplitter('\n');
+
+            splitter.setString(loadInitialCourseNames());
+            for (String courseName : splitter) {
                 Course course = new Course();
                 course.name = courseName;
                 course.save();
@@ -124,9 +109,37 @@ public class MainActivity extends ActionBarActivity
             editor.putBoolean(DB_STARTED, true);
 
             editor.commit();
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Problem loading initial configuration", e);
+            Toast.makeText(this, getString(R.string.error_loadingInitialConfig), Toast.LENGTH_LONG);
         } finally {
             ActiveAndroid.endTransaction();
         }
+    }
+
+    @DebugLog
+    public String loadInitialCourseNames() throws IOException {
+        //Create a InputStream to read the file into
+        InputStream iS;
+
+        Resources resources = getResources();
+
+        iS = resources.openRawResource(R.raw.initial_course_names);
+
+        //create a buffer that has the same size as the InputStream
+        byte[] buffer = new byte[iS.available()];
+        //read the text file as a stream, into the buffer
+        iS.read(buffer);
+        //create a output stream to write the buffer into
+        ByteArrayOutputStream oS = new ByteArrayOutputStream();
+        //write this buffer to the output stream
+        oS.write(buffer);
+        //Close the Input and Output streams
+        oS.close();
+        iS.close();
+
+        //return the output stream as a String
+        return oS.toString();
     }
 
     @Override
@@ -134,31 +147,31 @@ public class MainActivity extends ActionBarActivity
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getSupportFragmentManager();
 
-        Fragment frg = null;
+        currentFrg = null;
 
         switch (position) {
             case 0:
-                frg = new WeekFragment();
+                currentFrg = new WeekFragment();
                 break;
             case 1:
-                frg = new DishesFragment();
+                currentFrg = new CourseFragment();
                 break;
             case 2:
-                frg = new ShoppingListFragment();
+                currentFrg = new ShoppingListFragment();
                 break;
             default:
                 break;
         }
 
         fragmentManager.beginTransaction()
-                .replace(R.id.container, frg)
+                .replace(R.id.container, currentFrg)
                 .commit();
     }
 
     public void onSectionAttached(Fragment frg) {
         if (frg instanceof WeekFragment) {
             mTitle = getString(R.string.title_section1);
-        } else if (frg instanceof DishesFragment) {
+        } else if (frg instanceof CourseFragment) {
             mTitle = getString(R.string.title_section2);
         } else if (frg instanceof ShoppingListFragment) {
             mTitle = getString(R.string.title_section3);
@@ -179,7 +192,11 @@ public class MainActivity extends ActionBarActivity
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
-            getMenuInflater().inflate(R.menu.main, menu);
+            if (currentFrg instanceof WeekFragment) {
+                getMenuInflater().inflate(R.menu.main, menu);
+            } else {
+                getMenuInflater().inflate(R.menu.global, menu);
+            }
             restoreActionBar();
             return true;
         }
@@ -238,5 +255,10 @@ public class MainActivity extends ActionBarActivity
                 break;
         }
         return false;
+    }
+
+    @Override
+    public void onFragmentInteraction(String id) {
+        //TODO
     }
 }

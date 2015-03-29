@@ -10,4 +10,5 @@
     <string name="title_section1">Week</string>
     <string name="title_section2">Dishes</string>
     <string name="title_section3">Shopping list</string>
+    <string name="error.loadingInitialConfig">Problem loading initial configuration</string>
 </resources>

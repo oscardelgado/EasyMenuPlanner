@@ -7,4 +7,5 @@
     <string name="title_section3">Compra</string>
     <string name="action_example">Rellenar automáticamente</string>
     <string name="action_settings">Ajustes</string>
+    <string name="error.loadingInitialConfig">Problema al cargar configuración inicial</string>
 </resources>
