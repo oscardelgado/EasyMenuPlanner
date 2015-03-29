@@ -18,4 +18,9 @@ public class Course extends Model {
     public List<Ingredient> getIngredients() {
         return getMany(Ingredient.class, "course");
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

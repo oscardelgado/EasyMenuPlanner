@@ -16,6 +16,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Delete;
+import com.activeandroid.query.Select;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.GooglePlayServicesUtil;
@@ -82,6 +84,9 @@ public class MainActivity extends ActionBarActivity
         // Restore preferences
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
         boolean dbStarted = settings.getBoolean(DB_STARTED, false);
+
+//        dbStarted = false;
+//        new Delete().from(Course.class).execute();
 
         if (!dbStarted) {
             prePopulateDB();
@@ -258,7 +263,7 @@ public class MainActivity extends ActionBarActivity
     }
 
     @Override
-    public void onFragmentInteraction(String id) {
+    public void onFragmentInteraction(Long courseId) {
         //TODO
     }
 }
