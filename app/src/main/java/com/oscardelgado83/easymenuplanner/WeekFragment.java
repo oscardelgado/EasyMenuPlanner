@@ -63,20 +63,18 @@ public class WeekFragment extends Fragment {
             TextView tvB = (TextView) tr.findViewById(R.id.textViewB);
             tvB.setText(course2.name);
 
-            Button btnLeftA = (Button) tr.findViewById(R.id.buttonLeftA);
-            btnLeftA.setOnClickListener(courseBtnClickListener(tvA));
-
-            Button btnRightA = (Button) tr.findViewById(R.id.buttonRightA);
-            btnRightA.setOnClickListener(courseBtnClickListener(tvA));
-
-            Button btnLeftB = (Button) tr.findViewById(R.id.buttonLeftB);
-            btnLeftB.setOnClickListener(courseBtnClickListener(tvB));
-
-            Button btnRightB = (Button) tr.findViewById(R.id.buttonRightB);
-            btnRightB.setOnClickListener(courseBtnClickListener(tvB));
+            setOnClickListener(tr, tvA, R.id.buttonLeftA);
+            setOnClickListener(tr, tvA, R.id.buttonRightA);
+            setOnClickListener(tr, tvB, R.id.buttonLeftB);
+            setOnClickListener(tr, tvB, R.id.buttonRightB);
         }
 
         return view;
+    }
+
+    private void setOnClickListener(TableRow tr, TextView tvA, int btnId) {
+        Button btnLeftA = (Button) tr.findViewById(btnId);
+        btnLeftA.setOnClickListener(courseBtnClickListener(tvA));
     }
 
     private View.OnClickListener courseBtnClickListener(final TextView tv) {
