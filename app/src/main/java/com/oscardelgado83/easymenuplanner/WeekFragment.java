@@ -137,12 +137,12 @@ public class WeekFragment extends Fragment {
     public void randomFillAllCourses() {
         for(TableRow tr : allTableRows) {
             TextView tvA = (TextView) tr.findViewById(R.id.textViewA);
-            if ( ! tvA.getText().equals("")) {
+            if (tvA.getText().equals("")) {
                 tvA.setText(getRandomCourse().name);
             }
 
             TextView tvB = (TextView) tr.findViewById(R.id.textViewB);
-            if ( ! tvB.getText().equals("")) {
+            if (tvB.getText().equals("")) {
                 tvB.setText(getRandomCourse().name);
             }
         }
