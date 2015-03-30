@@ -213,9 +213,14 @@ public class MainActivity extends ActionBarActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (currentFrg instanceof WeekFragment) {
+            if (id == R.id.action_clear_all) {
+                ((WeekFragment)currentFrg).clearAllCourses();
+                return true;
+            } else if (item.getItemId() == R.id.action_automatic_fill) {
+                ((WeekFragment)currentFrg).randomFillAllCourses();
+                return true;
+            }
         }
 
         return super.onOptionsItemSelected(item);

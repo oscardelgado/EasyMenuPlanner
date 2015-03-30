@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -42,13 +43,15 @@ public class WeekFragment extends Fragment {
     @InjectView(R.id.day7)
     TableRow tableRow7;
 
+    private TableRow[] allTableRows;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_week, container, false);
         ButterKnife.inject(this, view);
 
-        TableRow[] allTableRows =  {tableRow1, tableRow2, tableRow3, tableRow4, tableRow5, tableRow6, tableRow7};
+        allTableRows = new TableRow[]{tableRow1, tableRow2, tableRow3, tableRow4, tableRow5, tableRow6, tableRow7};
         for(TableRow tr : allTableRows) {
             Course course = getRandomCourse();
 
@@ -93,21 +96,6 @@ public class WeekFragment extends Fragment {
                         .executeSingle();
     }
 
-//    @OnClick({R.id.buttonLeftA, R.id.buttonRightA, R.id.buttonLeftB, R.id.buttonRightB})
-//    public void changeCourseClickListener(Button b) {
-//        TextView tv = null;
-//        if (b.equals(btnLeftA)) {
-//            tv = (TextView) tableRow1.findViewById(R.id.textViewA);
-//        } else if (b.equals(btnLeftB)) {
-//            tv = (TextView) tableRow1.findViewById(R.id.textViewA);
-//        } else if (b.equals(btnRigthA)) {
-//            tv = (TextView) tableRow1.findViewById(R.id.textViewB);
-//        } else if (b.equals(btnRightB)) {
-//            tv = (TextView) tableRow1.findViewById(R.id.textViewB);
-//        }
-//        tv.setText(getRandomCourse().name);
-//    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -118,5 +106,45 @@ public class WeekFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.reset(this);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_clear_all) {
+            clearAllCourses();
+            return true;
+        } else if (item.getItemId() == R.id.action_automatic_fill) {
+            randomFillAllCourses();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void clearAllCourses() {
+        for(TableRow tr : allTableRows) {
+            TextView tvA = (TextView) tr.findViewById(R.id.textViewA);
+            tvA.setText("");
+
+            TextView tvB = (TextView) tr.findViewById(R.id.textViewB);
+            tvB.setText("");
+        }
+    }
+
+    public void randomFillAllCourses() {
+        for(TableRow tr : allTableRows) {
+            TextView tvA = (TextView) tr.findViewById(R.id.textViewA);
+            if ( ! tvA.getText().equals("")) {
+                tvA.setText(getRandomCourse().name);
+            }
+
+            TextView tvB = (TextView) tr.findViewById(R.id.textViewB);
+            if ( ! tvB.getText().equals("")) {
+                tvB.setText(getRandomCourse().name);
+            }
+        }
     }
 }

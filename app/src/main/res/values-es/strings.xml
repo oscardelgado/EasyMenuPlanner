@@ -5,7 +5,8 @@
     <string name="title_section1">Semana</string>
     <string name="title_section2">Platos</string>
     <string name="title_section3">Compra</string>
-    <string name="action_example">Rellenar automáticamente</string>
+    <string name="action_automatic_fill">Rellenar automáticamente</string>
     <string name="action_settings">Ajustes</string>
     <string name="error.loadingInitialConfig">Problema al cargar configuración inicial</string>
+    <string name="action_clear_all">Borrar todos</string>
 </resources>
