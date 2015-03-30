@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -14,7 +15,6 @@ import com.oscardelgado83.easymenuplanner.model.Course;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 
 /**
 * Created by oscar on 23/03/15.
@@ -59,9 +59,30 @@ public class WeekFragment extends Fragment {
 
             TextView tvB = (TextView) tr.findViewById(R.id.textViewB);
             tvB.setText(course2.name);
+
+            Button btnLeftA = (Button) tr.findViewById(R.id.buttonLeftA);
+            btnLeftA.setOnClickListener(courseBtnClickListener(tvA));
+
+            Button btnRightA = (Button) tr.findViewById(R.id.buttonRightA);
+            btnRightA.setOnClickListener(courseBtnClickListener(tvA));
+
+            Button btnLeftB = (Button) tr.findViewById(R.id.buttonLeftB);
+            btnLeftB.setOnClickListener(courseBtnClickListener(tvB));
+
+            Button btnRightB = (Button) tr.findViewById(R.id.buttonRightB);
+            btnRightB.setOnClickListener(courseBtnClickListener(tvB));
         }
 
         return view;
+    }
+
+    private View.OnClickListener courseBtnClickListener(final TextView tv) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tv.setText(getRandomCourse().name);
+            }
+        };
     }
 
     private Course getRandomCourse() {
@@ -72,11 +93,20 @@ public class WeekFragment extends Fragment {
                         .executeSingle();
     }
 
-    @OnClick({R.id.buttonLeftA, R.id.buttonRightA, R.id.buttonLeftB, R.id.buttonRightB})
-    public void changeCourse() {
-        TextView tvA = (TextView) tableRow1.findViewById(R.id.textViewA);
-        tvA.setText(getRandomCourse().name);
-    }
+//    @OnClick({R.id.buttonLeftA, R.id.buttonRightA, R.id.buttonLeftB, R.id.buttonRightB})
+//    public void changeCourseClickListener(Button b) {
+//        TextView tv = null;
+//        if (b.equals(btnLeftA)) {
+//            tv = (TextView) tableRow1.findViewById(R.id.textViewA);
+//        } else if (b.equals(btnLeftB)) {
+//            tv = (TextView) tableRow1.findViewById(R.id.textViewA);
+//        } else if (b.equals(btnRigthA)) {
+//            tv = (TextView) tableRow1.findViewById(R.id.textViewB);
+//        } else if (b.equals(btnRightB)) {
+//            tv = (TextView) tableRow1.findViewById(R.id.textViewB);
+//        }
+//        tv.setText(getRandomCourse().name);
+//    }
 
     @Override
     public void onAttach(Activity activity) {
