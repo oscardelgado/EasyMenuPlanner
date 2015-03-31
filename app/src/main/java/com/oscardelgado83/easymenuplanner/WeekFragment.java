@@ -53,15 +53,8 @@ public class WeekFragment extends Fragment {
 
         allTableRows = new TableRow[]{tableRow1, tableRow2, tableRow3, tableRow4, tableRow5, tableRow6, tableRow7};
         for(TableRow tr : allTableRows) {
-            Course course = getRandomCourse();
-
             TextView tvA = (TextView) tr.findViewById(R.id.textViewA);
-            tvA.setText(course.name);
-
-            Course course2 = getRandomCourse();
-
             TextView tvB = (TextView) tr.findViewById(R.id.textViewB);
-            tvB.setText(course2.name);
 
             setOnClickListener(tr, tvA, R.id.buttonLeftA);
             setOnClickListener(tr, tvA, R.id.buttonRightA);
@@ -72,9 +65,9 @@ public class WeekFragment extends Fragment {
         return view;
     }
 
-    private void setOnClickListener(TableRow tr, TextView tvA, int btnId) {
+    private void setOnClickListener(TableRow tr, TextView tv, int btnId) {
         Button btnLeftA = (Button) tr.findViewById(btnId);
-        btnLeftA.setOnClickListener(courseBtnClickListener(tvA));
+        btnLeftA.setOnClickListener(courseBtnClickListener(tv));
     }
 
     private View.OnClickListener courseBtnClickListener(final TextView tv) {
@@ -104,22 +97,6 @@ public class WeekFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.reset(this);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_clear_all) {
-            clearAllCourses();
-            return true;
-        } else if (item.getItemId() == R.id.action_automatic_fill) {
-            randomFillAllCourses();
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     public void clearAllCourses() {

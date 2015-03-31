@@ -196,7 +196,7 @@ public class MainActivity extends ActionBarActivity
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
             if (currentFrg instanceof WeekFragment) {
-                getMenuInflater().inflate(R.menu.main, menu);
+                getMenuInflater().inflate(R.menu.week_fragment, menu);
             } else {
                 getMenuInflater().inflate(R.menu.global, menu);
             }
