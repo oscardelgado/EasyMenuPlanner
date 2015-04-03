@@ -208,6 +208,7 @@ public class MainActivity extends ActionBarActivity
         return super.onCreateOptionsMenu(menu);
     }
 
+    @DebugLog
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -225,9 +226,13 @@ public class MainActivity extends ActionBarActivity
             }
         } else if( currentFrg instanceof CourseFragment) {
             if (id == R.id.action_add) {
-                ((CourseFragment)currentFrg).addCourseClicked();
+                ((CourseFragment) currentFrg).addCourseClicked();
                 return true;
             }
+        }
+        if (id == R.id.action_settings) {
+            Toast.makeText(this, "Sample action", Toast.LENGTH_SHORT).show();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

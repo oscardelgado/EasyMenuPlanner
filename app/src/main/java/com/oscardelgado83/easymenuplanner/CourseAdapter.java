@@ -19,30 +19,38 @@ import butterknife.InjectView;
  */
 public class CourseAdapter extends ArrayAdapter<Course> {
 
-    @InjectView(R.id.course_name)
-    TextView courseName;
-
     public CourseAdapter(Context context, List<Course> courses) {
-        super(context, 0, courses);
+        super(context, R.layout.item_course, courses);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
+        ViewHolder holder;
+        if (convertView != null) {
+            holder = (ViewHolder) convertView.getTag();
+        } else {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_course, parent, false);
+            holder = new ViewHolder(convertView);
+            convertView.setTag(holder);
+        }
+
         // Get the data item for this position
         Course course = getItem(position);
 
-        // Check if an existing view is being reused, otherwise inflate the view
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_course, parent, false);
-        }
-
-        ButterKnife.inject(this, convertView);
-
         // Populate the data into the template view using the data object
-        courseName.setText(course.name);
+        holder.courseName.setText(course.name);
 
         // Return the completed view to render on screen
         return convertView;
+    }
+
+    static class ViewHolder {
+        @InjectView(R.id.course_name)
+        TextView courseName;
+
+        public ViewHolder(View view) {
+            ButterKnife.inject(this, view);
+        }
     }
 }
