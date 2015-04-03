@@ -1,10 +1,13 @@
 package com.oscardelgado83.easymenuplanner;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.activeandroid.query.Select;
@@ -23,27 +26,8 @@ import butterknife.ButterKnife;
  */
 public class CourseFragment extends ListFragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private OnFragmentInteractionListener mListener;
     private List<Course> courseList;
-
-    // TODO: Rename and change types of parameters
-    public static CourseFragment newInstance(String param1, String param2) {
-        CourseFragment fragment = new CourseFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -55,11 +39,6 @@ public class CourseFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
 
         courseList = new Select().from(Course.class).orderBy("name ASC").execute();
 
@@ -117,5 +96,38 @@ public class CourseFragment extends ListFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.reset(this);
+    }
+
+    public void addCourseClicked() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        final EditText input = new EditText(getActivity());
+
+        builder.setMessage("message")
+                .setTitle("title")
+                .setView(input)
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        createCourse(input.getText().toString());
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        builder.show();
+    }
+
+    private void createCourse(String name) {
+        Course c = new Course();
+        c.name = name;
+        c.save();
+
+        courseList.add(c);
+
+        ((ArrayAdapter<Course>)getListAdapter()).notifyDataSetChanged();
     }
 }
