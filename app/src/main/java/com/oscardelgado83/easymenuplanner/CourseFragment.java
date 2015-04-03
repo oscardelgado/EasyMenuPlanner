@@ -42,9 +42,7 @@ public class CourseFragment extends ListFragment {
 
         courseList = new Select().from(Course.class).orderBy("name ASC").execute();
 
-        setListAdapter(new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1,
-                courseList));
+        setListAdapter(new CourseAdapter(getActivity(), courseList));
     }
 
 
