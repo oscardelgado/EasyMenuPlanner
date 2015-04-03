@@ -20,7 +20,8 @@ import butterknife.InjectView;
 public class CourseAdapter extends ArrayAdapter<Course> {
 
     public CourseAdapter(Context context, List<Course> courses) {
-        super(context, R.layout.item_course, courses);
+//        super(context, R.layout.item_course, courses);
+        super(context, 0, courses);
     }
 
     @Override
