@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.oscardelgado83.easymenuplanner"
-        minSdkVersion 10
+        minSdkVersion 11 //Todo: try to set it to 10
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"

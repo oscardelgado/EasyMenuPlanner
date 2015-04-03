@@ -2,11 +2,13 @@
 <resources>
     <string name="navigation_drawer_close">Cerrar barra lateral</string>
     <string name="navigation_drawer_open">Mostrar barra lateral</string>
-    <string name="title_section1">Semana</string>
-    <string name="title_section2">Platos</string>
-    <string name="title_section3">Compra</string>
+    <string name="title_section_week">Menú de la semana</string>
+    <string name="title_section_dishes">Platos</string>
+    <string name="title_section_shopping_list">Compra de la semana</string>
     <string name="action_automatic_fill">Rellenar automáticamente</string>
     <string name="action_settings">Ajustes</string>
-    <string name="error.loadingInitialConfig">Problema al cargar configuración inicial</string>
+    <string name="error_loadingInitialConfig">Problema al cargar configuración inicial</string>
     <string name="action_clear_all">Borrar todos</string>
+    <string name="action_add">Añadir</string>
+    <string name="action_remove">Borrar</string>
 </resources>

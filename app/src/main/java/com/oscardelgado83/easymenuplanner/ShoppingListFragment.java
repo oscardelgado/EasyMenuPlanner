@@ -14,6 +14,8 @@ import butterknife.ButterKnife;
 */
 public class ShoppingListFragment extends Fragment {
 
+    private static final String LOG_TAG = ShoppingListFragment.class.getSimpleName();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

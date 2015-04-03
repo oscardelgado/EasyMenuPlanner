@@ -157,10 +157,10 @@ public class MainActivity extends ActionBarActivity
                 currentFrg = new WeekFragment();
                 break;
             case 1:
-                currentFrg = new CourseFragment();
+                currentFrg = new ShoppingListFragment();
                 break;
             case 2:
-                currentFrg = new ShoppingListFragment();
+                currentFrg = new CourseFragment();
                 break;
             default:
                 break;
@@ -173,11 +173,11 @@ public class MainActivity extends ActionBarActivity
 
     public void onSectionAttached(Fragment frg) {
         if (frg instanceof WeekFragment) {
-            mTitle = getString(R.string.title_section1);
-        } else if (frg instanceof CourseFragment) {
-            mTitle = getString(R.string.title_section2);
+            mTitle = getString(R.string.title_section_week);
         } else if (frg instanceof ShoppingListFragment) {
-            mTitle = getString(R.string.title_section3);
+            mTitle = getString(R.string.title_section_shopping_list);
+        } else if (frg instanceof CourseFragment) {
+            mTitle = getString(R.string.title_section_dishes);
         }
     }
 
@@ -197,6 +197,8 @@ public class MainActivity extends ActionBarActivity
             // decide what to show in the action bar.
             if (currentFrg instanceof WeekFragment) {
                 getMenuInflater().inflate(R.menu.week_fragment, menu);
+            } else if (currentFrg instanceof CourseFragment) {
+                getMenuInflater().inflate(R.menu.courses_fragment, menu);
             } else {
                 getMenuInflater().inflate(R.menu.global, menu);
             }
@@ -219,6 +221,11 @@ public class MainActivity extends ActionBarActivity
                 return true;
             } else if (item.getItemId() == R.id.action_automatic_fill) {
                 ((WeekFragment)currentFrg).randomFillAllCourses();
+                return true;
+            }
+        } else if( currentFrg instanceof CourseFragment) {
+            if (id == R.id.action_add) {
+                ((CourseFragment)currentFrg).addCourseClicked();
                 return true;
             }
         }

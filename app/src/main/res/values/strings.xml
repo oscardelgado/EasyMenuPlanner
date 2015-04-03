@@ -8,8 +8,10 @@
     <string name="action_clear_all">Clear all</string>
     <string name="action_settings">Settings</string>
 
-    <string name="title_section1">Week</string>
-    <string name="title_section2">Dishes</string>
-    <string name="title_section3">Shopping list</string>
-    <string name="error.loadingInitialConfig">Problem loading initial configuration</string>
+    <string name="title_section_week">Week menu</string>
+    <string name="title_section_dishes">Dishes</string>
+    <string name="title_section_shopping_list">Week shopping list</string>
+    <string name="error_loadingInitialConfig">Problem loading initial configuration</string>
+    <string name="action_add">Add</string>
+    <string name="action_remove">Remove</string>
 </resources>
