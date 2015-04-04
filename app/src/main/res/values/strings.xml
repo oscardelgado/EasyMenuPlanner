@@ -14,4 +14,10 @@
     <string name="error_loadingInitialConfig">Problem loading initial configuration</string>
     <string name="action_add">Add</string>
     <string name="action_remove">Remove</string>
+    <string name="dialog_delete_confirmation">Delete selected courses?</string>
+    <string name="dialog_new_course_title">New course</string>
+    <string name="dialog_new_course_message">Name of the new course</string>
+    <string name="cab_title">Select Items</string>
+    <string name="cab_one_item_selected">1 item selected</string>
+    <string name="cab_elements_selected">" items selected"</string>
 </resources>

@@ -73,9 +73,9 @@ public class CourseFragment extends ListFragment {
 
                 int count = getListView().getCheckedItemCount();
                 if (count == 1) {
-                    mode.setSubtitle("1 item selected");
+                    mode.setSubtitle(getString(R.string.cab_one_item_selected));
                 } else {
-                    mode.setSubtitle(count + " items selected");
+                    mode.setSubtitle(count + getString(R.string.cab_elements_selected));
                 }
             }
 
@@ -98,7 +98,7 @@ public class CourseFragment extends ListFragment {
                 MenuInflater inflater = mode.getMenuInflater();
                 inflater.inflate(R.menu.courses_context, menu);
 
-                mode.setTitle("Select Items");
+                mode.setTitle(getString(R.string.cab_title));
 
                 this.menu = menu;
 
@@ -175,16 +175,16 @@ public class CourseFragment extends ListFragment {
 
         final EditText input = new EditText(getActivity());
 
-        builder.setMessage("message")
-                .setTitle("title")
+        builder.setMessage(getString(R.string.dialog_new_course_message))
+                .setTitle(getString(R.string.dialog_new_course_title))
                 .setView(input)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         createCourse(input.getText().toString());
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -209,8 +209,10 @@ public class CourseFragment extends ListFragment {
                 new DeleteBtnClickListener(checkedItemPositions, (CourseAdapter) getListAdapter());
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
-                .setNegativeButton("No", dialogClickListener).show();
+        builder.setMessage(getString(R.string.dialog_delete_confirmation))
+                .setPositiveButton(android.R.string.yes, dialogClickListener)
+                .setNegativeButton(android.R.string.no, dialogClickListener)
+                .show();
     }
 
     private static class DeleteBtnClickListener implements DialogInterface.OnClickListener {
