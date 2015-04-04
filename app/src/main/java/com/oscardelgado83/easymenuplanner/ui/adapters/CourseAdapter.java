@@ -1,4 +1,4 @@
-package com.oscardelgado83.easymenuplanner;
+package com.oscardelgado83.easymenuplanner.ui.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Course;
 
 import java.util.List;

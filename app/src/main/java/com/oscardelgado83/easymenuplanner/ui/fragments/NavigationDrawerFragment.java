@@ -1,4 +1,4 @@
-package com.oscardelgado83.easymenuplanner;
+package com.oscardelgado83.easymenuplanner.ui.fragments;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -20,6 +20,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
+import com.oscardelgado83.easymenuplanner.R;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.

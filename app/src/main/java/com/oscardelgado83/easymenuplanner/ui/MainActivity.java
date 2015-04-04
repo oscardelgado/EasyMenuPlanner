@@ -1,4 +1,4 @@
-package com.oscardelgado83.easymenuplanner;
+package com.oscardelgado83.easymenuplanner.ui;
 
 import android.app.Dialog;
 import android.content.SharedPreferences;
@@ -16,10 +16,17 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Delete;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Course;
+import com.oscardelgado83.easymenuplanner.model.Ingredient;
+import com.oscardelgado83.easymenuplanner.ui.fragments.CourseFragment;
+import com.oscardelgado83.easymenuplanner.ui.fragments.NavigationDrawerFragment;
+import com.oscardelgado83.easymenuplanner.ui.fragments.ShoppingListFragment;
+import com.oscardelgado83.easymenuplanner.ui.fragments.WeekFragment;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -83,8 +90,8 @@ public class MainActivity extends ActionBarActivity
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
         boolean dbStarted = settings.getBoolean(DB_STARTED, false);
 
-//        dbStarted = false;
-//        new Delete().from(Course.class).execute();
+        dbStarted = false;
+        new Delete().from(Course.class).execute();
 
         if (!dbStarted) {
             prePopulateDB();
@@ -103,6 +110,17 @@ public class MainActivity extends ActionBarActivity
                 course.name = courseName;
                 course.save();
             }
+
+            Ingredient ingr = new Ingredient();
+            ingr.name = "Ingr. 1";
+            ingr.save();
+            ingr = new Ingredient();
+            ingr.name = "Ingr. 2";
+            ingr.save();
+            ingr = new Ingredient();
+            ingr.name = "Ingr. 3";
+            ingr.save();
+
             ActiveAndroid.setTransactionSuccessful();
 
             // We need an Editor object to make preference changes.

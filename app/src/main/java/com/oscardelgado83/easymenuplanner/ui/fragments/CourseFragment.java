@@ -1,13 +1,15 @@
-package com.oscardelgado83.easymenuplanner;
+package com.oscardelgado83.easymenuplanner.ui.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -16,9 +18,15 @@ import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioGroup;
 
 import com.activeandroid.query.Select;
+import com.oscardelgado83.easymenuplanner.model.Ingredient;
+import com.oscardelgado83.easymenuplanner.ui.IngredientsCompletionView;
+import com.oscardelgado83.easymenuplanner.ui.MainActivity;
+import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Course;
+import com.oscardelgado83.easymenuplanner.ui.adapters.CourseAdapter;
 
 import java.util.List;
 
@@ -173,15 +181,20 @@ public class CourseFragment extends ListFragment {
     public void addCourseClicked() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        final EditText input = new EditText(getActivity());
+        View newCourseView = LayoutInflater.from(getActivity()).inflate(R.layout.course_view, null);
+        ButterKnife.inject(this, newCourseView);
 
-        builder.setMessage(getString(R.string.dialog_new_course_message))
-                .setTitle(getString(R.string.dialog_new_course_title))
-                .setView(input)
+        builder.setTitle(getString(R.string.dialog_new_course_title)).setView(newCourseView)
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        createCourse(input.getText().toString());
+                        Dialog d = (Dialog) dialog;
+                        EditText nameET = ButterKnife.findById(d, R.id.name_edit_text);
+//                        EditText ingredientsET = ButterKnife.findById(d, R.id.ingredients_edit_text);
+                        RadioGroup courseTypeRG = ButterKnife.findById(d, R.id.course_type_radio);
+
+                        createCourse(nameET.getText().toString());
                     }
                 })
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
@@ -190,6 +203,13 @@ public class CourseFragment extends ListFragment {
                         dialog.cancel();
                     }
                 });
+
+        List<Ingredient> ingredients = new Select().from(Ingredient.class).execute();
+        ArrayAdapter<Ingredient> ingrAdapter =
+                new ArrayAdapter<>(getActivity(), android.R.layout.simple_list_item_1, ingredients);
+        IngredientsCompletionView completionView = ButterKnife.findById(newCourseView, R.id.ingredients_edit_text);
+        completionView.setAdapter(ingrAdapter);
+
         builder.show();
     }
 
@@ -198,7 +218,7 @@ public class CourseFragment extends ListFragment {
         c.name = name;
         c.save();
 
-        courseList.add(c);
+        courseList.add(c); //TODO: insert in order
 
         ((ArrayAdapter)getListAdapter()).notifyDataSetChanged();
     }

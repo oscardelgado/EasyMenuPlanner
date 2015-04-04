@@ -1,4 +1,4 @@
-package com.oscardelgado83.easymenuplanner;
+package com.oscardelgado83.easymenuplanner.ui.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -11,6 +11,8 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.activeandroid.query.Select;
+import com.oscardelgado83.easymenuplanner.ui.MainActivity;
+import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Course;
 
 import butterknife.ButterKnife;

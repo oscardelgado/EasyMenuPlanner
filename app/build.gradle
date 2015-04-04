@@ -27,6 +27,7 @@ dependencies {
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     compile 'com.jakewharton:butterknife:6.1.0'
     compile 'com.android.support:support-v4:22.0.0'
+    compile files('libs/tokenautocomplete-1.2.1.jar')
 }
 
 repositories {
