@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
+import android.util.SparseBooleanArray;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,6 +23,7 @@ import com.oscardelgado83.easymenuplanner.model.Course;
 import java.util.List;
 
 import butterknife.ButterKnife;
+import hugo.weaving.DebugLog;
 
 /**
  * A fragment representing a list of Items.
@@ -33,6 +36,8 @@ public class CourseFragment extends ListFragment {
 
     private OnFragmentInteractionListener mListener;
     private List<Course> courseList;
+
+    private static final String LOG_TAG = CourseFragment.class.getSimpleName();
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -54,24 +59,34 @@ public class CourseFragment extends ListFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        //TODO: context dialog for Android < 11 (10)
         getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
         getListView().setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+
+            public Menu menu;
 
             @Override
             public void onItemCheckedStateChanged(ActionMode mode, int position,
                                                   long id, boolean checked) {
                 // Here you can do something when items are selected/de-selected,
                 // such as update the title in the CAB
+
+                int count = getListView().getCheckedItemCount();
+                if (count == 1) {
+                    mode.setSubtitle("1 item selected");
+                } else {
+                    mode.setSubtitle(count + " items selected");
+                }
             }
 
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 // Respond to clicks on the actions in the CAB
                 switch (item.getItemId()) {
-//                    case R.id.menu_delete:
-//                        deleteSelectedItems();
-//                        mode.finish(); // Action picked, so close the CAB
-//                        return true;
+                    case R.id.action_remove:
+                        deleteSelectedItems(getListView().getCheckedItemPositions());
+                        mode.finish(); // Action picked, so close the CAB
+                        return true;
                     default:
                         return false;
                 }
@@ -82,6 +97,11 @@ public class CourseFragment extends ListFragment {
                 // Inflate the menu for the CAB
                 MenuInflater inflater = mode.getMenuInflater();
                 inflater.inflate(R.menu.courses_context, menu);
+
+                mode.setTitle("Select Items");
+
+                this.menu = menu;
+
                 return true;
             }
 
@@ -181,5 +201,46 @@ public class CourseFragment extends ListFragment {
         courseList.add(c);
 
         ((ArrayAdapter)getListAdapter()).notifyDataSetChanged();
+    }
+
+    @DebugLog
+    private void deleteSelectedItems(final SparseBooleanArray checkedItemPositions) {
+        final DialogInterface.OnClickListener dialogClickListener =
+                new DeleteBtnClickListener(checkedItemPositions, (CourseAdapter) getListAdapter());
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                .setNegativeButton("No", dialogClickListener).show();
+    }
+
+    private static class DeleteBtnClickListener implements DialogInterface.OnClickListener {
+
+        private SparseBooleanArray checkedItemPositions;
+        private CourseAdapter listAdapter;
+
+        public DeleteBtnClickListener(SparseBooleanArray checkedItemPositions, CourseAdapter listAdapter) {
+            this.listAdapter = listAdapter;
+            this.checkedItemPositions = checkedItemPositions.clone();
+        }
+
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which){
+                case DialogInterface.BUTTON_POSITIVE:
+                    Log.d(LOG_TAG, "checkedItemPositions: " + checkedItemPositions);
+                    // Inverse order to avoid possible IndexOutOfBoundsException after remove.
+                    for (int i = checkedItemPositions.size() - 1; i >= 0; i --) {
+                        if (checkedItemPositions.valueAt(i)) {
+                            Course deletedCourse = listAdapter.getItem(checkedItemPositions.keyAt(i));
+                            Log.d(LOG_TAG, "deletedCourse: " + deletedCourse);
+                            listAdapter.remove(deletedCourse);
+                            deletedCourse.delete();
+                        }
+                    }
+                    break;
+                case DialogInterface.BUTTON_NEGATIVE:
+                    break;
+            }
+        }
     }
 }

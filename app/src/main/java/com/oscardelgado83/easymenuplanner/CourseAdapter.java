@@ -53,4 +53,15 @@ public class CourseAdapter extends ArrayAdapter<Course> {
             ButterKnife.inject(this, view);
         }
     }
+
+    @Override
+    public boolean hasStableIds() {
+        return true;
+    }
+
+    @Override
+    public long getItemId(int position) {
+        Course course = getItem(position);
+        return course.getId();
+    }
 }
