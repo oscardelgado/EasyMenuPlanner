@@ -2,7 +2,6 @@ package com.oscardelgado83.easymenuplanner.ui.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -32,11 +31,8 @@ import com.oscardelgado83.easymenuplanner.model.Ingredient;
 import com.oscardelgado83.easymenuplanner.ui.IngredientsCompletionView;
 import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 import com.oscardelgado83.easymenuplanner.ui.adapters.CourseAdapter;
-import com.tokenautocomplete.TokenCompleteTextView;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.StringTokenizer;
 
 import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
