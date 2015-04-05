@@ -212,16 +212,20 @@ public class CourseFragment extends ListFragment {
             public void onClick(View v) {
                 EditText nameET = ButterKnife.findById(d, R.id.name_edit_text);
 
-                IngredientsCompletionView completionView = ButterKnife.findById(d, R.id.ingredients_edit_text);
-                addUnconfirmedIngredient(completionView);
+                if (nameET.getText().toString().trim().length() == 0) {
+                    Toast.makeText(getActivity(), "El nombre no puede estar vacío", Toast.LENGTH_LONG).show();
+                } else {
+                    IngredientsCompletionView completionView = ButterKnife.findById(d, R.id.ingredients_edit_text);
+                    addUnconfirmedIngredient(completionView);
 
-                RadioGroup courseTypeRG = ButterKnife.findById(d, R.id.course_type_radio); //TODO
+                    RadioGroup courseTypeRG = ButterKnife.findById(d, R.id.course_type_radio); //TODO
 
-                createCourse(nameET.getText().toString(), completionView.getObjects());
+                    createCourse(nameET.getText().toString(), completionView.getObjects());
 
-                d.dismiss();
+                    d.dismiss();
 
-                getListView().smoothScrollToPosition(ScrollView.FOCUS_DOWN);
+                    getListView().smoothScrollToPosition(ScrollView.FOCUS_DOWN);
+                }
             }
         });
     }
@@ -348,7 +352,7 @@ public class CourseFragment extends ListFragment {
             public void onClick(View v) {
                 EditText nameET = ButterKnife.findById(d, R.id.name_edit_text);
 
-                if (nameET.getText().length() == 0) {
+                if (nameET.getText().toString().trim().length() == 0) {
                     Toast.makeText(getActivity(), "El nombre no puede estar vacío", Toast.LENGTH_LONG).show();
                 } else {
                     IngredientsCompletionView completionView = ButterKnife.findById(d, R.id.ingredients_edit_text);
