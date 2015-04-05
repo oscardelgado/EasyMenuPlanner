@@ -24,5 +24,5 @@
     <string name="second_course">Second course</string>
     <string name="action_edit">Edit</string>
     <string name="dialog_edit_course_title">Edit course</string>
-    <string name="empty_name_not_allowed">Name can't be empty</string>
+    <string name="empty_name_not_allowed">Name can\'t be empty</string>
 </resources>

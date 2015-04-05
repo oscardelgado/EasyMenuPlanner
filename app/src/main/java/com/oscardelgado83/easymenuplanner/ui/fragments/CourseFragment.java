@@ -356,11 +356,13 @@ public class CourseFragment extends ListFragment {
                     Toast.makeText(getActivity(), getString(R.string.empty_name_not_allowed), Toast.LENGTH_LONG).show();
                 } else {
                     IngredientsCompletionView completionView = ButterKnife.findById(d, R.id.ingredients_edit_text);
-                    //addUnconfirmedIngredient(completionView);
+                    addUnconfirmedIngredient(completionView);
 
                     RadioGroup courseTypeRG = ButterKnife.findById(d, R.id.course_type_radio); //TODO
 
                     updateCourse(c, nameET.getText().toString(), completionView.getObjects());
+
+                    d.dismiss();
                 }
             }
         });
