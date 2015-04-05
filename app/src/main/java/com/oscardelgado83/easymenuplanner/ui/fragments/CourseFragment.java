@@ -213,7 +213,7 @@ public class CourseFragment extends ListFragment {
                 EditText nameET = ButterKnife.findById(d, R.id.name_edit_text);
 
                 if (nameET.getText().toString().trim().length() == 0) {
-                    Toast.makeText(getActivity(), "El nombre no puede estar vacío", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), getString(R.string.empty_name_not_allowed), Toast.LENGTH_LONG).show();
                 } else {
                     IngredientsCompletionView completionView = ButterKnife.findById(d, R.id.ingredients_edit_text);
                     addUnconfirmedIngredient(completionView);
@@ -353,7 +353,7 @@ public class CourseFragment extends ListFragment {
                 EditText nameET = ButterKnife.findById(d, R.id.name_edit_text);
 
                 if (nameET.getText().toString().trim().length() == 0) {
-                    Toast.makeText(getActivity(), "El nombre no puede estar vacío", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), getString(R.string.empty_name_not_allowed), Toast.LENGTH_LONG).show();
                 } else {
                     IngredientsCompletionView completionView = ButterKnife.findById(d, R.id.ingredients_edit_text);
                     //addUnconfirmedIngredient(completionView);

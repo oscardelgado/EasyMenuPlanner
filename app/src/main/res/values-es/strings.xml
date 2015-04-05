@@ -21,4 +21,5 @@
     <string name="second_course">Segundo plato</string>
     <string name="action_edit">Editar</string>
     <string name="dialog_edit_course_title">Editar plato</string>
+    <string name="empty_name_not_allowed">El nombre no puede estar vacío</string>
 </resources>
