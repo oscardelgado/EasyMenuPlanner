@@ -22,6 +22,7 @@ import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Course;
+import com.oscardelgado83.easymenuplanner.model.CourseIngredient;
 import com.oscardelgado83.easymenuplanner.model.Ingredient;
 import com.oscardelgado83.easymenuplanner.ui.fragments.CourseFragment;
 import com.oscardelgado83.easymenuplanner.ui.fragments.NavigationDrawerFragment;
@@ -90,8 +91,11 @@ public class MainActivity extends ActionBarActivity
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
         boolean dbStarted = settings.getBoolean(DB_STARTED, false);
 
-        dbStarted = false;
-        new Delete().from(Course.class).execute();
+        //TODO: remove these lines
+//        dbStarted = false;
+//        new Delete().from(Course.class).execute();
+//        new Delete().from(Ingredient.class).execute();
+//        new Delete().from(CourseIngredient.class).execute();
 
         if (!dbStarted) {
             prePopulateDB();
@@ -104,7 +108,7 @@ public class MainActivity extends ActionBarActivity
         try {
             TextUtils.StringSplitter splitter = new TextUtils.SimpleStringSplitter('\n');
 
-            splitter.setString(loadInitialCourseNames());
+            splitter.setString(loadInitialCourseNames());//TODO: English
             for (String courseName : splitter) {
                 Course course = new Course();
                 course.name = courseName;

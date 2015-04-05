@@ -17,4 +17,8 @@
     <string name="cab_title">Seleccione elementos</string>
     <string name="cab_one_item_selected">1 elemento seleccionado</string>
     <string name="cab_elements_selected"> elementos seleccionados</string>
+    <string name="first_course">Primer plato</string>
+    <string name="second_course">Segundo plato</string>
+    <string name="action_edit">Editar</string>
+    <string name="dialog_edit_course_title">Editar plato</string>
 </resources>

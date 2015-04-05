@@ -3,7 +3,10 @@ package com.oscardelgado83.easymenuplanner.model;
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
+import com.activeandroid.query.Delete;
+import com.activeandroid.query.Select;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -15,8 +18,16 @@ public class Course extends Model {
     @Column (index = true)
     public String name;
 
-    public List<Ingredient> getIngredients() {
-        return getMany(Ingredient.class, "course");
+    public List<CourseIngredient> getIngredients() {
+        return new Select().from(CourseIngredient.class)
+                .where("course = ?", this.getId())
+                .execute();
+    }
+
+    public void removeAllIngredients() {
+        new Delete().from(CourseIngredient.class)
+                .where("course = ?", this.getId())
+                .execute();
     }
 
     @Override
