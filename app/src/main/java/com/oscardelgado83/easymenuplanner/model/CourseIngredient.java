@@ -15,4 +15,14 @@ public class CourseIngredient extends Model {
 
     @Column(onDelete = Column.ForeignKeyAction.CASCADE)
     public Ingredient ingredient;
+
+    public CourseIngredient() {
+        super();
+    }
+
+    public CourseIngredient(Course course, Ingredient ingredient) {
+        super();
+        this.course = course;
+        this.ingredient = ingredient;
+    }
 }

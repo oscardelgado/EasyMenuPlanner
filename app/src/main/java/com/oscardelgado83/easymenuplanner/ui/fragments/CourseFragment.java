@@ -16,9 +16,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
+import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Select;
@@ -29,8 +32,11 @@ import com.oscardelgado83.easymenuplanner.model.Ingredient;
 import com.oscardelgado83.easymenuplanner.ui.IngredientsCompletionView;
 import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 import com.oscardelgado83.easymenuplanner.ui.adapters.CourseAdapter;
+import com.tokenautocomplete.TokenCompleteTextView;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
@@ -195,26 +201,41 @@ public class CourseFragment extends ListFragment {
         // Auto-complete for Ingredients
         setIngredientsAutocompleteAdapter(newCourseView);
 
-        builder.setTitle(getString(R.string.dialog_new_course_title)).setView(newCourseView)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Dialog d = (Dialog) dialog;
-                        EditText nameET = ButterKnife.findById(d, R.id.name_edit_text);
-                        IngredientsCompletionView completionView = ButterKnife.findById(d, R.id.ingredients_edit_text);
-                        RadioGroup courseTypeRG = ButterKnife.findById(d, R.id.course_type_radio); //TODO
-
-                        createCourse(nameET.getText().toString(), completionView.getObjects());
-                    }
-                })
+       final AlertDialog d = builder.setTitle(getString(R.string.dialog_new_course_title)).setView(newCourseView)
+                .setPositiveButton(android.R.string.ok, null)
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
-                })
-                .show();
+                }).create();
+        d.show();
+        Button positiveButton = d.getButton(AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                EditText nameET = ButterKnife.findById(d, R.id.name_edit_text);
+
+                IngredientsCompletionView completionView = ButterKnife.findById(d, R.id.ingredients_edit_text);
+                addUnconfirmedIngredient(completionView);
+
+                RadioGroup courseTypeRG = ButterKnife.findById(d, R.id.course_type_radio); //TODO
+
+                createCourse(nameET.getText().toString(), completionView.getObjects());
+
+                d.dismiss();
+
+                getListView().smoothScrollToPosition(ScrollView.FOCUS_DOWN);
+            }
+        });
+    }
+
+    // If the last item wasn't confirmed, we manually confirm it so it doesn't get lost
+    private void addUnconfirmedIngredient(IngredientsCompletionView completionView) {
+        String[] strings = completionView.getText().toString().split(",");
+        if (! strings[strings.length - 1].trim().equals("")) {
+            completionView.append(",");
+        }
     }
 
     private IngredientsCompletionView setIngredientsAutocompleteAdapter(View newCourseView) {
@@ -225,6 +246,7 @@ public class CourseFragment extends ListFragment {
         completionView.allowDuplicates(false);
         completionView.setThreshold(1);
         completionView.setAdapter(ingrAdapter);
+//        completionView.performBestGuess(false); //Turn off making a best guess when converting text into a token (allows free entry)
 
         return completionView;
     }
@@ -242,9 +264,8 @@ public class CourseFragment extends ListFragment {
 
             for (Object ingrObj : ingredients) {
                 Ingredient ingr = (Ingredient) ingrObj;
-                CourseIngredient ci = new CourseIngredient();
-                ci.ingredient = ingr;
-                ci.course = c;
+                if (ingr.getId() == null) ingr.save();
+                CourseIngredient ci = new CourseIngredient(c, ingr);
                 ci.save();
             }
             ActiveAndroid.setTransactionSuccessful();
@@ -315,26 +336,34 @@ public class CourseFragment extends ListFragment {
         EditText nameET = ButterKnife.findById(editCourseView, R.id.name_edit_text);
         nameET.setText(c.name);
 
-        builder.setTitle(getString(R.string.dialog_edit_course_title)).setView(editCourseView)
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+        final AlertDialog d =
+                builder.setTitle(getString(R.string.dialog_edit_course_title)).setView(editCourseView)
+                        .setPositiveButton(android.R.string.ok, null)
+                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        }).create();
+        d.show();
+        Button positiveButton = d.getButton(AlertDialog.BUTTON_POSITIVE);
+        positiveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText nameET = ButterKnife.findById(d, R.id.name_edit_text);
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Dialog d = (Dialog) dialog;
-                        EditText nameET = ButterKnife.findById(d, R.id.name_edit_text);
-                        IngredientsCompletionView completionView = ButterKnife.findById(d, R.id.ingredients_edit_text);
-                        RadioGroup courseTypeRG = ButterKnife.findById(d, R.id.course_type_radio); //TODO
+                if (nameET.getText().length() == 0) {
+                    Toast.makeText(getActivity(), "El nombre no puede estar vacío", Toast.LENGTH_LONG).show();
+                } else {
+                    IngredientsCompletionView completionView = ButterKnife.findById(d, R.id.ingredients_edit_text);
+                    //addUnconfirmedIngredient(completionView);
 
-                        updateCourse(c, nameET.getText().toString(), completionView.getObjects());
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                })
-                .show();
+                    RadioGroup courseTypeRG = ButterKnife.findById(d, R.id.course_type_radio); //TODO
+
+                    updateCourse(c, nameET.getText().toString(), completionView.getObjects());
+                }
+            }
+        });
     }
 
     private void updateCourse(Course c, String newName, List<Object> ingredients) {
@@ -345,6 +374,7 @@ public class CourseFragment extends ListFragment {
             c.removeAllIngredients();
             for (Object ingrObj : ingredients) {
                 Ingredient ingr = (Ingredient) ingrObj;
+                if (ingr.getId() == null) ingr.save();
                 CourseIngredient ci = new CourseIngredient();
                 ci.ingredient = ingr;
                 ci.course = c;
