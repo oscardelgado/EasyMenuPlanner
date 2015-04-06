@@ -15,8 +15,15 @@ import java.util.List;
 @Table(name = "Courses")
 public class Course extends Model {
 
+    public enum CourseType {
+        FIRST, SECOND, NONE;
+    };
+
     @Column (index = true)
     public String name;
+
+    @Column
+    public CourseType courseType;
 
     public List<CourseIngredient> getIngredients() {
         return new Select().from(CourseIngredient.class)

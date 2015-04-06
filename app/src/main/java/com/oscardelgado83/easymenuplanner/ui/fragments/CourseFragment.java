@@ -197,7 +197,7 @@ public class CourseFragment extends ListFragment {
         // Auto-complete for Ingredients
         setIngredientsAutocompleteAdapter(newCourseView);
 
-       final AlertDialog d = builder.setTitle(getString(R.string.dialog_new_course_title)).setView(newCourseView)
+        final AlertDialog d = builder.setTitle(getString(R.string.dialog_new_course_title)).setView(newCourseView)
                 .setPositiveButton(android.R.string.ok, null)
                 .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
                     @Override
@@ -218,9 +218,7 @@ public class CourseFragment extends ListFragment {
                     IngredientsCompletionView completionView = ButterKnife.findById(d, R.id.ingredients_edit_text);
                     addUnconfirmedIngredient(completionView);
 
-                    RadioGroup courseTypeRG = ButterKnife.findById(d, R.id.course_type_radio); //TODO
-
-                    createCourse(nameET.getText().toString(), completionView.getObjects());
+                    createCourse(nameET.getText().toString(), completionView.getObjects(), getCourseType(d));
 
                     d.dismiss();
 
@@ -228,6 +226,23 @@ public class CourseFragment extends ListFragment {
                 }
             }
         });
+    }
+
+    private Course.CourseType getCourseType(AlertDialog d) {
+        Course.CourseType courseType;
+        RadioGroup courseTypeRG = ButterKnife.findById(d, R.id.course_type_radio);
+        switch (courseTypeRG.getCheckedRadioButtonId()) {
+            case R.id.radio_btn_first:
+                courseType = Course.CourseType.FIRST;
+                break;
+            case R.id.radio_btn_second:
+                courseType = Course.CourseType.SECOND;
+                break;
+            default:
+                courseType = Course.CourseType.NONE;
+                break;
+        }
+        return courseType;
     }
 
     // If the last item wasn't confirmed, we manually confirm it so it doesn't get lost
@@ -251,11 +266,12 @@ public class CourseFragment extends ListFragment {
         return completionView;
     }
 
-    private void createCourse(String name, List<Object> ingredients) {
+    private void createCourse(String name, List<Object> ingredients, Course.CourseType courseType) {
         ActiveAndroid.beginTransaction();
         try {
             Course c = new Course();
             c.name = name;
+            c.courseType = courseType;
             c.save();
 
             courseList.add(c); //TODO: insert in order
@@ -326,7 +342,6 @@ public class CourseFragment extends ListFragment {
         View editCourseView = LayoutInflater.from(getActivity()).inflate(R.layout.course_view, null);
         ButterKnife.inject(this, editCourseView);
 
-        // Auto-complete for Ingredients
         IngredientsCompletionView completionView = setIngredientsAutocompleteAdapter(editCourseView);
 
         for (CourseIngredient rel : c.getIngredients()) {
@@ -346,6 +361,14 @@ public class CourseFragment extends ListFragment {
                             }
                         }).create();
         d.show();
+
+        RadioGroup courseTypeRG = ButterKnife.findById(d, R.id.course_type_radio);
+        if (c.courseType == Course.CourseType.FIRST) {
+            courseTypeRG.check(R.id.radio_btn_first);
+        } else if (c.courseType == Course.CourseType.SECOND) {
+            courseTypeRG.check(R.id.radio_btn_second);
+        }
+
         Button positiveButton = d.getButton(AlertDialog.BUTTON_POSITIVE);
         positiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -358,9 +381,7 @@ public class CourseFragment extends ListFragment {
                     IngredientsCompletionView completionView = ButterKnife.findById(d, R.id.ingredients_edit_text);
                     addUnconfirmedIngredient(completionView);
 
-                    RadioGroup courseTypeRG = ButterKnife.findById(d, R.id.course_type_radio); //TODO
-
-                    updateCourse(c, nameET.getText().toString(), completionView.getObjects());
+                    updateCourse(c, nameET.getText().toString(), completionView.getObjects(), getCourseType(d));
 
                     d.dismiss();
                 }
@@ -368,7 +389,7 @@ public class CourseFragment extends ListFragment {
         });
     }
 
-    private void updateCourse(Course c, String newName, List<Object> ingredients) {
+    private void updateCourse(Course c, String newName, List<Object> ingredients, Course.CourseType courseType) {
         ActiveAndroid.beginTransaction();
         try {
             c.name = newName;
@@ -382,6 +403,7 @@ public class CourseFragment extends ListFragment {
                 ci.course = c;
                 ci.save();
             }
+            c.courseType = courseType;
             c.save();
             ActiveAndroid.setTransactionSuccessful();
         } finally {
