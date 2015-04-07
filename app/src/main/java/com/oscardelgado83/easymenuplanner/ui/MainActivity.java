@@ -33,8 +33,8 @@ import com.oscardelgado83.easymenuplanner.ui.fragments.WeekFragment;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import butterknife.InjectView;
 import hugo.weaving.DebugLog;
@@ -66,7 +66,7 @@ public class MainActivity extends ActionBarActivity
     private CharSequence mTitle;
     private Fragment currentFrg;
 
-    private Day[] week;
+    private List<Day> week;
 
     @Override
     @DebugLog
@@ -98,6 +98,7 @@ public class MainActivity extends ActionBarActivity
 
         //TODO: remove these lines
         dbStarted = false;
+        new Delete().from(Day.class).execute();
         new Delete().from(Course.class).execute();
         new Delete().from(Ingredient.class).execute();
         new Delete().from(CourseIngredient.class).execute();
@@ -105,6 +106,9 @@ public class MainActivity extends ActionBarActivity
         if (!dbStarted) {
             prePopulateDB();
         }
+
+        week = Day.findAll();
+        Log.d(LOG_TAG, "week: " + week);
     }
 
     @DebugLog
@@ -130,7 +134,6 @@ public class MainActivity extends ActionBarActivity
             ingr.name = "Ingr. 3";
             ingr.save();
 
-            week = new Day[WEEKDAYS];
             for (int i = 0; i < WEEKDAYS; i++) {
                 Day day = new Day();
                 day.date = new Date();
@@ -144,9 +147,7 @@ public class MainActivity extends ActionBarActivity
                 }
 
                 day.save();
-                week[i] = day;
             }
-            Log.d(LOG_TAG, "week: " + Arrays.toString(week));
 
             ActiveAndroid.setTransactionSuccessful();
 
@@ -327,7 +328,7 @@ public class MainActivity extends ActionBarActivity
         //TODO
     }
 
-    public Day[] getWeek() {
+    public List<Day> getWeek() {
         return week;
     }
 }

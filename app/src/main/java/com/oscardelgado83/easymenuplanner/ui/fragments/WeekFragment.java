@@ -11,15 +11,17 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.activeandroid.query.Select;
-import com.oscardelgado83.easymenuplanner.model.Day;
-import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Course;
+import com.oscardelgado83.easymenuplanner.model.Day;
+import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 
-import butterknife.ButterKnife;
+import java.util.List;
+
 import butterknife.InjectView;
 
-import static butterknife.ButterKnife.*;
+import static butterknife.ButterKnife.inject;
+import static butterknife.ButterKnife.reset;
 
 /**
 * Created by oscar on 23/03/15.
@@ -57,21 +59,23 @@ public class WeekFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_week, container, false);
         inject(this, view);
 
+        List<Day> week = ((MainActivity) getActivity()).getWeek();
+
         allTableRows = new TableRow[]{tableRow1, tableRow2, tableRow3, tableRow4, tableRow5, tableRow6, tableRow7};
-        for(TableRow tr : allTableRows) {
+        for(int i = 0; i < allTableRows.length; i++) {
+            TableRow tr = allTableRows[i];
+
             TextView tvA = (TextView) tr.findViewById(R.id.textViewA);
             TextView tvB = (TextView) tr.findViewById(R.id.textViewB);
+
+            if (week.get(i).firstCourse != null) tvA.setText(week.get(i).firstCourse.name);
+            if (week.get(i).secondCourse != null) tvA.setText(week.get(i).secondCourse.name);
 
             setOnClickListener(tr, tvA, R.id.buttonLeftA);
             setOnClickListener(tr, tvA, R.id.buttonRightA);
             setOnClickListener(tr, tvB, R.id.buttonLeftB);
             setOnClickListener(tr, tvB, R.id.buttonRightB);
         }
-
-        //TODO: remove
-        TextView tv = findById(tableRow3, R.id.textViewA);
-        Day[] week = ((MainActivity) getActivity()).getWeek();
-        tv.setText(week[2].firstCourse.name);
 
         return view;
     }
