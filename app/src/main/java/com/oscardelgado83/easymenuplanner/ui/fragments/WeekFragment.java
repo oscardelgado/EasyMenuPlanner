@@ -11,12 +11,15 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.activeandroid.query.Select;
+import com.oscardelgado83.easymenuplanner.model.Day;
 import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Course;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+
+import static butterknife.ButterKnife.*;
 
 /**
 * Created by oscar on 23/03/15.
@@ -52,7 +55,7 @@ public class WeekFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_week, container, false);
-        ButterKnife.inject(this, view);
+        inject(this, view);
 
         allTableRows = new TableRow[]{tableRow1, tableRow2, tableRow3, tableRow4, tableRow5, tableRow6, tableRow7};
         for(TableRow tr : allTableRows) {
@@ -65,12 +68,17 @@ public class WeekFragment extends Fragment {
             setOnClickListener(tr, tvB, R.id.buttonRightB);
         }
 
+        //TODO: remove
+        TextView tv = findById(tableRow3, R.id.textViewA);
+        Day[] week = ((MainActivity) getActivity()).getWeek();
+        tv.setText(week[2].firstCourse.name);
+
         return view;
     }
 
     private void setOnClickListener(TableRow tr, TextView tv, int btnId) {
-        Button btnLeftA = (Button) tr.findViewById(btnId);
-        btnLeftA.setOnClickListener(courseBtnClickListener(tv));
+        Button btn = (Button) tr.findViewById(btnId);
+        btn.setOnClickListener(courseBtnClickListener(tv));
     }
 
     private View.OnClickListener courseBtnClickListener(final TextView tv) {
@@ -99,7 +107,7 @@ public class WeekFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.reset(this);
+        reset(this);
     }
 
     public void clearAllCourses() {

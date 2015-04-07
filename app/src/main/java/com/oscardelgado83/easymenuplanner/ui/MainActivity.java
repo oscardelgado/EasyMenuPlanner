@@ -23,6 +23,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Course;
 import com.oscardelgado83.easymenuplanner.model.CourseIngredient;
+import com.oscardelgado83.easymenuplanner.model.Day;
 import com.oscardelgado83.easymenuplanner.model.Ingredient;
 import com.oscardelgado83.easymenuplanner.ui.fragments.CourseFragment;
 import com.oscardelgado83.easymenuplanner.ui.fragments.NavigationDrawerFragment;
@@ -32,6 +33,8 @@ import com.oscardelgado83.easymenuplanner.ui.fragments.WeekFragment;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Date;
 
 import butterknife.InjectView;
 import hugo.weaving.DebugLog;
@@ -49,9 +52,9 @@ public class MainActivity extends ActionBarActivity
     @InjectView(R.id.adView)
     AdView adView;
 
+    public static final int WEEKDAYS = 7;
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
-
-    public static final String DB_STARTED = "dbStarted";
+    public static final String PREFERENCE_DB_STARTED = "dbStarted";
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -62,6 +65,8 @@ public class MainActivity extends ActionBarActivity
      */
     private CharSequence mTitle;
     private Fragment currentFrg;
+
+    private Day[] week;
 
     @Override
     @DebugLog
@@ -89,13 +94,13 @@ public class MainActivity extends ActionBarActivity
 
         // Restore preferences
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
-        boolean dbStarted = settings.getBoolean(DB_STARTED, false);
+        boolean dbStarted = settings.getBoolean(PREFERENCE_DB_STARTED, false);
 
         //TODO: remove these lines
-//        dbStarted = false;
-//        new Delete().from(Course.class).execute();
-//        new Delete().from(Ingredient.class).execute();
-//        new Delete().from(CourseIngredient.class).execute();
+        dbStarted = false;
+        new Delete().from(Course.class).execute();
+        new Delete().from(Ingredient.class).execute();
+        new Delete().from(CourseIngredient.class).execute();
 
         if (!dbStarted) {
             prePopulateDB();
@@ -125,13 +130,31 @@ public class MainActivity extends ActionBarActivity
             ingr.name = "Ingr. 3";
             ingr.save();
 
+            week = new Day[WEEKDAYS];
+            for (int i = 0; i < WEEKDAYS; i++) {
+                Day day = new Day();
+                day.date = new Date();
+
+                //TODO: remove
+                if (i == 2) {
+                    Course testCourse = new Course();
+                    testCourse.name = "Test";
+                    testCourse.save();
+                    day.firstCourse = testCourse;
+                }
+
+                day.save();
+                week[i] = day;
+            }
+            Log.d(LOG_TAG, "week: " + Arrays.toString(week));
+
             ActiveAndroid.setTransactionSuccessful();
 
             // We need an Editor object to make preference changes.
             // All objects are from android.context.Context
             SharedPreferences settings = getPreferences(MODE_PRIVATE);
             SharedPreferences.Editor editor = settings.edit();
-            editor.putBoolean(DB_STARTED, true);
+            editor.putBoolean(PREFERENCE_DB_STARTED, true);
 
             editor.commit();
         } catch (IOException e) {
@@ -302,5 +325,9 @@ public class MainActivity extends ActionBarActivity
     @Override
     public void onFragmentInteraction(Long courseId) {
         //TODO
+    }
+
+    public Day[] getWeek() {
+        return week;
     }
 }
