@@ -16,13 +16,11 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
-import com.activeandroid.query.Delete;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Course;
-import com.oscardelgado83.easymenuplanner.model.CourseIngredient;
 import com.oscardelgado83.easymenuplanner.model.Day;
 import com.oscardelgado83.easymenuplanner.model.Ingredient;
 import com.oscardelgado83.easymenuplanner.ui.fragments.CourseFragment;
@@ -97,11 +95,11 @@ public class MainActivity extends ActionBarActivity
         boolean dbStarted = settings.getBoolean(PREFERENCE_DB_STARTED, false);
 
         //TODO: remove these lines
-        dbStarted = false;
-        new Delete().from(Day.class).execute();
-        new Delete().from(Course.class).execute();
-        new Delete().from(Ingredient.class).execute();
-        new Delete().from(CourseIngredient.class).execute();
+//        dbStarted = false;
+//        new Delete().from(Day.class).execute();
+//        new Delete().from(Course.class).execute();
+//        new Delete().from(Ingredient.class).execute();
+//        new Delete().from(CourseIngredient.class).execute();
 
         if (!dbStarted) {
             prePopulateDB();

@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Select;
 import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Course;
@@ -19,7 +20,9 @@ import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 import java.util.List;
 
 import butterknife.InjectView;
+import hugo.weaving.DebugLog;
 
+import static butterknife.ButterKnife.findById;
 import static butterknife.ButterKnife.inject;
 import static butterknife.ButterKnife.reset;
 
@@ -51,6 +54,8 @@ public class WeekFragment extends Fragment {
 
     private TableRow[] allTableRows;
 
+    private boolean dirty;
+
     private static final String LOG_TAG = WeekFragment.class.getSimpleName();
 
     @Override
@@ -65,18 +70,17 @@ public class WeekFragment extends Fragment {
         for(int i = 0; i < allTableRows.length; i++) {
             TableRow tr = allTableRows[i];
 
-            TextView tvA = (TextView) tr.findViewById(R.id.textViewA);
-            TextView tvB = (TextView) tr.findViewById(R.id.textViewB);
+            TextView tvA = findById(tr, R.id.textViewA);
+            TextView tvB = findById(tr, R.id.textViewB);
 
             if (week.get(i).firstCourse != null) tvA.setText(week.get(i).firstCourse.name);
-            if (week.get(i).secondCourse != null) tvA.setText(week.get(i).secondCourse.name);
+            if (week.get(i).secondCourse != null) tvB.setText(week.get(i).secondCourse.name);
 
             setOnClickListener(tr, tvA, R.id.buttonLeftA);
             setOnClickListener(tr, tvA, R.id.buttonRightA);
             setOnClickListener(tr, tvB, R.id.buttonLeftB);
             setOnClickListener(tr, tvB, R.id.buttonRightB);
         }
-
         return view;
     }
 
@@ -90,6 +94,8 @@ public class WeekFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 tv.setText(getRandomCourse().name);
+                //TODO: store day
+                dirty = true;
             }
         };
     }
@@ -114,6 +120,27 @@ public class WeekFragment extends Fragment {
         reset(this);
     }
 
+    @DebugLog
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        //TODO: decide if store to DB in onPause() or onStop() (http://stackoverflow.com/q/14936281/1464013)
+        if (dirty) {
+            try {
+                ActiveAndroid.beginTransaction();
+                List<Day> week = ((MainActivity) getActivity()).getWeek();
+                for(int i = 0; i < allTableRows.length; i++) {
+                    Day day = week.get(i);
+                    day.save();
+                }
+                ActiveAndroid.setTransactionSuccessful();
+            } finally {
+                ActiveAndroid.endTransaction();
+            }
+        }
+    }
+
     public void clearAllCourses() {
         for(TableRow tr : allTableRows) {
             TextView tvA = (TextView) tr.findViewById(R.id.textViewA);
@@ -122,19 +149,28 @@ public class WeekFragment extends Fragment {
             TextView tvB = (TextView) tr.findViewById(R.id.textViewB);
             tvB.setText("");
         }
+        dirty = true;
     }
 
     public void randomFillAllCourses() {
-        for(TableRow tr : allTableRows) {
+        Course course = null;
+        List<Day> week = ((MainActivity) getActivity()).getWeek();
+        for(int i = 0; i < allTableRows.length; i++) {
+            TableRow tr = allTableRows[i];
             TextView tvA = (TextView) tr.findViewById(R.id.textViewA);
             if (tvA.getText().equals("")) {
-                tvA.setText(getRandomCourse().name);
+                course = getRandomCourse();
+                week.get(i).firstCourse = course;
+                tvA.setText(course.name);
             }
 
             TextView tvB = (TextView) tr.findViewById(R.id.textViewB);
             if (tvB.getText().equals("")) {
+                course = getRandomCourse();
+                week.get(i).secondCourse = course;
                 tvB.setText(getRandomCourse().name);
             }
         }
+        dirty = true;
     }
 }
