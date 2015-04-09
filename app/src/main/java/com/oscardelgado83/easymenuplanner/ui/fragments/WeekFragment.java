@@ -3,6 +3,7 @@ package com.oscardelgado83.easymenuplanner.ui.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import com.oscardelgado83.easymenuplanner.model.Day;
 import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 
 import java.util.List;
+import java.util.Random;
 
 import butterknife.InjectView;
 import hugo.weaving.DebugLog;
@@ -54,7 +56,11 @@ public class WeekFragment extends Fragment {
 
     private TableRow[] allTableRows;
 
+    private List<Course> allCourses;
+
     private boolean dirty;
+
+    private Random rand;
 
     private static final String LOG_TAG = WeekFragment.class.getSimpleName();
 
@@ -66,6 +72,11 @@ public class WeekFragment extends Fragment {
 
         List<Day> week = ((MainActivity) getActivity()).getWeek();
 
+        allCourses = new Select()
+                .from(Course.class)
+                .orderBy("name")
+                .execute();
+
         allTableRows = new TableRow[]{tableRow1, tableRow2, tableRow3, tableRow4, tableRow5, tableRow6, tableRow7};
         for(int i = 0; i < allTableRows.length; i++) {
             TableRow tr = allTableRows[i];
@@ -73,8 +84,12 @@ public class WeekFragment extends Fragment {
             TextView tvA = findById(tr, R.id.textViewA);
             TextView tvB = findById(tr, R.id.textViewB);
 
-            if (week.get(i).firstCourse != null) tvA.setText(week.get(i).firstCourse.name);
-            if (week.get(i).secondCourse != null) tvB.setText(week.get(i).secondCourse.name);
+            if (week.isEmpty()) {
+                Log.w(LOG_TAG, "The week has not been initialized.");
+            } else {
+                if (week.get(i).firstCourse != null) tvA.setText(week.get(i).firstCourse.name);
+                if (week.get(i).secondCourse != null) tvB.setText(week.get(i).secondCourse.name);
+            }
 
             setOnClickListener(tr, tvA, R.id.buttonLeftA);
             setOnClickListener(tr, tvA, R.id.buttonRightA);
@@ -101,11 +116,11 @@ public class WeekFragment extends Fragment {
     }
 
     private Course getRandomCourse() {
-        return new Select()
-                        .from(Course.class)
-    //                    .where("Category = ?", category.getId())
-                        .orderBy("RANDOM()")
-                        .executeSingle();
+        rand = new Random();
+
+        int randomInt = rand.nextInt(allCourses.size());
+
+        return allCourses.get(randomInt);
     }
 
     @Override
@@ -132,7 +147,7 @@ public class WeekFragment extends Fragment {
                 List<Day> week = ((MainActivity) getActivity()).getWeek();
                 for(int i = 0; i < allTableRows.length; i++) {
                     Day day = week.get(i);
-                    day.save();
+                    day.save(); // TODO: optimize (update only if dirty)
                 }
                 ActiveAndroid.setTransactionSuccessful();
             } finally {
