@@ -19,6 +19,7 @@ import com.oscardelgado83.easymenuplanner.model.Day;
 import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Random;
 
 import butterknife.InjectView;
@@ -80,6 +81,7 @@ public class WeekFragment extends Fragment {
         allTableRows = new TableRow[]{tableRow1, tableRow2, tableRow3, tableRow4, tableRow5, tableRow6, tableRow7};
         for(int i = 0; i < allTableRows.length; i++) {
             TableRow tr = allTableRows[i];
+            tr.setTag(i);
 
             TextView tvA = findById(tr, R.id.textViewA);
             TextView tvB = findById(tr, R.id.textViewB);
@@ -101,15 +103,52 @@ public class WeekFragment extends Fragment {
 
     private void setOnClickListener(TableRow tr, TextView tv, int btnId) {
         Button btn = (Button) tr.findViewById(btnId);
-        btn.setOnClickListener(courseBtnClickListener(tv));
+
+        int row = (Integer) tr.getTag();
+        int col = (tv.getId() == R.id.textViewA)? 0 : 1;
+        btn.setOnClickListener(courseBtnClickListener(tv, row, col));
     }
 
-    private View.OnClickListener courseBtnClickListener(final TextView tv) {
+    private View.OnClickListener courseBtnClickListener(final TextView tv, final int row, final int col) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tv.setText(getRandomCourse().name);
-                //TODO: store day
+                List<Day> week = ((MainActivity) getActivity()).getWeek();
+                Day selectedDay = week.get(row);
+                Course currentCourse = (col == 0)? selectedDay.firstCourse : selectedDay.secondCourse;
+                Course newCourse = null;
+                ListIterator<Course> it = allCourses.listIterator(allCourses.indexOf(currentCourse));
+                switch (v.getId()) {
+                    case R.id.buttonLeftA:
+                    case R.id.buttonLeftB:
+                        do {
+                            if (it.hasPrevious()) {
+                                newCourse = it.previous();
+                            } else {
+                                newCourse = allCourses.get(allCourses.size() - 1);
+                            }
+                        } while ( newCourse == currentCourse);
+                        break;
+                    case R.id.buttonRightA:
+                    case R.id.buttonRightB:
+                        do {
+                            if (it.hasNext()) {
+                                newCourse = it.next();
+                            } else {
+                                newCourse = allCourses.get(0);
+                            }
+                        } while (newCourse == currentCourse);
+                        break;
+                    default:
+                        break;
+                }
+                if (col == 0) {
+                    selectedDay.firstCourse = newCourse;
+                } else if (col == 1) {
+                    selectedDay.secondCourse = newCourse;
+                }
+                selectedDay.save();
+                tv.setText(newCourse.name);
                 dirty = true;
             }
         };
@@ -117,9 +156,7 @@ public class WeekFragment extends Fragment {
 
     private Course getRandomCourse() {
         rand = new Random();
-
         int randomInt = rand.nextInt(allCourses.size());
-
         return allCourses.get(randomInt);
     }
 
