@@ -7,8 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.oscardelgado83.easymenuplanner.ui.MainActivity;
+import com.oscardelgado83.easymenuplanner.EMPApplication;
 import com.oscardelgado83.easymenuplanner.R;
+import com.oscardelgado83.easymenuplanner.ui.MainActivity;
+import com.oscardelgado83.easymenuplanner.util.GA;
 
 import butterknife.ButterKnife;
 
@@ -37,5 +39,14 @@ public class ShoppingListFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.reset(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        GA.sendScreenHit(
+                ((EMPApplication) getActivity().getApplication()).getTracker(),
+                getClass().getSimpleName());
     }
 }

@@ -13,10 +13,12 @@ import android.widget.TextView;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Select;
+import com.oscardelgado83.easymenuplanner.EMPApplication;
 import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Course;
 import com.oscardelgado83.easymenuplanner.model.Day;
 import com.oscardelgado83.easymenuplanner.ui.MainActivity;
+import com.oscardelgado83.easymenuplanner.util.GA;
 
 import java.util.List;
 import java.util.ListIterator;
@@ -103,6 +105,15 @@ public class WeekFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        GA.sendScreenHit(
+                ((EMPApplication) getActivity().getApplication()).getTracker(),
+                getClass().getSimpleName());
+    }
+
     private void setOnClickListener(TableRow tr, TextView tv, int btnId) {
         Button btn = (Button) tr.findViewById(btnId);
 
@@ -119,43 +130,45 @@ public class WeekFragment extends Fragment {
                 Day selectedDay = week.get(row);
                 Course currentCourse = (col == 0)? selectedDay.firstCourse : selectedDay.secondCourse;
                 Course newCourse = null;
-                ListIterator<Course> it = allCourses.listIterator(allCourses.indexOf(currentCourse));
-                switch (v.getId()) {
-                    case R.id.buttonLeftA:
-                    case R.id.buttonLeftB:
-                        do {
-                            if (it.hasPrevious()) {
-                                newCourse = it.previous();
-                            } else {
-                                newCourse = allCourses.get(allCourses.size() - 1);
-                            }
-                        } while ( newCourse == currentCourse);
-                        break;
-                    case R.id.buttonRightA:
-                    case R.id.buttonRightB:
-                        do {
-                            if (it.hasNext()) {
-                                newCourse = it.next();
-                            } else {
-                                newCourse = allCourses.get(0);
-                            }
-                        } while (newCourse == currentCourse);
-                        break;
-                    case R.id.buttonDelA:
-                    case R.id.buttonDelB:
-                        newCourse = null;
-                        break;
-                    default:
-                        break;
+                if (currentCourse != null) {
+                    ListIterator<Course> it = allCourses.listIterator(allCourses.indexOf(currentCourse));
+                    switch (v.getId()) {
+                        case R.id.buttonLeftA:
+                        case R.id.buttonLeftB:
+                            do {
+                                if (it.hasPrevious()) {
+                                    newCourse = it.previous();
+                                } else {
+                                    newCourse = allCourses.get(allCourses.size() - 1);
+                                }
+                            } while (newCourse == currentCourse);
+                            break;
+                        case R.id.buttonRightA:
+                        case R.id.buttonRightB:
+                            do {
+                                if (it.hasNext()) {
+                                    newCourse = it.next();
+                                } else {
+                                    newCourse = allCourses.get(0);
+                                }
+                            } while (newCourse == currentCourse);
+                            break;
+                        case R.id.buttonDelA:
+                        case R.id.buttonDelB:
+                            newCourse = null;
+                            break;
+                        default:
+                            break;
+                    }
+                    if (col == 0) {
+                        selectedDay.firstCourse = newCourse;
+                    } else if (col == 1) {
+                        selectedDay.secondCourse = newCourse;
+                    }
+                    selectedDay.save();
+                    tv.setText(newCourse != null ? newCourse.name : "");
+                    dirty = true;
                 }
-                if (col == 0) {
-                    selectedDay.firstCourse = newCourse;
-                } else if (col == 1) {
-                    selectedDay.secondCourse = newCourse;
-                }
-                selectedDay.save();
-                tv.setText(newCourse != null? newCourse.name : "");
-                dirty = true;
             }
         };
     }

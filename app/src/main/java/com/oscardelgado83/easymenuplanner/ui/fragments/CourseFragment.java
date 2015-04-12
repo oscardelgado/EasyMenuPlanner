@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Select;
+import com.oscardelgado83.easymenuplanner.EMPApplication;
 import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Course;
 import com.oscardelgado83.easymenuplanner.model.CourseIngredient;
@@ -31,6 +32,7 @@ import com.oscardelgado83.easymenuplanner.model.Ingredient;
 import com.oscardelgado83.easymenuplanner.ui.IngredientsCompletionView;
 import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 import com.oscardelgado83.easymenuplanner.ui.adapters.CourseAdapter;
+import com.oscardelgado83.easymenuplanner.util.GA;
 
 import java.util.List;
 
@@ -188,6 +190,15 @@ public class CourseFragment extends ListFragment {
         ButterKnife.reset(this);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        GA.sendScreenHit(
+                ((EMPApplication) getActivity().getApplication()).getTracker(),
+                getClass().getSimpleName());
+    }
+
     public void addCourseClicked() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
@@ -226,6 +237,12 @@ public class CourseFragment extends ListFragment {
                 }
             }
         });
+        GA.sendEvent(
+                ((EMPApplication) getActivity().getApplication()).getTracker(),
+                getClass().getSimpleName(),
+                "open dialog",
+                "add course"
+        );
     }
 
     private Course.CourseType getCourseType(AlertDialog d) {
@@ -300,6 +317,12 @@ public class CourseFragment extends ListFragment {
                 .setPositiveButton(android.R.string.yes, dialogClickListener)
                 .setNegativeButton(android.R.string.no, dialogClickListener)
                 .show();
+        GA.sendEvent(
+                ((EMPApplication) getActivity().getApplication()).getTracker(),
+                getClass().getSimpleName(),
+                "open dialog",
+                "delete course"
+        );
     }
 
     private static class DeleteBtnClickListener implements DialogInterface.OnClickListener {
@@ -323,7 +346,7 @@ public class CourseFragment extends ListFragment {
                             Course deletedCourse = listAdapter.getItem(checkedItemPositions.keyAt(i));
                             Log.d(LOG_TAG, "deletedCourse: " + deletedCourse);
                             listAdapter.remove(deletedCourse);
-                            deletedCourse.delete();
+                            deletedCourse.delete(); //TODO: posible FOREIGN KEY fail
                         }
                     }
                     break;
@@ -387,6 +410,12 @@ public class CourseFragment extends ListFragment {
                 }
             }
         });
+        GA.sendEvent(
+                ((EMPApplication) getActivity().getApplication()).getTracker(),
+                getClass().getSimpleName(),
+                "open dialog",
+                "edit course"
+        );
     }
 
     private void updateCourse(Course c, String newName, List<Object> ingredients, Course.CourseType courseType) {
