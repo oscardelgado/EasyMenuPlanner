@@ -10,17 +10,6 @@
         android:layout_height="match_parent"
         android:layout_weight="1">
 
-        <Button
-            style="?android:attr/buttonStyleSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="&lt;"
-            android:id="@+id/buttonLeftA"
-            android:layout_weight="1"
-            android:layout_below="@+id/textViewA"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,6 +20,37 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="x"
+            android:id="@+id/buttonDelA"
+            android:layout_weight="1"
+            android:layout_below="@+id/textViewA"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="&lt;"
+            android:id="@+id/buttonLeftA"
+            android:layout_weight="1"
+            android:layout_below="@+id/textViewA"
+            android:layout_toRightOf="@id/buttonDelA"/>
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=">"
+            android:id="@+id/buttonRightA"
+            android:layout_weight="1"
+            android:layout_alignTop="@+id/buttonLeftA"
+            android:layout_toRightOf="@+id/buttonLeftA"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -48,10 +68,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=">"
-            android:id="@+id/buttonRightA"
+            android:id="@+id/buttonRightB"
             android:layout_weight="1"
-            android:layout_alignTop="@+id/buttonLeftA"
-            android:layout_toRightOf="@+id/buttonLeftA"/>
+            android:layout_below="@id/textViewB"
+            android:layout_alignParentRight="true"/>
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -60,18 +80,19 @@
             android:text="&lt;"
             android:id="@+id/buttonLeftB"
             android:layout_weight="1"
-            android:layout_alignTop="@+id/buttonRightA"
-            android:layout_toLeftOf="@+id/buttonRightB"/>
+            android:layout_alignTop="@id/buttonRightB"
+            android:layout_toLeftOf="@id/buttonRightB"/>
 
         <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=">"
-            android:id="@+id/buttonRightB"
+            android:text="x"
+            android:id="@+id/buttonDelB"
             android:layout_weight="1"
-            android:layout_below="@id/textViewB"
-            android:layout_alignParentRight="true"/>
+            android:layout_alignTop="@id/buttonLeftB"
+            android:layout_toLeftOf="@id/buttonLeftB"/>
+
     </RelativeLayout>
 
 </TableRow>

@@ -93,8 +93,10 @@ public class WeekFragment extends Fragment {
                 if (week.get(i).secondCourse != null) tvB.setText(week.get(i).secondCourse.name);
             }
 
+            setOnClickListener(tr, tvA, R.id.buttonDelA);
             setOnClickListener(tr, tvA, R.id.buttonLeftA);
             setOnClickListener(tr, tvA, R.id.buttonRightA);
+            setOnClickListener(tr, tvB, R.id.buttonDelB);
             setOnClickListener(tr, tvB, R.id.buttonLeftB);
             setOnClickListener(tr, tvB, R.id.buttonRightB);
         }
@@ -139,6 +141,10 @@ public class WeekFragment extends Fragment {
                             }
                         } while (newCourse == currentCourse);
                         break;
+                    case R.id.buttonDelA:
+                    case R.id.buttonDelB:
+                        newCourse = null;
+                        break;
                     default:
                         break;
                 }
@@ -148,7 +154,7 @@ public class WeekFragment extends Fragment {
                     selectedDay.secondCourse = newCourse;
                 }
                 selectedDay.save();
-                tv.setText(newCourse.name);
+                tv.setText(newCourse != null? newCourse.name : "");
                 dirty = true;
             }
         };
