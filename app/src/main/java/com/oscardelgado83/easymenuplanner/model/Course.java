@@ -6,7 +6,6 @@ import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Delete;
 import com.activeandroid.query.Select;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -39,6 +38,9 @@ public class Course extends Model {
 
     @Override
     public String toString() {
-        return name;
+        return "Course{" +
+                "name='" + name + '\'' +
+                ", courseType=" + courseType +
+                '}';
     }
 }

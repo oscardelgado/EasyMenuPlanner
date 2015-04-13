@@ -24,4 +24,13 @@ public class Day extends Model {
     public static List<Day> findAll() {
         return new Select().from(Day.class).orderBy("date ASC").execute();
     }
+
+    @Override
+    public String toString() {
+        return "Day{" +
+                "date=" + date +
+                ", firstCourse=" + firstCourse +
+                ", secondCourse=" + secondCourse +
+                '}';
+    }
 }

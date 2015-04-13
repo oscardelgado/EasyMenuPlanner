@@ -25,4 +25,6 @@
     <string name="action_edit">Edit</string>
     <string name="dialog_edit_course_title">Edit course</string>
     <string name="empty_name_not_allowed">Name can\'t be empty</string>
+    <string name="days_with_this_course_exist">This course is assigned to one or more days</string>
+    <string name="delete_it_anyway">Delete anyway</string>
 </resources>

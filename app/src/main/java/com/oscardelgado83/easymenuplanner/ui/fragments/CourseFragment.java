@@ -2,6 +2,7 @@ package com.oscardelgado83.easymenuplanner.ui.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -28,6 +29,7 @@ import com.oscardelgado83.easymenuplanner.EMPApplication;
 import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Course;
 import com.oscardelgado83.easymenuplanner.model.CourseIngredient;
+import com.oscardelgado83.easymenuplanner.model.Day;
 import com.oscardelgado83.easymenuplanner.model.Ingredient;
 import com.oscardelgado83.easymenuplanner.ui.IngredientsCompletionView;
 import com.oscardelgado83.easymenuplanner.ui.MainActivity;
@@ -329,10 +331,12 @@ public class CourseFragment extends ListFragment {
 
         private SparseBooleanArray checkedItemPositions;
         private CourseAdapter listAdapter;
+        private Context context;
 
         public DeleteBtnClickListener(SparseBooleanArray checkedItemPositions, CourseAdapter listAdapter) {
             this.listAdapter = listAdapter;
             this.checkedItemPositions = checkedItemPositions.clone();
+            this.context = listAdapter.getContext();
         }
 
         @Override
@@ -340,14 +344,56 @@ public class CourseFragment extends ListFragment {
             switch (which){
                 case DialogInterface.BUTTON_POSITIVE:
                     Log.d(LOG_TAG, "checkedItemPositions: " + checkedItemPositions);
-                    // Inverse order to avoid possible IndexOutOfBoundsException after remove.
-                    for (int i = checkedItemPositions.size() - 1; i >= 0; i --) {
-                        if (checkedItemPositions.valueAt(i)) {
-                            Course deletedCourse = listAdapter.getItem(checkedItemPositions.keyAt(i));
-                            Log.d(LOG_TAG, "deletedCourse: " + deletedCourse);
-                            listAdapter.remove(deletedCourse);
-                            deletedCourse.delete(); //TODO: posible FOREIGN KEY fail
+
+//                    try {
+//                        ActiveAndroid.beginTransaction();
+
+                        // Inverse order to avoid possible IndexOutOfBoundsException after remove.
+                        for (int i = checkedItemPositions.size() - 1; i >= 0; i --) {
+                            if (checkedItemPositions.valueAt(i)) {
+                                final Course deletedCourse = listAdapter.getItem(checkedItemPositions.keyAt(i));
+                                Log.d(LOG_TAG, "deletedCourse: " + deletedCourse);
+                                final List<Day> daysWithCourseAsFirst = new Select().from(Day.class)
+                                        .where("firstCourse = ?", deletedCourse.getId())
+                                        .execute();
+                                final List<Day> daysWithCourseAsSecond= new Select().from(Day.class)
+                                        .where("secondCourse = ?", deletedCourse.getId())
+                                        .execute();
+                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                                builder.setMessage(context.getString(R.string.days_with_this_course_exist))
+                                        .setPositiveButton(R.string.delete_it_anyway, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                for (Day day : daysWithCourseAsFirst) {
+                                                    Log.i(LOG_TAG, "Removing first course assigned to day: " + day);
+                                                    day.firstCourse = null;
+                                                    day.save();
+                                                    deletedCourse.delete();
+                                                    listAdapter.remove(deletedCourse);
+                                                }
+                                                for (Day day : daysWithCourseAsSecond) {
+                                                    Log.i(LOG_TAG, "Removing second course assigned to day: " + day);
+                                                    day.secondCourse = null;
+                                                    day.save();
+                                                    deletedCourse.delete();
+                                                    listAdapter.remove(deletedCourse);
+                                                }
+                                            }
+                                        })
+                                        .setNegativeButton(android.R.string.cancel, null);
+                                if ( ! (daysWithCourseAsFirst.isEmpty() && daysWithCourseAsSecond.isEmpty())) {
+                                    builder.show();
+                                } else {
+                                    deletedCourse.delete();
+                                    listAdapter.remove(deletedCourse);
+                                }
+                            }
                         }
+//                        ActiveAndroid.setTransactionSuccessful();
+//                    } finally {
+//                        ActiveAndroid.endTransaction();
+//                    }
+                    if (checkedItemPositions.size() > 0) {
                     }
                     break;
                 case DialogInterface.BUTTON_NEGATIVE:
