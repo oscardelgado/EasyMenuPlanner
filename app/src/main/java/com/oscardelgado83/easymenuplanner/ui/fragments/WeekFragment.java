@@ -130,46 +130,46 @@ public class WeekFragment extends Fragment {
                 Day selectedDay = week.get(row);
                 Course currentCourse = (col == 0)? selectedDay.firstCourse : selectedDay.secondCourse;
                 Course newCourse = null;
-                if (currentCourse != null) {
-                    ListIterator<Course> it = allCourses.listIterator(allCourses.indexOf(currentCourse));
-                    switch (v.getId()) {
-                        case R.id.buttonLeftA:
-                        case R.id.buttonLeftB:
-                            do {
-                                if (it.hasPrevious()) {
-                                    newCourse = it.previous();
-                                } else {
-                                    newCourse = allCourses.get(allCourses.size() - 1);
-                                }
-                            } while (newCourse == currentCourse);
-                            break;
-                        case R.id.buttonRightA:
-                        case R.id.buttonRightB:
-                            do {
-                                if (it.hasNext()) {
-                                    newCourse = it.next();
-                                } else {
-                                    newCourse = allCourses.get(0);
-                                }
-                            } while (newCourse == currentCourse);
-                            break;
-                        case R.id.buttonDelA:
-                        case R.id.buttonDelB:
-                            newCourse = null;
-                            break;
-                        default:
-                            break;
-                    }
-                    if (col == 0) {
-                        selectedDay.firstCourse = newCourse;
-                    } else if (col == 1) {
-                        selectedDay.secondCourse = newCourse;
-                    }
-                    selectedDay.save();
-                    tv.setText(newCourse != null ? newCourse.name : "");
-                    dirty = true;
+                int iterPos = (currentCourse != null)? allCourses.indexOf(currentCourse) : 0;
+                ListIterator<Course> it = allCourses.listIterator(iterPos);
+                switch (v.getId()) {
+                    case R.id.buttonLeftA:
+                    case R.id.buttonLeftB:
+                        do {
+                            if (it.hasPrevious()) {
+                                newCourse = it.previous();
+                            } else {
+                                newCourse = allCourses.get(allCourses.size() - 1);
+                            }
+                        } while (newCourse == currentCourse);
+                        break;
+                    case R.id.buttonRightA:
+                    case R.id.buttonRightB:
+                        do {
+                            if (it.hasNext()) {
+                                newCourse = it.next();
+                            } else {
+                                newCourse = allCourses.get(0);
+                            }
+                        } while (newCourse == currentCourse);
+                        break;
+                    case R.id.buttonDelA:
+                    case R.id.buttonDelB:
+                        newCourse = null;
+                        break;
+                    default:
+                        break;
                 }
-            }
+                if (col == 0) {
+                    selectedDay.firstCourse = newCourse;
+                } else if (col == 1) {
+                    selectedDay.secondCourse = newCourse;
+                }
+                selectedDay.save();
+                tv.setText(newCourse != null ? newCourse.name : "");
+                dirty = true;
+                }
+//            }
         };
     }
 
