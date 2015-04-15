@@ -10,11 +10,14 @@ import com.google.android.gms.analytics.Tracker;
  */
 public class EMPApplication extends Application {
 
+    public static final boolean DEBUGGING = true;
+
     Tracker tracker;
 
     public synchronized Tracker getTracker() {
         if (tracker == null) {
             GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
+            analytics.setDryRun(DEBUGGING);
             tracker = analytics.newTracker(getString(R.string.ga_property_id));
         }
         return tracker;
