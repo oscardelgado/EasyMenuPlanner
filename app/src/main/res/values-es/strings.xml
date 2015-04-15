@@ -22,6 +22,6 @@
     <string name="action_edit">Editar</string>
     <string name="dialog_edit_course_title">Editar plato</string>
     <string name="empty_name_not_allowed">El nombre no puede estar vacío</string>
-    <string name="days_with_this_course_exist">El plato está asignado a algún día</string>
+    <string name="days_with_this_course_exist">El plato (%s) está asignado a algún día</string>
     <string name="delete_it_anyway">Borrar de todas formas</string>
 </resources>

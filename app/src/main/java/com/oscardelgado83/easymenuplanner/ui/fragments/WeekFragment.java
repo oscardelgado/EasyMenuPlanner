@@ -87,20 +87,29 @@ public class WeekFragment extends Fragment {
 
             TextView tvA = findById(tr, R.id.textViewA);
             TextView tvB = findById(tr, R.id.textViewB);
+            Button btnDelA = findById(tr, R.id.buttonDelA);
+            Button btnDelB = findById(tr, R.id.buttonDelB);
 
             if (week.isEmpty()) {
                 Log.w(LOG_TAG, "The week has not been initialized.");
             } else {
-                if (week.get(i).firstCourse != null) tvA.setText(week.get(i).firstCourse.name);
-                if (week.get(i).secondCourse != null) tvB.setText(week.get(i).secondCourse.name);
+                if (week.get(i).firstCourse != null) {
+                    tvA.setText(week.get(i).firstCourse.name);
+                } else {
+                    btnDelA.setEnabled(false);
+                }
+                if (week.get(i).secondCourse != null) {
+                    tvB.setText(week.get(i).secondCourse.name);
+                } else {
+                    btnDelB.setEnabled(false);
+                }
             }
-
-            setOnClickListener(tr, tvA, R.id.buttonDelA);
-            setOnClickListener(tr, tvA, R.id.buttonLeftA);
-            setOnClickListener(tr, tvA, R.id.buttonRightA);
-            setOnClickListener(tr, tvB, R.id.buttonDelB);
-            setOnClickListener(tr, tvB, R.id.buttonLeftB);
-            setOnClickListener(tr, tvB, R.id.buttonRightB);
+            findById(tr, R.id.buttonLeftA).setOnClickListener(courseBtnClickListener(tvA, i, 0));
+            findById(tr, R.id.buttonRightA).setOnClickListener(courseBtnClickListener(tvA, i, 0));
+            findById(tr, R.id.buttonLeftB).setOnClickListener(courseBtnClickListener(tvB, i, 1));
+            findById(tr, R.id.buttonRightB).setOnClickListener(courseBtnClickListener(tvB, i, 1));
+            btnDelA.setOnClickListener(courseBtnClickListener(tvA, i, 0));
+            btnDelB.setOnClickListener(courseBtnClickListener(tvB, i, 1));
         }
         return view;
     }
@@ -114,14 +123,6 @@ public class WeekFragment extends Fragment {
                 getClass().getSimpleName());
     }
 
-    private void setOnClickListener(TableRow tr, TextView tv, int btnId) {
-        Button btn = (Button) tr.findViewById(btnId);
-
-        int row = (Integer) tr.getTag();
-        int col = (tv.getId() == R.id.textViewA)? 0 : 1;
-        btn.setOnClickListener(courseBtnClickListener(tv, row, col));
-    }
-
     private View.OnClickListener courseBtnClickListener(final TextView tv, final int row, final int col) {
         return new View.OnClickListener() {
             @Override
@@ -130,11 +131,16 @@ public class WeekFragment extends Fragment {
                 Day selectedDay = week.get(row);
                 Course currentCourse = (col == 0)? selectedDay.firstCourse : selectedDay.secondCourse;
                 Course newCourse = null;
-                int iterPos = (currentCourse != null)? allCourses.indexOf(currentCourse) : 0;
+                int iterPos =  (currentCourse != null)? allCourses.indexOf(currentCourse) : 0;
                 ListIterator<Course> it = allCourses.listIterator(iterPos);
                 switch (v.getId()) {
                     case R.id.buttonLeftA:
                     case R.id.buttonLeftB:
+                        if (col == 0) {
+                            findById(allTableRows[row], R.id.buttonDelA).setEnabled(true);
+                        } else {
+                            findById(allTableRows[row], R.id.buttonDelB).setEnabled(true);
+                        }
                         do {
                             if (it.hasPrevious()) {
                                 newCourse = it.previous();
@@ -145,6 +151,11 @@ public class WeekFragment extends Fragment {
                         break;
                     case R.id.buttonRightA:
                     case R.id.buttonRightB:
+                        if (col == 0) {
+                            findById(allTableRows[row], R.id.buttonDelA).setEnabled(true);
+                        } else {
+                            findById(allTableRows[row], R.id.buttonDelB).setEnabled(true);
+                        }
                         do {
                             if (it.hasNext()) {
                                 newCourse = it.next();
@@ -155,6 +166,11 @@ public class WeekFragment extends Fragment {
                         break;
                     case R.id.buttonDelA:
                     case R.id.buttonDelB:
+                        if (col == 0) {
+                            findById(allTableRows[row], R.id.buttonDelA).setEnabled(false);
+                        } else {
+                            findById(allTableRows[row], R.id.buttonDelB).setEnabled(false);
+                        }
                         newCourse = null;
                         break;
                     default:
@@ -168,8 +184,7 @@ public class WeekFragment extends Fragment {
                 selectedDay.save();
                 tv.setText(newCourse != null ? newCourse.name : "");
                 dirty = true;
-                }
-//            }
+            }
         };
     }
 
@@ -214,11 +229,14 @@ public class WeekFragment extends Fragment {
 
     public void clearAllCourses() {
         for(TableRow tr : allTableRows) {
-            TextView tvA = (TextView) tr.findViewById(R.id.textViewA);
+            TextView tvA = findById(tr, R.id.textViewA);
             tvA.setText("");
 
-            TextView tvB = (TextView) tr.findViewById(R.id.textViewB);
+            TextView tvB = findById(tr, R.id.textViewB);
             tvB.setText("");
+
+            findById(tr, R.id.buttonDelA).setEnabled(false);
+            findById(tr, R.id.buttonDelB).setEnabled(false);
         }
         dirty = true;
     }
@@ -233,6 +251,7 @@ public class WeekFragment extends Fragment {
                 course = getRandomCourse();
                 week.get(i).firstCourse = course;
                 tvA.setText(course.name);
+                findById(tr, R.id.buttonDelA).setEnabled(true);
             }
 
             TextView tvB = (TextView) tr.findViewById(R.id.textViewB);
@@ -240,6 +259,7 @@ public class WeekFragment extends Fragment {
                 course = getRandomCourse();
                 week.get(i).secondCourse = course;
                 tvB.setText(getRandomCourse().name);
+                findById(tr, R.id.buttonDelB).setEnabled(true);
             }
         }
         dirty = true;

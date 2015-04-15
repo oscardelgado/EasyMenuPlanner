@@ -351,35 +351,17 @@ public class CourseFragment extends ListFragment {
                         // Inverse order to avoid possible IndexOutOfBoundsException after remove.
                         for (int i = checkedItemPositions.size() - 1; i >= 0; i --) {
                             if (checkedItemPositions.valueAt(i)) {
-                                final Course deletedCourse = listAdapter.getItem(checkedItemPositions.keyAt(i));
+                                Course deletedCourse = listAdapter.getItem(checkedItemPositions.keyAt(i));
                                 Log.d(LOG_TAG, "deletedCourse: " + deletedCourse);
-                                final List<Day> daysWithCourseAsFirst = new Select().from(Day.class)
+                                List<Day> daysWithCourseAsFirst = new Select().from(Day.class)
                                         .where("firstCourse = ?", deletedCourse.getId())
                                         .execute();
-                                final List<Day> daysWithCourseAsSecond= new Select().from(Day.class)
+                                List<Day> daysWithCourseAsSecond= new Select().from(Day.class)
                                         .where("secondCourse = ?", deletedCourse.getId())
                                         .execute();
                                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                                builder.setMessage(context.getString(R.string.days_with_this_course_exist))
-                                        .setPositiveButton(R.string.delete_it_anyway, new DialogInterface.OnClickListener() {
-                                            @Override
-                                            public void onClick(DialogInterface dialog, int which) {
-                                                for (Day day : daysWithCourseAsFirst) {
-                                                    Log.i(LOG_TAG, "Removing first course assigned to day: " + day);
-                                                    day.firstCourse = null;
-                                                    day.save();
-                                                    deletedCourse.delete();
-                                                    listAdapter.remove(deletedCourse);
-                                                }
-                                                for (Day day : daysWithCourseAsSecond) {
-                                                    Log.i(LOG_TAG, "Removing second course assigned to day: " + day);
-                                                    day.secondCourse = null;
-                                                    day.save();
-                                                    deletedCourse.delete();
-                                                    listAdapter.remove(deletedCourse);
-                                                }
-                                            }
-                                        })
+                                builder.setMessage(context.getString(R.string.days_with_this_course_exist, deletedCourse.name))
+                                        .setPositiveButton(R.string.delete_it_anyway, new ConfirmDeleteCourseOnClickListener(daysWithCourseAsFirst, daysWithCourseAsSecond,  deletedCourse))
                                         .setNegativeButton(android.R.string.cancel, null);
                                 if ( ! (daysWithCourseAsFirst.isEmpty() && daysWithCourseAsSecond.isEmpty())) {
                                     builder.show();
@@ -398,6 +380,35 @@ public class CourseFragment extends ListFragment {
                     break;
                 case DialogInterface.BUTTON_NEGATIVE:
                     break;
+            }
+        }
+
+        private class ConfirmDeleteCourseOnClickListener implements DialogInterface.OnClickListener {
+
+            private final List<Day> daysWithCourseAsFirst;
+            private final List<Day> daysWithCourseAsSecond;
+            private final Course deletedCourse;
+
+            public ConfirmDeleteCourseOnClickListener(List<Day> daysWithCourseAsFirst, List<Day> daysWithCourseAsSecond, Course deletedCourse) {
+                this.daysWithCourseAsFirst = daysWithCourseAsFirst;
+                this.deletedCourse = deletedCourse;
+                this.daysWithCourseAsSecond = daysWithCourseAsSecond;
+            }
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                for (Day day : daysWithCourseAsFirst) {
+                    Log.i(LOG_TAG, "Removing first course assigned to day: " + day);
+                    day.firstCourse = null;
+                    day.save();
+                }
+                for (Day day : daysWithCourseAsSecond) {
+                    Log.i(LOG_TAG, "Removing second course assigned to day: " + day);
+                    day.secondCourse = null;
+                    day.save();
+                }
+                listAdapter.remove(deletedCourse);
+                deletedCourse.delete();
             }
         }
     }
