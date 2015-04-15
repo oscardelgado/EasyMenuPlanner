@@ -2,31 +2,35 @@ package com.oscardelgado83.easymenuplanner.ui.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.support.v4.app.ListFragment;
 
+import com.activeandroid.query.Select;
 import com.oscardelgado83.easymenuplanner.EMPApplication;
-import com.oscardelgado83.easymenuplanner.R;
+import com.oscardelgado83.easymenuplanner.model.Ingredient;
 import com.oscardelgado83.easymenuplanner.ui.MainActivity;
+import com.oscardelgado83.easymenuplanner.ui.adapters.ShoppingListAdapter;
 import com.oscardelgado83.easymenuplanner.util.GA;
+
+import java.util.List;
 
 import butterknife.ButterKnife;
 
 /**
 * Created by oscar on 23/03/15.
 */
-public class ShoppingListFragment extends Fragment {
+public class ShoppingListFragment extends ListFragment {
 
     private static final String LOG_TAG = ShoppingListFragment.class.getSimpleName();
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_shopping_list, container, false);
+    private List<Ingredient> ingredientList;
 
-        return view;
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        ingredientList = new Select().from(Ingredient.class).execute();
+
+        setListAdapter(new ShoppingListAdapter(getActivity(), ingredientList));
     }
 
     @Override
