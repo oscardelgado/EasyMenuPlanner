@@ -135,15 +135,6 @@ public class MainActivity extends ActionBarActivity
             for (int i = 0; i < WEEKDAYS; i++) {
                 Day day = new Day();
                 day.date = new Date();
-
-                //TODO: remove
-                if (i == 2) {
-                    Course testCourse = new Course();
-                    testCourse.name = "Test";
-                    testCourse.save();
-                    day.firstCourse = testCourse;
-                }
-
                 day.save();
             }
 
