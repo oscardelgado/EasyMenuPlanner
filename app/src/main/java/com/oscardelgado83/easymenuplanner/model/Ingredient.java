@@ -15,6 +15,9 @@ public class Ingredient extends Model implements Serializable {
     @Column (index = true)
     public String name;
 
+    @Column
+    public boolean checked;
+
     @Override
     public String toString() {
         return name;

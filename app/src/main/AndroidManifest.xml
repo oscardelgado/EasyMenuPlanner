@@ -22,7 +22,7 @@
             android:value="@integer/google_play_services_version" />
 
         <meta-data android:name="AA_DB_NAME" android:value="EasyMenuPlanner.db" />
-        <meta-data android:name="AA_DB_VERSION" android:value="1" />
+        <meta-data android:name="AA_DB_VERSION" android:value="2" />
 
         <activity android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"/>

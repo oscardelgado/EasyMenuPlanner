@@ -28,6 +28,7 @@ public class ShoppingListFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //TODO: do the correct query
         ingredientList = new Select().from(Ingredient.class).execute();
 
         setListAdapter(new ShoppingListAdapter(getActivity(), ingredientList));
