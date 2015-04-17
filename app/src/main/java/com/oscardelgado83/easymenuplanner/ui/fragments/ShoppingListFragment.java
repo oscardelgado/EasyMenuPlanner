@@ -4,14 +4,18 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 
-import com.activeandroid.query.Select;
 import com.oscardelgado83.easymenuplanner.EMPApplication;
+import com.oscardelgado83.easymenuplanner.model.CourseIngredient;
+import com.oscardelgado83.easymenuplanner.model.Day;
 import com.oscardelgado83.easymenuplanner.model.Ingredient;
 import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 import com.oscardelgado83.easymenuplanner.ui.adapters.ShoppingListAdapter;
 import com.oscardelgado83.easymenuplanner.util.GA;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import butterknife.ButterKnife;
 
@@ -22,16 +26,26 @@ public class ShoppingListFragment extends ListFragment {
 
     private static final String LOG_TAG = ShoppingListFragment.class.getSimpleName();
 
-    private List<Ingredient> ingredientList;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //TODO: do the correct query
-        ingredientList = new Select().from(Ingredient.class).execute();
+        //TODO: substitute with a query
+        List<Day> week = ((MainActivity) getActivity()).getWeek();
+        Set<Ingredient> ingredientSet = new HashSet<>();
+        for (int i = 0; i < MainActivity.WEEKDAYS; i++) {
+            Day day = week.get(i);
+            List<CourseIngredient> ciList = new ArrayList<>();
+            if (day.firstCourse != null) ciList.addAll(day.firstCourse.getIngredients());
+            if (day.secondCourse != null) ciList.addAll(day.secondCourse.getIngredients());
+            for (CourseIngredient ci : ciList) {
+                ingredientSet.add(ci.ingredient);
+            }
+        }
 
-        setListAdapter(new ShoppingListAdapter(getActivity(), ingredientList));
+        setListAdapter(new ShoppingListAdapter(getActivity(), new ArrayList(ingredientSet)));
     }
 
     @Override
