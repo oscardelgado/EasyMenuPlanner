@@ -9,12 +9,12 @@ android {
         applicationId "com.oscardelgado83.easymenuplanner"
         minSdkVersion 11 //Todo: try to set it to 10
         targetSdkVersion 21
-        versionCode 4
-        versionName "0.03"
+        versionCode 5
+        versionName "0.04"
     }
     buildTypes {
         release {
-            minifyEnabled false /*TODO: true when publishing */
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
