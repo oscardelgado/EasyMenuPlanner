@@ -32,6 +32,7 @@
     public static final ** CREATOR;
 }
 
+#For Butterknife
 -keep class butterknife.** { *; }
 -dontwarn butterknife.internal.**
 -keep class **$$ViewInjector { *; }
@@ -43,3 +44,6 @@
 -keepclasseswithmembernames class * {
     @butterknife.* <methods>;
 }
+
+# For ActiveAndroid
+-keepattributes *Annotation*
