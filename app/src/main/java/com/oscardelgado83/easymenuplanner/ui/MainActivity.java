@@ -201,9 +201,18 @@ public class MainActivity extends ActionBarActivity
                 break;
         }
 
+        //http://stackoverflow.com/a/10261449/1464013
+        // TODO:EDIT2: in the end the proper solution was (as seen in the comments) to use :
+//        transaction.commitAllowingStateLoss();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, currentFrg)
                 .commit();
+    }
+
+    //http://stackoverflow.com/a/10261449/1464013
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        //No call for super(). Bug on API Level > 11.
     }
 
     public void onSectionAttached(Fragment frg) {

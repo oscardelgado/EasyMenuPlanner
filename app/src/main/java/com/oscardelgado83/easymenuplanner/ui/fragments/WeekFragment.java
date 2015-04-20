@@ -90,7 +90,7 @@ public class WeekFragment extends Fragment {
             Button btnDelA = findById(tr, R.id.buttonDelA);
             Button btnDelB = findById(tr, R.id.buttonDelB);
 
-            if (week.isEmpty()) {
+            if (week == null || week.isEmpty()) {
                 Log.w(LOG_TAG, "The week has not been initialized.");
             } else {
                 if (week.get(i).firstCourse != null) {
