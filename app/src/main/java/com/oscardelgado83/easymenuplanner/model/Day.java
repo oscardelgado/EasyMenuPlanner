@@ -2,6 +2,7 @@ package com.oscardelgado83.easymenuplanner.model;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 
 import java.util.Date;
@@ -10,6 +11,7 @@ import java.util.List;
 /**
  * Created by oscar on 15/03/15.
  */
+@Table(name = "Days")
 public class Day extends Model {
 
     @Column (index = true)

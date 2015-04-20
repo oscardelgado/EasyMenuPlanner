@@ -36,14 +36,17 @@
 -keep class butterknife.** { *; }
 -dontwarn butterknife.internal.**
 -keep class **$$ViewInjector { *; }
-
 -keepclasseswithmembernames class * {
     @butterknife.* <fields>;
 }
-
 -keepclasseswithmembernames class * {
     @butterknife.* <methods>;
 }
 
 # For ActiveAndroid
--keepattributes *Annotation*
+-keep class com.activeandroid.** {
+     *;
+}
+-keepclassmembers class * {
+    @com.activeandroid.annotation.Column *;
+}
