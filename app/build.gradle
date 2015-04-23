@@ -16,11 +16,14 @@ android {
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            resValue "bool", "debug_mode", "false"
         }
-//        debug {
+        debug {
 //            minifyEnabled true
 //            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-//        }
+            resValue "bool", "debug_mode", "true"
+        }
     }
 }
 

@@ -10,15 +10,24 @@ import com.google.android.gms.analytics.Tracker;
  */
 public class EMPApplication extends Application {
 
-    public static final boolean DEBUGGING = true;
+    public static boolean DEBUGGING;
 
-    Tracker tracker;
+    private Tracker tracker;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        DEBUGGING = getResources().getBoolean(R.bool.debug_mode);
+    }
 
     public synchronized Tracker getTracker() {
         if (tracker == null) {
             GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
             analytics.setDryRun(DEBUGGING);
             tracker = analytics.newTracker(getString(R.string.ga_property_id));
+
+            // Enable Display Features.
+            tracker.enableAdvertisingIdCollection(true);
         }
         return tracker;
     }

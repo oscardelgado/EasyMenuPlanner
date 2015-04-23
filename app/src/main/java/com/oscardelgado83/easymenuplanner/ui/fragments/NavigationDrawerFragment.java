@@ -20,7 +20,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.oscardelgado83.easymenuplanner.EMPApplication;
 import com.oscardelgado83.easymenuplanner.R;
 
 /**
@@ -108,6 +110,11 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.title_section_dishes),
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+
+        if (((EMPApplication) getActivity().getApplication()).DEBUGGING ) {
+            Toast.makeText(getActivity(), "Debug mode is ON", Toast.LENGTH_LONG).show();
+        }
+
         return mDrawerListView;
     }
 
