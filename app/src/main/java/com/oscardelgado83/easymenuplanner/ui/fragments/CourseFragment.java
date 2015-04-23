@@ -1,14 +1,18 @@
 package com.oscardelgado83.easymenuplanner.ui.fragments;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v7.internal.widget.AdapterViewCompat;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -75,9 +79,46 @@ public class CourseFragment extends ListFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        //TODO: context dialog for Android < 11 (10)
-        getListView().setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        getListView().setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
+        int currentapiVersion = Build.VERSION.SDK_INT;
+        if (currentapiVersion >= Build.VERSION_CODES.HONEYCOMB){
+            setMultichoiceModeListener(getListView());
+        } else{
+            addFloatingContextMenuListener(getListView());
+        }
+
+    }
+
+    private void addFloatingContextMenuListener(ListView listView) {
+        registerForContextMenu(listView);
+
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.context_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterViewCompat.AdapterContextMenuInfo info = (AdapterViewCompat.AdapterContextMenuInfo) item.getMenuInfo();
+        switch (item.getItemId()) {
+            case R.id.action_edit:
+                editCourse(info.position);
+                return true;
+            case R.id.action_remove:
+                deleteCourse(info.position);
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void setMultichoiceModeListener(ListView listView) {
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+        listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
 
             public Menu menu;
 
@@ -106,7 +147,7 @@ public class CourseFragment extends ListFragment {
                         mode.finish(); // Action picked, so close the CAB
                         return true;
                     case R.id.action_edit:
-                        editSelectedItem(getListView().getCheckedItemPositions());
+                        editCourse(getListView().getCheckedItemPositions().keyAt(getListView().getCheckedItemPositions().indexOfValue(true)));
                         mode.finish();
                         return true;
                     default:
@@ -327,7 +368,7 @@ public class CourseFragment extends ListFragment {
         );
     }
 
-    private static class DeleteBtnClickListener implements DialogInterface.OnClickListener {
+    private class DeleteBtnClickListener implements DialogInterface.OnClickListener {
 
         private SparseBooleanArray checkedItemPositions;
         private CourseAdapter listAdapter;
@@ -345,77 +386,83 @@ public class CourseFragment extends ListFragment {
                 case DialogInterface.BUTTON_POSITIVE:
                     Log.d(LOG_TAG, "checkedItemPositions: " + checkedItemPositions);
 
+                    //TODO: revise
 //                    try {
 //                        ActiveAndroid.beginTransaction();
 
                         // Inverse order to avoid possible IndexOutOfBoundsException after remove.
                         for (int i = checkedItemPositions.size() - 1; i >= 0; i --) {
                             if (checkedItemPositions.valueAt(i)) {
-                                Course deletedCourse = listAdapter.getItem(checkedItemPositions.keyAt(i));
-                                Log.d(LOG_TAG, "deletedCourse: " + deletedCourse);
-                                List<Day> daysWithCourseAsFirst = new Select().from(Day.class)
-                                        .where("firstCourse = ?", deletedCourse.getId())
-                                        .execute();
-                                List<Day> daysWithCourseAsSecond= new Select().from(Day.class)
-                                        .where("secondCourse = ?", deletedCourse.getId())
-                                        .execute();
-                                AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                                builder.setMessage(context.getString(R.string.days_with_this_course_exist, deletedCourse.name))
-                                        .setPositiveButton(R.string.delete_it_anyway, new ConfirmDeleteCourseOnClickListener(daysWithCourseAsFirst, daysWithCourseAsSecond,  deletedCourse))
-                                        .setNegativeButton(android.R.string.cancel, null);
-                                if ( ! (daysWithCourseAsFirst.isEmpty() && daysWithCourseAsSecond.isEmpty())) {
-                                    builder.show();
-                                } else {
-                                    deletedCourse.delete();
-                                    listAdapter.remove(deletedCourse);
-                                }
+                                deleteCourse(checkedItemPositions.keyAt(i));
                             }
                         }
 //                        ActiveAndroid.setTransactionSuccessful();
 //                    } finally {
 //                        ActiveAndroid.endTransaction();
 //                    }
-                    if (checkedItemPositions.size() > 0) {
-                    }
+
                     break;
                 case DialogInterface.BUTTON_NEGATIVE:
                     break;
             }
         }
+    }
 
-        private class ConfirmDeleteCourseOnClickListener implements DialogInterface.OnClickListener {
-
-            private final List<Day> daysWithCourseAsFirst;
-            private final List<Day> daysWithCourseAsSecond;
-            private final Course deletedCourse;
-
-            public ConfirmDeleteCourseOnClickListener(List<Day> daysWithCourseAsFirst, List<Day> daysWithCourseAsSecond, Course deletedCourse) {
-                this.daysWithCourseAsFirst = daysWithCourseAsFirst;
-                this.deletedCourse = deletedCourse;
-                this.daysWithCourseAsSecond = daysWithCourseAsSecond;
-            }
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                for (Day day : daysWithCourseAsFirst) {
-                    Log.i(LOG_TAG, "Removing first course assigned to day: " + day);
-                    day.firstCourse = null;
-                    day.save();
-                }
-                for (Day day : daysWithCourseAsSecond) {
-                    Log.i(LOG_TAG, "Removing second course assigned to day: " + day);
-                    day.secondCourse = null;
-                    day.save();
-                }
-                listAdapter.remove(deletedCourse);
-                deletedCourse.delete();
-            }
+    private void deleteCourse(int position) {
+        CourseAdapter listAdapter = (CourseAdapter) getListAdapter();
+        Context context = listAdapter.getContext();
+        Course deletedCourse = listAdapter.getItem(position);
+        Log.d(LOG_TAG, "deletedCourse: " + deletedCourse);
+        List<Day> daysWithCourseAsFirst = new Select().from(Day.class)
+                .where("firstCourse = ?", deletedCourse.getId())
+                .execute();
+        List<Day> daysWithCourseAsSecond= new Select().from(Day.class)
+                .where("secondCourse = ?", deletedCourse.getId())
+                .execute();
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage(context.getString(R.string.days_with_this_course_exist, deletedCourse.name))
+                .setPositiveButton(R.string.delete_it_anyway, new ConfirmDeleteCourseOnClickListener(daysWithCourseAsFirst, daysWithCourseAsSecond,  deletedCourse))
+                .setNegativeButton(android.R.string.cancel, null);
+        if ( ! (daysWithCourseAsFirst.isEmpty() && daysWithCourseAsSecond.isEmpty())) {
+            builder.show();
+        } else {
+            deletedCourse.delete();
+            listAdapter.remove(deletedCourse);
         }
     }
 
-    private void editSelectedItem(SparseBooleanArray checkedItemPositions) {
-        final Course c = (Course) getListAdapter().getItem(
-                checkedItemPositions.keyAt(checkedItemPositions.indexOfValue(true)));
+    private class ConfirmDeleteCourseOnClickListener implements DialogInterface.OnClickListener {
+
+        private final List<Day> daysWithCourseAsFirst;
+        private final List<Day> daysWithCourseAsSecond;
+        private final Course deletedCourse;
+
+        public ConfirmDeleteCourseOnClickListener(List<Day> daysWithCourseAsFirst, List<Day> daysWithCourseAsSecond, Course deletedCourse) {
+            this.daysWithCourseAsFirst = daysWithCourseAsFirst;
+            this.deletedCourse = deletedCourse;
+            this.daysWithCourseAsSecond = daysWithCourseAsSecond;
+        }
+
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            for (Day day : daysWithCourseAsFirst) {
+                Log.i(LOG_TAG, "Removing first course assigned to day: " + day);
+                day.firstCourse = null;
+                day.save();
+            }
+            for (Day day : daysWithCourseAsSecond) {
+                Log.i(LOG_TAG, "Removing second course assigned to day: " + day);
+                day.secondCourse = null;
+                day.save();
+            }
+            ((CourseAdapter) getListAdapter()).remove(deletedCourse);
+            deletedCourse.delete();
+        }
+    }
+
+    private void editCourse(int position) {
+        final Course c = ((CourseAdapter) getListAdapter()).getItem(
+                position);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 

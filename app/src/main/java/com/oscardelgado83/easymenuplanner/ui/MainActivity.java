@@ -8,7 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
@@ -44,7 +44,7 @@ import static com.google.android.gms.common.ConnectionResult.SERVICE_VERSION_UPD
 import static com.google.android.gms.common.ConnectionResult.SUCCESS;
 
 
-public class MainActivity extends ActionBarActivity
+public class MainActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks, CourseFragment.OnFragmentInteractionListener {
 
     @InjectView(R.id.adView)
