@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.support.v7.internal.widget.AdapterViewCompat;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.ActionMode;
@@ -19,6 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -88,26 +88,25 @@ public class CourseFragment extends ListFragment {
         if (currentapiVersion >= Build.VERSION_CODES.HONEYCOMB){
             setMultichoiceModeListener(getListView());
         } else{
-            addFloatingContextMenuListener(getListView());
+           addFloatingContextMenuListener(getListView());
         }
 
     }
 
     private void addFloatingContextMenuListener(ListView listView) {
         registerForContextMenu(listView);
-
     }
 
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.context_menu, menu);
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.courses_context, menu);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        AdapterViewCompat.AdapterContextMenuInfo info = (AdapterViewCompat.AdapterContextMenuInfo) item.getMenuInfo();
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
             case R.id.action_edit:
                 editCourse(info.position);
