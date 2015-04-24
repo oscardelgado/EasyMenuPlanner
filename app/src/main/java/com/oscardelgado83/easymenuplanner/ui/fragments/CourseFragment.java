@@ -24,7 +24,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioGroup;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
@@ -40,6 +39,8 @@ import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 import com.oscardelgado83.easymenuplanner.ui.adapters.CourseAdapter;
 import com.oscardelgado83.easymenuplanner.util.GA;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -70,9 +71,13 @@ public class CourseFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        courseList = new Select().from(Course.class).orderBy("UPPER(name) ASC").execute();
+        courseList = getAllCourses();
 
         setListAdapter(new CourseAdapter(getActivity(), courseList));
+    }
+
+    private List<Course> getAllCourses() {
+        return new Select().from(Course.class).orderBy("UPPER(name) ASC").execute();
     }
 
     @Override
@@ -275,8 +280,6 @@ public class CourseFragment extends ListFragment {
                     createCourse(nameET.getText().toString(), completionView.getObjects(), getCourseType(d));
 
                     d.dismiss();
-
-                    getListView().smoothScrollToPosition(ScrollView.FOCUS_DOWN);
                 }
             }
         });
@@ -327,17 +330,13 @@ public class CourseFragment extends ListFragment {
     }
 
     private void createCourse(String name, List<Object> ingredients, Course.CourseType courseType) {
+        Course c = new Course();
+        c.name = name;
+        c.courseType = courseType;
+
         ActiveAndroid.beginTransaction();
         try {
-            Course c = new Course();
-            c.name = name;
-            c.courseType = courseType;
             c.save();
-
-            courseList.add(c); //TODO: insert in order.
-
-            ((ArrayAdapter) getListAdapter()).notifyDataSetChanged();
-
             for (Object ingrObj : ingredients) {
                 Ingredient ingr = (Ingredient) ingrObj;
                 if (ingr.getId() == null) ingr.save();
@@ -348,6 +347,19 @@ public class CourseFragment extends ListFragment {
         } finally {
             ActiveAndroid.endTransaction();
         }
+
+        courseList.clear();
+        courseList.addAll(getAllCourses());
+        ((CourseAdapter) getListAdapter()).notifyDataSetChanged();
+
+        int position = Collections.binarySearch(courseList, c, new Comparator<Course>() {
+            @Override
+            public int compare(Course lhs, Course rhs) {
+                return lhs.name.toUpperCase().compareTo(rhs.name.toUpperCase());
+            }
+        });
+
+        getListView().smoothScrollToPosition(position);
     }
 
     @DebugLog
@@ -371,13 +383,9 @@ public class CourseFragment extends ListFragment {
     private class DeleteBtnClickListener implements DialogInterface.OnClickListener {
 
         private SparseBooleanArray checkedItemPositions;
-        private CourseAdapter listAdapter;
-        private Context context;
 
         public DeleteBtnClickListener(SparseBooleanArray checkedItemPositions, CourseAdapter listAdapter) {
-            this.listAdapter = listAdapter;
             this.checkedItemPositions = checkedItemPositions.clone();
-            this.context = listAdapter.getContext();
         }
 
         @Override
