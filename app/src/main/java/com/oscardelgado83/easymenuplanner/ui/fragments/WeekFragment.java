@@ -77,7 +77,7 @@ public class WeekFragment extends Fragment {
 
         allCourses = new Select()
                 .from(Course.class)
-                .orderBy("name")
+                .orderBy("UPPER(name)")
                 .execute();
 
         allTableRows = new TableRow[]{tableRow1, tableRow2, tableRow3, tableRow4, tableRow5, tableRow6, tableRow7};

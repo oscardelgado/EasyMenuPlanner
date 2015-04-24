@@ -70,7 +70,7 @@ public class CourseFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        courseList = new Select().from(Course.class).orderBy("name ASC").execute();
+        courseList = new Select().from(Course.class).orderBy("UPPER(name) ASC").execute();
 
         setListAdapter(new CourseAdapter(getActivity(), courseList));
     }
@@ -334,7 +334,7 @@ public class CourseFragment extends ListFragment {
             c.courseType = courseType;
             c.save();
 
-            courseList.add(c); //TODO: insert in order
+            courseList.add(c); //TODO: insert in order.
 
             ((ArrayAdapter) getListAdapter()).notifyDataSetChanged();
 
@@ -386,9 +386,8 @@ public class CourseFragment extends ListFragment {
                 case DialogInterface.BUTTON_POSITIVE:
                     Log.d(LOG_TAG, "checkedItemPositions: " + checkedItemPositions);
 
-                    //TODO: revise
-//                    try {
-//                        ActiveAndroid.beginTransaction();
+                    try {
+                        ActiveAndroid.beginTransaction();
 
                         // Inverse order to avoid possible IndexOutOfBoundsException after remove.
                         for (int i = checkedItemPositions.size() - 1; i >= 0; i --) {
@@ -396,10 +395,10 @@ public class CourseFragment extends ListFragment {
                                 deleteCourse(checkedItemPositions.keyAt(i));
                             }
                         }
-//                        ActiveAndroid.setTransactionSuccessful();
-//                    } finally {
-//                        ActiveAndroid.endTransaction();
-//                    }
+                        ActiveAndroid.setTransactionSuccessful();
+                    } finally {
+                        ActiveAndroid.endTransaction();
+                    }
 
                     break;
                 case DialogInterface.BUTTON_NEGATIVE:
