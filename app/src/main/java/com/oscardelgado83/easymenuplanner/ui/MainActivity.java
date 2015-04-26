@@ -232,16 +232,16 @@ public class MainActivity extends AppCompatActivity
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
-            if (currentFrg instanceof WeekFragment) {
-                getMenuInflater().inflate(R.menu.week_fragment, menu);
-            } else if (currentFrg instanceof CourseFragment) {
-                getMenuInflater().inflate(R.menu.courses_fragment, menu);
-            } else {
-                getMenuInflater().inflate(R.menu.global, menu);
-            }
-            restoreActionBar();
-            return true;
+        if (currentFrg instanceof WeekFragment) {
+            getMenuInflater().inflate(R.menu.week_fragment, menu);
+        } else if (currentFrg instanceof CourseFragment) {
+            getMenuInflater().inflate(R.menu.courses_fragment, menu);
+        } else {
+            getMenuInflater().inflate(R.menu.global, menu);
         }
+            restoreActionBar();
+        return true;
+    }
         return super.onCreateOptionsMenu(menu);
     }
 
