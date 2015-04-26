@@ -18,8 +18,10 @@
     <string name="dialog_new_course_title">New course</string>
     <string name="dialog_new_course_message">Name of the new course</string>
     <string name="cab_title">Select Items</string>
-    <string name="cab_one_item_selected">1 item selected</string>
-    <string name="cab_elements_selected">" items selected"</string>
+    <plurals name="cab_elements_selected">
+        <item quantity="one">%d item selected.</item>
+        <item quantity="other">%d items selected.</item>
+    </plurals>
     <string name="first_course">First course</string>
     <string name="second_course">Second course</string>
     <string name="action_edit">Edit</string>

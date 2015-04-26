@@ -133,13 +133,8 @@ public class CourseFragment extends ListFragment {
                 // such as update the title in the CAB
 
                 int count = getListView().getCheckedItemCount();
-                if (count == 1) {
-                    mode.setSubtitle(getString(R.string.cab_one_item_selected));
-                    mode.getMenu().findItem(R.id.action_edit).setVisible(true);
-                } else {
-                    mode.setSubtitle(count + getString(R.string.cab_elements_selected));//TODO: http://developer.android.com/guide/topics/resources/string-resource.html#Plurals
-                    mode.getMenu().findItem(R.id.action_edit).setVisible(false);
-                }
+                mode.setSubtitle(getResources().getQuantityString(R.plurals.cab_elements_selected, count, count));
+                mode.getMenu().findItem(R.id.action_edit).setVisible(count == 1);
             }
 
             @Override

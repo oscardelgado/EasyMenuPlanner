@@ -14,9 +14,11 @@
     <string name="dialog_delete_confirmation">¿Borrar los platos seleccionados?</string>
     <string name="dialog_new_course_message">Nombre del nuevo plato</string>
     <string name="dialog_new_course_title">Nuevo plato</string>
-    <string name="cab_title">Seleccione elementos</string>
-    <string name="cab_one_item_selected">1 elemento seleccionado</string>
-    <string name="cab_elements_selected"> elementos seleccionados</string>
+    <string name="cab_title">Selecciona platos</string>
+    <plurals name="cab_elements_selected">
+        <item quantity="one">%d plato seleccionado.</item>
+        <item quantity="other">%d platos seleccionados.</item>
+    </plurals>
     <string name="first_course">Primer plato</string>
     <string name="second_course">Segundo plato</string>
     <string name="action_edit">Editar</string>
