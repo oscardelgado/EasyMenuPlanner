@@ -90,7 +90,6 @@ public class CourseFragment extends ListFragment {
         } else{
            addFloatingContextMenuListener(getListView());
         }
-
     }
 
     private void addFloatingContextMenuListener(ListView listView) {
@@ -204,6 +203,8 @@ public class CourseFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
+
+        editCourse(position);
 
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
