@@ -181,7 +181,6 @@ public class WeekFragment extends Fragment {
                 } else if (col == 1) {
                     selectedDay.secondCourse = newCourse;
                 }
-                selectedDay.save();
                 tv.setText(newCourse != null ? newCourse.name : "");
                 dirty = true;
             }
@@ -211,27 +210,30 @@ public class WeekFragment extends Fragment {
     public void onPause() {
         super.onPause();
 
-        //TODO: decide if store to DB in onPause() or onStop() (http://stackoverflow.com/q/14936281/1464013)
         if (dirty) {
-            try {
-                ActiveAndroid.beginTransaction();
-                List<Day> week = ((MainActivity) getActivity()).getWeek();
-                for(int i = 0; i < allTableRows.length; i++) {
-                    Day day = week.get(i);
-                    if (day.dirty) {
-                        day.save();
-                        day.dirty = false;
-                    }
-                }
-                ActiveAndroid.setTransactionSuccessful();
-            } finally {
-                ActiveAndroid.endTransaction();
+            persist();
+        }
+    }
+
+    @DebugLog
+    private void persist() {
+        try {
+            ActiveAndroid.beginTransaction();
+            List<Day> week = ((MainActivity) getActivity()).getWeek();
+            for(int i = 0; i < allTableRows.length; i++) {
+                Day day = week.get(i);
+                day.save();
             }
+            ActiveAndroid.setTransactionSuccessful();
+        } finally {
+            ActiveAndroid.endTransaction();
         }
     }
 
     public void clearAllCourses() {
-        for(TableRow tr : allTableRows) {
+        List<Day> week = ((MainActivity) getActivity()).getWeek();
+        for(int i = 0; i < allTableRows.length; i++) {
+            TableRow tr = allTableRows[i];
             TextView tvA = findById(tr, R.id.textViewA);
             tvA.setText("");
 
@@ -240,6 +242,9 @@ public class WeekFragment extends Fragment {
 
             findById(tr, R.id.buttonDelA).setEnabled(false);
             findById(tr, R.id.buttonDelB).setEnabled(false);
+
+            week.get(i).firstCourse = null;
+            week.get(i).secondCourse = null;
         }
         dirty = true;
     }
