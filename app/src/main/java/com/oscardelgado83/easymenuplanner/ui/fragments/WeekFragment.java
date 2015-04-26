@@ -218,7 +218,10 @@ public class WeekFragment extends Fragment {
                 List<Day> week = ((MainActivity) getActivity()).getWeek();
                 for(int i = 0; i < allTableRows.length; i++) {
                     Day day = week.get(i);
-                    day.save(); // TODO: optimize (update only if dirty)
+                    if (day.dirty) {
+                        day.save();
+                        day.dirty = false;
+                    }
                 }
                 ActiveAndroid.setTransactionSuccessful();
             } finally {

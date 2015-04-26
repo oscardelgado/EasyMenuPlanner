@@ -94,13 +94,6 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
         boolean dbStarted = settings.getBoolean(PREFERENCE_DB_STARTED, false);
 
-        //TODO: remove these lines
-//        dbStarted = false;
-//        new Delete().from(Day.class).execute();
-//        new Delete().from(Course.class).execute();
-//        new Delete().from(Ingredient.class).execute();
-//        new Delete().from(CourseIngredient.class).execute();
-
         if (!dbStarted) {
             prePopulateDB();
         }
@@ -307,7 +300,7 @@ public class MainActivity extends AppCompatActivity
         int returnCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
         switch (returnCode) {
             case SUCCESS:
-                // TODO: then the Google Play services APK is up-to-date and you can continue to make a connection
+                // Then the Google Play services APK is up-to-date and you can continue to make a connection
                 return true;
             case SERVICE_MISSING:
             case SERVICE_VERSION_UPDATE_REQUIRED:
@@ -322,8 +315,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    //http://stackoverflow.com/a/24778951/1464013
     public void onFragmentInteraction(Long courseId) {
-        //TODO
     }
 
     public List<Day> getWeek() {

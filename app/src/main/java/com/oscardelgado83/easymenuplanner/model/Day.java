@@ -23,6 +23,8 @@ public class Day extends Model {
     @Column
     public Course secondCourse;
 
+    public boolean dirty;
+
     public static List<Day> findAll() {
         return new Select().from(Day.class).orderBy("date ASC").execute();
     }
