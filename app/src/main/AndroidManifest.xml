@@ -43,12 +43,11 @@
         -->
         <meta-data
             android:name="AA_MODELS"
-            android:value="com.oscardelgado83.easymenuplanner.model.Course,             com.oscardelgado83.easymenuplanner.model.CourseIngredient,             com.oscardelgado83.easymenuplanner.model.Ingredient,             com.oscardelgado83.easymenuplanner.model.Day" />
+            android:value="com.oscardelgado83.easymenuplanner.model.Course,
+                com.oscardelgado83.easymenuplanner.model.CourseIngredient,
+                com.oscardelgado83.easymenuplanner.model.Ingredient,
+                com.oscardelgado83.easymenuplanner.model.Day"/>
 
-        <activity
-            android:name=".Main2Activity"
-            android:label="@string/title_activity_main2" >
-        </activity>
     </application>
 
 </manifest>
