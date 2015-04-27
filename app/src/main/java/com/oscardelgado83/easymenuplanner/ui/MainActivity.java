@@ -16,11 +16,13 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
+import com.activeandroid.query.Select;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Course;
+import com.oscardelgado83.easymenuplanner.model.CourseIngredient;
 import com.oscardelgado83.easymenuplanner.model.Day;
 import com.oscardelgado83.easymenuplanner.model.Ingredient;
 import com.oscardelgado83.easymenuplanner.ui.fragments.CourseFragment;
@@ -33,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import butterknife.InjectView;
 import hugo.weaving.DebugLog;
@@ -42,6 +45,9 @@ import static com.google.android.gms.common.ConnectionResult.SERVICE_DISABLED;
 import static com.google.android.gms.common.ConnectionResult.SERVICE_MISSING;
 import static com.google.android.gms.common.ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED;
 import static com.google.android.gms.common.ConnectionResult.SUCCESS;
+import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.FIRST;
+import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.NONE;
+import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.SECOND;
 
 
 public class MainActivity extends AppCompatActivity
@@ -109,21 +115,36 @@ public class MainActivity extends AppCompatActivity
             TextUtils.StringSplitter splitter = new TextUtils.SimpleStringSplitter('\n');
 
             splitter.setString(loadInitialCourseNames());//TODO: English
-            for (String courseName : splitter) {
+            for (String line : splitter) {
                 Course course = new Course();
-                course.name = courseName;
+                StringTokenizer tknzr = new StringTokenizer(line, ",");
+                course.name = tknzr.nextToken().trim();
+                switch (Integer.parseInt(tknzr.nextToken().trim())) {
+                    case 1:
+                        course.courseType = FIRST;
+                        break;
+                    case 2:
+                        course.courseType = SECOND;
+                        break;
+                    default:
+                        course.courseType = NONE;
+                        break;
+                }
                 course.save();
-            }
 
-            Ingredient ingr = new Ingredient();
-            ingr.name = "Ingr. 1";
-            ingr.save();
-            ingr = new Ingredient();
-            ingr.name = "Ingr. 2";
-            ingr.save();
-            ingr = new Ingredient();
-            ingr.name = "Ingr. 3";
-            ingr.save();
+                while (tknzr.hasMoreElements()) {
+                    String ingredientName = tknzr.nextToken().trim();
+                    Ingredient ingr = new Select().from(Ingredient.class)
+                            .where("name = ?", ingredientName).executeSingle();
+                    if (ingr == null) {
+                        ingr = new Ingredient();
+                        ingr.name = ingredientName;
+                        ingr.save();
+                    }
+                    CourseIngredient ci = new CourseIngredient(course, ingr);
+                    ci.save();
+                }
+            }
 
             for (int i = 0; i < WEEKDAYS; i++) {
                 Day day = new Day();
@@ -155,7 +176,7 @@ public class MainActivity extends AppCompatActivity
 
         Resources resources = getResources();
 
-        iS = resources.openRawResource(R.raw.initial_course_names);
+        iS = resources.openRawResource(R.raw.initial_data);
 
         //create a buffer that has the same size as the InputStream
         byte[] buffer = new byte[iS.available()];
