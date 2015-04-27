@@ -29,11 +29,4 @@
     <string name="empty_name_not_allowed">Name can\'t be empty</string>
     <string name="days_with_this_course_exist">This course (%s) is assigned to one or more days</string>
     <string name="delete_it_anyway">Delete anyway</string>
-    <string name="title_activity_main2">Main2Activity</string>
-
-    <string name="title_section1">Section 1</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
-
-    <string name="action_example">Example action</string>
 </resources>
