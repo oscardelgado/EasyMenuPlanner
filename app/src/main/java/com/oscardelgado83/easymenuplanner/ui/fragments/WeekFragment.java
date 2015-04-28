@@ -120,7 +120,7 @@ public class WeekFragment extends Fragment {
 
         GA.sendScreenHit(
                 ((EMPApplication) getActivity().getApplication()).getTracker(),
-                getClass().getSimpleName());
+                "WeekFragment");
     }
 
     private View.OnClickListener courseBtnClickListener(final TextView tv, final int row, final int col) {

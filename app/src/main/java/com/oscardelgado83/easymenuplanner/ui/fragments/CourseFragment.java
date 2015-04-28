@@ -239,7 +239,7 @@ public class CourseFragment extends ListFragment {
 
         GA.sendScreenHit(
                 ((EMPApplication) getActivity().getApplication()).getTracker(),
-                getClass().getSimpleName());
+                "CourseFragment");
     }
 
     public void addCourseClicked() {

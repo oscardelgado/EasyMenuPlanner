@@ -60,6 +60,6 @@ public class ShoppingListFragment extends ListFragment {
 
         GA.sendScreenHit(
                 ((EMPApplication) getActivity().getApplication()).getTracker(),
-                getClass().getSimpleName());
+                "ShoppingListFragment");
     }
 }
