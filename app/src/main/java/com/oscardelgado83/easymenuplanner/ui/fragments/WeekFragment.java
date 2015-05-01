@@ -30,6 +30,9 @@ import hugo.weaving.DebugLog;
 import static butterknife.ButterKnife.findById;
 import static butterknife.ButterKnife.inject;
 import static butterknife.ButterKnife.reset;
+import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.FIRST;
+import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.NONE;
+import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.SECOND;
 
 /**
 * Created by oscar on 23/03/15.
@@ -59,7 +62,8 @@ public class WeekFragment extends Fragment {
 
     private TableRow[] allTableRows;
 
-    private List<Course> allCourses;
+    private List<Course> allFirstCourses;
+    private List<Course> allSecondCourses;
 
     private boolean dirty;
 
@@ -75,8 +79,15 @@ public class WeekFragment extends Fragment {
 
         List<Day> week = ((MainActivity) getActivity()).getWeek();
 
-        allCourses = new Select()
+        allFirstCourses = new Select()
                 .from(Course.class)
+                .where("courseType in (?, ?)", FIRST, NONE)
+                .orderBy("UPPER(name)")
+                .execute();
+
+        allSecondCourses = new Select()
+                .from(Course.class)
+                .where("courseType in (?, ?)", SECOND, NONE)
                 .orderBy("UPPER(name)")
                 .execute();
 
@@ -131,8 +142,20 @@ public class WeekFragment extends Fragment {
                 Day selectedDay = week.get(row);
                 Course currentCourse = (col == 0)? selectedDay.firstCourse : selectedDay.secondCourse;
                 Course newCourse = null;
-                int iterPos =  (currentCourse != null)? allCourses.indexOf(currentCourse) : 0;
-                ListIterator<Course> it = allCourses.listIterator(iterPos);
+                ListIterator<Course> it = null;
+                List<Course> currentCoursesList = null;
+                if (v.getId() == R.id.buttonLeftA || v.getId() == R.id.buttonRightA) {
+                    currentCoursesList = allFirstCourses;
+                } else if (v.getId() == R.id.buttonLeftB || v.getId() == R.id.buttonRightB) {
+                    currentCoursesList = allSecondCourses;
+                }
+                if (currentCoursesList != null) {
+                    if (currentCourse != null) {
+                        it = currentCoursesList.listIterator(currentCoursesList.indexOf(currentCourse));
+                    } else {
+                        it = currentCoursesList.listIterator(0);
+                    }
+                }
                 switch (v.getId()) {
                     case R.id.buttonLeftA:
                     case R.id.buttonLeftB:
@@ -145,7 +168,7 @@ public class WeekFragment extends Fragment {
                             if (it.hasPrevious()) {
                                 newCourse = it.previous();
                             } else {
-                                newCourse = allCourses.get(allCourses.size() - 1);
+                                newCourse = currentCoursesList.get(currentCoursesList.size() - 1);
                             }
                         } while (newCourse == currentCourse);
                         break;
@@ -160,7 +183,7 @@ public class WeekFragment extends Fragment {
                             if (it.hasNext()) {
                                 newCourse = it.next();
                             } else {
-                                newCourse = allCourses.get(0);
+                                newCourse = currentCoursesList.get(0);
                             }
                         } while (newCourse == currentCourse);
                         break;
@@ -187,10 +210,11 @@ public class WeekFragment extends Fragment {
         };
     }
 
-    private Course getRandomCourse() {
+    private Course getRandomCourse(Course.CourseType type) {
         rand = new Random();
-        int randomInt = rand.nextInt(allCourses.size());
-        return allCourses.get(randomInt);
+        List<Course> courseList = (type == FIRST)? allFirstCourses : allSecondCourses;
+        int randomInt = rand.nextInt(courseList.size());
+        return courseList.get(randomInt);
     }
 
     @Override
@@ -256,7 +280,7 @@ public class WeekFragment extends Fragment {
             TableRow tr = allTableRows[i];
             TextView tvA = (TextView) tr.findViewById(R.id.textViewA);
             if (tvA.getText().equals("")) {
-                course = getRandomCourse();
+                course = getRandomCourse(FIRST);
                 week.get(i).firstCourse = course;
                 tvA.setText(course.name);
                 findById(tr, R.id.buttonDelA).setEnabled(true);
@@ -264,9 +288,9 @@ public class WeekFragment extends Fragment {
 
             TextView tvB = (TextView) tr.findViewById(R.id.textViewB);
             if (tvB.getText().equals("")) {
-                course = getRandomCourse();
+                course = getRandomCourse(SECOND);
                 week.get(i).secondCourse = course;
-                tvB.setText(getRandomCourse().name);
+                tvB.setText(course.name);
                 findById(tr, R.id.buttonDelB).setEnabled(true);
             }
         }
