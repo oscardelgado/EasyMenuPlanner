@@ -17,11 +17,11 @@ Gazpacho (precooked), 1, Gazpacho (precooked)
 Potatoes, 1, Potatoes
 Lentils, 1, Lentils
 Stuffed peppers, 3, Peppers
-Chicken breasts, 2 Chicken breasts
+Chicken breasts, 2, Chicken breasts
 Trout, 2, Trout
 Hamburger, 2, Hamburger
 Grilled chicken, 2, Chicken
 Tortilla, 3, Eggs, Potatoes
-Sausages, 2 Sausages
+Sausages, 2, Sausages
 Chicken Wings, 2, Chicken Wings
 Chickpeas, 1, Chickpeas
