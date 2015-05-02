@@ -95,7 +95,7 @@ public class WeekFragment extends Fragment {
                 .orderBy("UPPER(name)")
                 .execute();
 
-        if (allFirstCourses.isEmpty() || allSecondCourses.isEmpty()) {
+        if (allFirstCourses.size() < 2 || allSecondCourses.size() < 2) {
             String message = null;
             if (allFirstCourses.isEmpty()) {
                 message = getString(R.string.first_courses_needed);
@@ -301,8 +301,15 @@ public class WeekFragment extends Fragment {
             TextView tvA = (TextView) tr.findViewById(R.id.textViewA);
             if (tvA.getText().equals("")) {
                 rand = new Random();
-                int randomInt = rand.nextInt(notUsedFirstCourses.size());
-                course = notUsedFirstCourses.get(randomInt);
+
+                //Avoid repeating if possible
+                if (! notUsedFirstCourses.isEmpty()) {
+                    int randomInt = rand.nextInt(notUsedFirstCourses.size());
+                    course = notUsedFirstCourses.get(randomInt);
+                } else {
+                    int randomInt = rand.nextInt(allFirstCourses.size());
+                    course = allFirstCourses.get(randomInt);
+                }
                 week.get(i).firstCourse = course;
                 tvA.setText(course.name);
                 findById(tr, R.id.buttonDelA).setEnabled(true);
@@ -312,8 +319,15 @@ public class WeekFragment extends Fragment {
             TextView tvB = (TextView) tr.findViewById(R.id.textViewB);
             if (tvB.getText().equals("")) {
                 rand = new Random();
-                int randomInt = rand.nextInt(notUsedSecondCourses.size());
-                course = notUsedSecondCourses.get(randomInt);
+
+                //Avoid repeating if possible
+                if (! notUsedFirstCourses.isEmpty()) {
+                    int randomInt = rand.nextInt(notUsedSecondCourses.size());
+                    course = notUsedSecondCourses.get(randomInt);
+                } else {
+                    int randomInt = rand.nextInt(allSecondCourses.size());
+                    course = allSecondCourses.get(randomInt);
+                }
                 week.get(i).secondCourse = course;
                 tvB.setText(course.name);
                 findById(tr, R.id.buttonDelB).setEnabled(true);
