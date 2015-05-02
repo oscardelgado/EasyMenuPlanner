@@ -33,4 +33,5 @@
     <string name="not_enough_courses">Not enough courses exist!</string>
     <string name="second_course_needed">You need to add some more second courses.</string>
     <string name="go_to_courses">Go to Dishes</string>
+    <string name="action_restore_default_courses">Restore default courses</string>
 </resources>

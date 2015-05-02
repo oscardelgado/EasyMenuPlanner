@@ -4,7 +4,5 @@
     <item android:id="@+id/action_automatic_fill" android:title="@string/action_automatic_fill"
         app:showAsAction="withText|ifRoom" />
     <item android:id="@+id/action_clear_all" android:title="@string/action_clear_all"
-        app:showAsAction="withText|ifRoom" />
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
+        app:showAsAction="never" />
 </menu>

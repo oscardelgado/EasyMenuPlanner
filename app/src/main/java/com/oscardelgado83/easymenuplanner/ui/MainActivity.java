@@ -110,16 +110,18 @@ public class MainActivity extends AppCompatActivity
     }
 
     @DebugLog
-    private void prePopulateDB() {
+    public void prePopulateDB() {
         ActiveAndroid.beginTransaction();
         try {
             TextUtils.StringSplitter splitter = new TextUtils.SimpleStringSplitter('\n');
 
-            splitter.setString(loadInitialCourseNames());//TODO: English
+            splitter.setString(loadInitialCoursesFromFile());//TODO: English
             for (String line : splitter) {
                 Course course = new Course();
                 StringTokenizer tknzr = new StringTokenizer(line, ",");
                 course.name = tknzr.nextToken().trim();
+                Course existingCourse = new Select().from(Course.class).where("name = ?", course.name).executeSingle();
+                if (existingCourse != null) existingCourse.delete();
                 switch (Integer.parseInt(tknzr.nextToken().trim())) {
                     case 1:
                         course.courseType = FIRST;
@@ -162,16 +164,13 @@ public class MainActivity extends AppCompatActivity
             editor.putBoolean(PREFERENCE_DB_STARTED, true);
 
             editor.commit();
-        } catch (IOException e) {
-            Log.e(LOG_TAG, "Problem loading initial configuration", e);
-            Toast.makeText(this, getString(R.string.error_loadingInitialConfig), Toast.LENGTH_LONG);
         } finally {
             ActiveAndroid.endTransaction();
         }
     }
 
     @DebugLog
-    public String loadInitialCourseNames() throws IOException {
+    private String loadInitialCoursesFromFile() {
         //Create a InputStream to read the file into
         InputStream iS;
 
@@ -180,19 +179,25 @@ public class MainActivity extends AppCompatActivity
         iS = resources.openRawResource(R.raw.initial_data);
 
         //create a buffer that has the same size as the InputStream
-        byte[] buffer = new byte[iS.available()];
-        //read the text file as a stream, into the buffer
-        iS.read(buffer);
-        //create a output stream to write the buffer into
-        ByteArrayOutputStream oS = new ByteArrayOutputStream();
-        //write this buffer to the output stream
-        oS.write(buffer);
-        //Close the Input and Output streams
-        oS.close();
-        iS.close();
-
-        //return the output stream as a String
-        return oS.toString();
+        byte[] buffer = new byte[0];
+        try {
+            buffer = new byte[iS.available()];
+            //read the text file as a stream, into the buffer
+            iS.read(buffer);
+            //create a output stream to write the buffer into
+            ByteArrayOutputStream oS = new ByteArrayOutputStream();
+            //write this buffer to the output stream
+            oS.write(buffer);
+            //Close the Input and Output streams
+            oS.close();
+            iS.close();
+            //return the output stream as a String
+            return oS.toString();
+        } catch (IOException e) {
+            Log.e(LOG_TAG, "Problem loading initial configuration", e);
+            Toast.makeText(this, getString(R.string.error_loadingInitialConfig), Toast.LENGTH_LONG);
+        }
+        return null;
     }
 
     @Override
@@ -279,11 +284,11 @@ public class MainActivity extends AppCompatActivity
             if (id == R.id.action_add) {
                 ((CourseFragment) currentFrg).addCourseClicked();
                 return true;
+            } else if (id == R.id.action_restore_default_courses) {
+                prePopulateDB();
+                ((CourseFragment) currentFrg).refreshCourseList();
+                return true;
             }
-        }
-        if (id == R.id.action_settings) {
-            Toast.makeText(this, "Sample action", Toast.LENGTH_SHORT).show();
-            return true;
         }
 
         return super.onOptionsItemSelected(item);

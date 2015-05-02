@@ -545,4 +545,10 @@ public class CourseFragment extends ListFragment {
             ActiveAndroid.endTransaction();
         }
     }
+
+    public void refreshCourseList() {
+        courseList.clear();
+        courseList.addAll(getAllCourses());
+        ((CourseAdapter) getListAdapter()).notifyDataSetChanged();
+    }
 }

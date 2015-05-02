@@ -1,4 +1,4 @@
-Soup, 1, Packet Soup
+Soup, 1, Packet soup
 Steak, 2, Steak, Oil
 Escalope with cheese filling, 2, Escalope with cheese filling
 Asparagus, 1, Asparagus, Mayonnaise
@@ -7,12 +7,12 @@ Salad, 1, Lettuce, Tomatoes, Oil, Vinegar
 Spinach, 1, Spinach
 Green beans, 1, Green beans
 Macaroni, 1, macaroni, Fried tomato
-Rice, 1, Rice, Fried Tomato
+Rice, 1, Rice, Fried tomato
 Mashed potatoes, 1, Potatoes
 Squid, 2, Squid
 Pizza, 3, Pizza
 Cod, 2, Cod
-Gazpacho (natural), 1, Tomatoes, Cucumber, Bell Pepper, Onion, Garlic
+Gazpacho (natural), 1, Tomatoes, Cucumber, Bell pepper, Onion, Garlic
 Gazpacho (precooked), 1, Gazpacho (precooked)
 Potatoes, 1, Potatoes
 Lentils, 1, Lentils
@@ -21,7 +21,7 @@ Chicken breasts, 2, Chicken breasts
 Trout, 2, Trout
 Hamburger, 2, Hamburger
 Grilled chicken, 2, Chicken
-Tortilla, 3, Eggs, Potatoes
+Omelet, 3, Eggs, Potatoes
 Sausages, 2, Sausages
-Chicken Wings, 2, Chicken Wings
+Chicken wings, 2, Chicken wings
 Chickpeas, 1, Chickpeas
