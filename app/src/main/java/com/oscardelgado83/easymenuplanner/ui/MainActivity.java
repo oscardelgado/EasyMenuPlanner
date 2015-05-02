@@ -27,6 +27,7 @@ import com.oscardelgado83.easymenuplanner.model.Day;
 import com.oscardelgado83.easymenuplanner.model.Ingredient;
 import com.oscardelgado83.easymenuplanner.ui.fragments.CourseFragment;
 import com.oscardelgado83.easymenuplanner.ui.fragments.NavigationDrawerFragment;
+import com.oscardelgado83.easymenuplanner.ui.fragments.NavigationDrawerFragment.Section;
 import com.oscardelgado83.easymenuplanner.ui.fragments.ShoppingListFragment;
 import com.oscardelgado83.easymenuplanner.ui.fragments.WeekFragment;
 
@@ -223,11 +224,11 @@ public class MainActivity extends AppCompatActivity
 
     public void onSectionAttached(Fragment frg) {
         if (frg instanceof WeekFragment) {
-            mTitle = getString(R.string.title_section_week);
+            mTitle = getString(Section.WEEK_MENU.getTitleKey());
         } else if (frg instanceof ShoppingListFragment) {
-            mTitle = getString(R.string.title_section_shopping_list);
+            mTitle = getString(Section.WEEK_SHOPPINGLIST.getTitleKey());
         } else if (frg instanceof CourseFragment) {
-            mTitle = getString(R.string.title_section_dishes);
+            mTitle = getString(Section.COURSES.getTitleKey());
         }
     }
 
@@ -245,16 +246,16 @@ public class MainActivity extends AppCompatActivity
             // Only show items in the action bar relevant to this screen
             // if the drawer is not showing. Otherwise, let the drawer
             // decide what to show in the action bar.
-        if (currentFrg instanceof WeekFragment) {
-            getMenuInflater().inflate(R.menu.week_fragment, menu);
-        } else if (currentFrg instanceof CourseFragment) {
-            getMenuInflater().inflate(R.menu.courses_fragment, menu);
-        } else {
-            getMenuInflater().inflate(R.menu.global, menu);
-        }
+            if (currentFrg instanceof WeekFragment) {
+                getMenuInflater().inflate(R.menu.week_fragment, menu);
+            } else if (currentFrg instanceof CourseFragment) {
+                getMenuInflater().inflate(R.menu.courses_fragment, menu);
+            } else {
+                getMenuInflater().inflate(R.menu.global, menu);
+            }
             restoreActionBar();
-        return true;
-    }
+            return true;
+        }
         return super.onCreateOptionsMenu(menu);
     }
 

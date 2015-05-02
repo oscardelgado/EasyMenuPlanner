@@ -1,6 +1,8 @@
 package com.oscardelgado83.easymenuplanner.ui.fragments;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -20,11 +22,10 @@ import com.oscardelgado83.easymenuplanner.model.Day;
 import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 import com.oscardelgado83.easymenuplanner.util.GA;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
-import java.util.Set;
 
 import butterknife.InjectView;
 import hugo.weaving.DebugLog;
@@ -35,6 +36,7 @@ import static butterknife.ButterKnife.reset;
 import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.FIRST;
 import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.NONE;
 import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.SECOND;
+import static com.oscardelgado83.easymenuplanner.ui.fragments.NavigationDrawerFragment.Section.COURSES;
 
 /**
 * Created by oscar on 23/03/15.
@@ -92,6 +94,20 @@ public class WeekFragment extends Fragment {
                 .where("courseType in (?, ?)", SECOND, NONE)
                 .orderBy("UPPER(name)")
                 .execute();
+
+        if (allFirstCourses.isEmpty() || allSecondCourses.isEmpty()) {
+            String message = null;
+            if (allFirstCourses.isEmpty()) {
+                message = getString(R.string.first_courses_needed);
+            } else if (allSecondCourses.isEmpty()) {
+                message = getString(R.string.second_course_needed);
+            }
+            new AlertDialog.Builder(getActivity())
+                    .setTitle(getString(R.string.not_enough_courses))
+                    .setMessage(message)
+                    .setPositiveButton(getString(R.string.go_to_courses), dialogClickListener)
+                    .create().show();
+        }
 
         allTableRows = new TableRow[]{tableRow1, tableRow2, tableRow3, tableRow4, tableRow5, tableRow6, tableRow7};
         for(int i = 0; i < allTableRows.length; i++) {
@@ -212,13 +228,6 @@ public class WeekFragment extends Fragment {
         };
     }
 
-    private Course getRandomCourse(Course.CourseType type) {
-        rand = new Random();
-        List<Course> courseList = (type == FIRST)? allFirstCourses : allSecondCourses;
-        int randomInt = rand.nextInt(courseList.size());
-        return courseList.get(randomInt);
-    }
-
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -279,37 +288,46 @@ public class WeekFragment extends Fragment {
         Course course = null;
         List<Day> week = ((MainActivity) getActivity()).getWeek();
 
-        Set<Course> notRepeatableCourses = new HashSet<>();
+        List<Course> notUsedFirstCourses = new ArrayList<>(allFirstCourses);
+        List<Course> notUsedSecondCourses = new ArrayList<>(allSecondCourses);
 
         for (Day day : ((MainActivity) getActivity()).getWeek()) {
-            if (day.firstCourse != null) notRepeatableCourses.add(day.firstCourse);
-            if (day.secondCourse != null) notRepeatableCourses.add(day.secondCourse);
+            if (day.firstCourse != null) notUsedFirstCourses.remove(day.firstCourse);
+            if (day.secondCourse != null) notUsedSecondCourses.remove(day.secondCourse);
         }
 
         for(int i = 0; i < allTableRows.length; i++) {
             TableRow tr = allTableRows[i];
             TextView tvA = (TextView) tr.findViewById(R.id.textViewA);
             if (tvA.getText().equals("")) {
-                do {
-                    course = getRandomCourse(FIRST);
-                    week.get(i).firstCourse = course;
-                    tvA.setText(course.name);
-                    findById(tr, R.id.buttonDelA).setEnabled(true);
-                } while (notRepeatableCourses.contains(course));
+                rand = new Random();
+                int randomInt = rand.nextInt(notUsedFirstCourses.size());
+                course = notUsedFirstCourses.get(randomInt);
+                week.get(i).firstCourse = course;
+                tvA.setText(course.name);
+                findById(tr, R.id.buttonDelA).setEnabled(true);
             }
-            notRepeatableCourses.add(course);
+            notUsedFirstCourses.remove(course);
 
             TextView tvB = (TextView) tr.findViewById(R.id.textViewB);
             if (tvB.getText().equals("")) {
-                do {
-                    course = getRandomCourse(SECOND);
-                    week.get(i).secondCourse = course;
-                    tvB.setText(course.name);
-                    findById(tr, R.id.buttonDelB).setEnabled(true);
-                } while (notRepeatableCourses.contains(course));
+                rand = new Random();
+                int randomInt = rand.nextInt(notUsedSecondCourses.size());
+                course = notUsedSecondCourses.get(randomInt);
+                week.get(i).secondCourse = course;
+                tvB.setText(course.name);
+                findById(tr, R.id.buttonDelB).setEnabled(true);
             }
-            notRepeatableCourses.add(course);
+            notUsedSecondCourses.remove(course);
         }
         dirty = true;
     }
+
+    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            ((MainActivity) getActivity()).onNavigationDrawerItemSelected(COURSES.ordinal());
+            getActivity().supportInvalidateOptionsMenu();
+        }
+    };
 }

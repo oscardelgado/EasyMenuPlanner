@@ -26,4 +26,8 @@
     <string name="empty_name_not_allowed">El nombre no puede estar vacío</string>
     <string name="days_with_this_course_exist">El plato (%s) está asignado a algún día</string>
     <string name="delete_it_anyway">Borrar de todas formas</string>
+    <string name="first_courses_needed">Es necesario que añadas algún primer plato más.</string>
+    <string name="not_enough_courses">¡No hay suficientes platos!</string>
+    <string name="second_course_needed">Es necesario que añadas algún segundo plato más.</string>
+    <string name="go_to_courses">Ir a Platos</string>
 </resources>

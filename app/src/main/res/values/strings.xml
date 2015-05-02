@@ -29,4 +29,8 @@
     <string name="empty_name_not_allowed">Name can\'t be empty</string>
     <string name="days_with_this_course_exist">This course (%s) is assigned to one or more days</string>
     <string name="delete_it_anyway">Delete anyway</string>
+    <string name="first_courses_needed">You need to add some more first courses.</string>
+    <string name="not_enough_courses">Not enough courses exist!</string>
+    <string name="second_course_needed">You need to add some more second courses.</string>
+    <string name="go_to_courses">Go to Dishes</string>
 </resources>

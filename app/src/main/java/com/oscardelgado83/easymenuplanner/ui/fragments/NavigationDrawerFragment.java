@@ -61,6 +61,22 @@ public class NavigationDrawerFragment extends Fragment {
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
+    public enum Section {
+        WEEK_MENU(R.string.title_section_week),
+        WEEK_SHOPPINGLIST(R.string.title_section_shopping_list),
+        COURSES(R.string.title_section_dishes);
+
+        private final int titleKey;
+
+        Section(int titleKey) {
+            this.titleKey = titleKey;
+        }
+
+        public int getTitleKey() {
+            return titleKey;
+        }
+    }
+
     public NavigationDrawerFragment() {
     }
 
@@ -105,9 +121,9 @@ public class NavigationDrawerFragment extends Fragment {
                 android.R.layout.simple_list_item_1,
                 android.R.id.text1,
                 new String[]{
-                        getString(R.string.title_section_week),
-                        getString(R.string.title_section_shopping_list),
-                        getString(R.string.title_section_dishes),
+                        getString(Section.values()[0].getTitleKey()),
+                        getString(Section.values()[1].getTitleKey()),
+                        getString(Section.values()[2].getTitleKey()),
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 
