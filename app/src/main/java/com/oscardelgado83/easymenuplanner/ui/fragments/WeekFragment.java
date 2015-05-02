@@ -20,9 +20,11 @@ import com.oscardelgado83.easymenuplanner.model.Day;
 import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 import com.oscardelgado83.easymenuplanner.util.GA;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
+import java.util.Set;
 
 import butterknife.InjectView;
 import hugo.weaving.DebugLog;
@@ -276,23 +278,37 @@ public class WeekFragment extends Fragment {
     public void randomFillAllCourses() {
         Course course = null;
         List<Day> week = ((MainActivity) getActivity()).getWeek();
+
+        Set<Course> notRepeatableCourses = new HashSet<>();
+
+        for (Day day : ((MainActivity) getActivity()).getWeek()) {
+            if (day.firstCourse != null) notRepeatableCourses.add(day.firstCourse);
+            if (day.secondCourse != null) notRepeatableCourses.add(day.secondCourse);
+        }
+
         for(int i = 0; i < allTableRows.length; i++) {
             TableRow tr = allTableRows[i];
             TextView tvA = (TextView) tr.findViewById(R.id.textViewA);
             if (tvA.getText().equals("")) {
-                course = getRandomCourse(FIRST);
-                week.get(i).firstCourse = course;
-                tvA.setText(course.name);
-                findById(tr, R.id.buttonDelA).setEnabled(true);
+                do {
+                    course = getRandomCourse(FIRST);
+                    week.get(i).firstCourse = course;
+                    tvA.setText(course.name);
+                    findById(tr, R.id.buttonDelA).setEnabled(true);
+                } while (notRepeatableCourses.contains(course));
             }
+            notRepeatableCourses.add(course);
 
             TextView tvB = (TextView) tr.findViewById(R.id.textViewB);
             if (tvB.getText().equals("")) {
-                course = getRandomCourse(SECOND);
-                week.get(i).secondCourse = course;
-                tvB.setText(course.name);
-                findById(tr, R.id.buttonDelB).setEnabled(true);
+                do {
+                    course = getRandomCourse(SECOND);
+                    week.get(i).secondCourse = course;
+                    tvB.setText(course.name);
+                    findById(tr, R.id.buttonDelB).setEnabled(true);
+                } while (notRepeatableCourses.contains(course));
             }
+            notRepeatableCourses.add(course);
         }
         dirty = true;
     }
