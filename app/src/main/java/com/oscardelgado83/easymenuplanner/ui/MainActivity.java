@@ -52,7 +52,9 @@ import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.SECOND;
 
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks, CourseFragment.OnFragmentInteractionListener {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks,
+        CourseFragment.OnFragmentInteractionListener,
+        ShoppingListFragment.OnFragmentInteractionListener {
 
     @InjectView(R.id.adView)
     AdView adView;
@@ -115,12 +117,13 @@ public class MainActivity extends AppCompatActivity
         try {
             TextUtils.StringSplitter splitter = new TextUtils.SimpleStringSplitter('\n');
 
-            splitter.setString(loadInitialCoursesFromFile());//TODO: English
+            splitter.setString(loadInitialCoursesFromFile());
             for (String line : splitter) {
                 Course course = new Course();
                 StringTokenizer tknzr = new StringTokenizer(line, ",");
                 course.name = tknzr.nextToken().trim();
-                Course existingCourse = new Select().from(Course.class).where("name = ?", course.name).executeSingle();
+                Course existingCourse = new Select().from(Course.class).where("UPPER(name) = ?",
+                        course.name.toUpperCase()).executeSingle();
                 if (existingCourse != null) existingCourse.delete();
                 switch (Integer.parseInt(tknzr.nextToken().trim())) {
                     case 1:
@@ -138,7 +141,7 @@ public class MainActivity extends AppCompatActivity
                 while (tknzr.hasMoreElements()) {
                     String ingredientName = tknzr.nextToken().trim();
                     Ingredient ingr = new Select().from(Ingredient.class)
-                            .where("name = ?", ingredientName).executeSingle();
+                            .where("UPPER(name) = ?", ingredientName.toUpperCase()).executeSingle();
                     if (ingr == null) {
                         ingr = new Ingredient();
                         ingr.name = ingredientName;

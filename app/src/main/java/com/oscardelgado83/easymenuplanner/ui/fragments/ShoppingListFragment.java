@@ -21,13 +21,17 @@ import hugo.weaving.DebugLog;
 */
 public class ShoppingListFragment extends ListFragment {
 
+    private OnFragmentInteractionListener mListener;
+    private List<Ingredient> ingredientList;
+
     private static final String LOG_TAG = ShoppingListFragment.class.getSimpleName();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setListAdapter(new ShoppingListAdapter(getActivity(), getIngredients()));
+        ingredientList = getIngredients();
+        setListAdapter(new ShoppingListAdapter(getActivity(), ingredientList));
     }
 
     @DebugLog
@@ -37,7 +41,7 @@ public class ShoppingListFragment extends ListFragment {
         List<Ingredient> ingrList = new Select().from(Ingredient.class)
                 .where("Id IN (SELECT CI.ingredient FROM CourseIngredients CI, Days D " +
                         "WHERE CI.course = D.firstCourse OR CI.course = D.secondCourse)")
-                .orderBy("UPPER (name) ASC")
+                .orderBy("checked ASC, UPPER (name) ASC")
                 .execute();
         return ingrList;
     }
@@ -46,6 +50,18 @@ public class ShoppingListFragment extends ListFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         ((MainActivity) activity).onSectionAttached(this);
+        try {
+            mListener = (OnFragmentInteractionListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
     @Override
@@ -61,5 +77,19 @@ public class ShoppingListFragment extends ListFragment {
         GA.sendScreenHit(
                 ((EMPApplication) getActivity().getApplication()).getTracker(),
                 "ShoppingListFragment");
+    }
+
+    /**
+     * This interface must be implemented by activities that contain this
+     * fragment to allow an interaction in this fragment to be communicated
+     * to the activity and potentially other fragments contained in that
+     * activity.
+     * <p/>
+     * See the Android Training lesson <a href=
+     * "http://developer.android.com/training/basics/fragments/communicating.html"
+     * >Communicating with Other Fragments</a> for more information.
+     */
+    public interface OnFragmentInteractionListener {
+        public void onFragmentInteraction(Long ingredientId);
     }
 }

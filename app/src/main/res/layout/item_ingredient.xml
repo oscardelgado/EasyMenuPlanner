@@ -8,6 +8,9 @@
         android:id="@+id/ingredient_chk"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:focusableInTouchMode="false"
+        android:clickable="false"
+        android:focusable="false"
         />
 
     <TextView
@@ -15,5 +18,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
-        android:id="@+id/ingredient_name"/>
+        android:id="@+id/ingredient_name"
+        android:focusableInTouchMode="false"
+        android:clickable="false"
+        android:focusable="false"/>
 </LinearLayout>

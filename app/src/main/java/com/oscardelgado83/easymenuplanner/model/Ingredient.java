@@ -20,6 +20,9 @@ public class Ingredient extends Model implements Serializable {
 
     @Override
     public String toString() {
-        return name;
+        return "Ingredient{" +
+                "name='" + name + '\'' +
+                ", checked=" + checked +
+                '}';
     }
 }

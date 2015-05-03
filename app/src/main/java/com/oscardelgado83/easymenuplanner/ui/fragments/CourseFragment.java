@@ -199,7 +199,6 @@ public class CourseFragment extends ListFragment {
         mListener = null;
     }
 
-
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
@@ -282,8 +281,7 @@ public class CourseFragment extends ListFragment {
                 ((EMPApplication) getActivity().getApplication()).getTracker(),
                 getClass().getSimpleName(),
                 "open dialog",
-                "add course"
-        );
+                "add course");
     }
 
     private Course.CourseType getCourseType(AlertDialog d) {
@@ -371,8 +369,7 @@ public class CourseFragment extends ListFragment {
                 ((EMPApplication) getActivity().getApplication()).getTracker(),
                 getClass().getSimpleName(),
                 "open dialog",
-                "delete course"
-        );
+                "delete course");
     }
 
     private class DeleteBtnClickListener implements DialogInterface.OnClickListener {
@@ -520,8 +517,7 @@ public class CourseFragment extends ListFragment {
                 ((EMPApplication) getActivity().getApplication()).getTracker(),
                 getClass().getSimpleName(),
                 "open dialog",
-                "edit course"
-        );
+                "edit course");
     }
 
     private void updateCourse(Course c, String newName, List<Object> ingredients, Course.CourseType courseType) {
@@ -550,5 +546,11 @@ public class CourseFragment extends ListFragment {
         courseList.clear();
         courseList.addAll(getAllCourses());
         ((CourseAdapter) getListAdapter()).notifyDataSetChanged();
+
+        GA.sendEvent(
+                ((EMPApplication) getActivity().getApplication()).getTracker(),
+                getClass().getSimpleName(),
+                "action tapped",
+                "reload default courses");
     }
 }

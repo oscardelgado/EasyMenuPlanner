@@ -1,6 +1,7 @@
 package com.oscardelgado83.easymenuplanner.ui.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,11 +16,14 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import hugo.weaving.DebugLog;
 
 /**
  * Created by oscar on 15/04/15.
  */
 public class ShoppingListAdapter extends ArrayAdapter<Ingredient> {
+
+    private static final String LOG_TAG = ShoppingListAdapter.class.getSimpleName();
 
     public ShoppingListAdapter(Context context, List<Ingredient> ingredientList) {
         super(context, 0, ingredientList);
@@ -29,14 +33,14 @@ public class ShoppingListAdapter extends ArrayAdapter<Ingredient> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         // Get the data item for this position
-        Ingredient ingredient = getItem(position);
+        final Ingredient ingredient = getItem(position);
 
-        ViewHolder holder;
+        final ViewHolder holder;
         if (convertView != null) {
             holder = (ViewHolder) convertView.getTag();
         } else {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_ingredient, parent, false);
-            holder = new ViewHolder(convertView, ingredient);
+            holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         }
 
@@ -44,6 +48,17 @@ public class ShoppingListAdapter extends ArrayAdapter<Ingredient> {
         holder.ingredientName.setText(ingredient.name);
 
         holder.ingredientChecked.setChecked(ingredient.checked);
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @DebugLog
+            @Override
+            public void onClick(View v) {
+                ingredient.checked = ! ingredient.checked;
+                ingredient.save();
+                Log.d(LOG_TAG, "Ingredient saved: " + ingredient);
+                holder.ingredientChecked.setChecked(ingredient.checked);
+            }
+        });
 
         // Return the completed view to render on screen
         return convertView;
@@ -56,15 +71,8 @@ public class ShoppingListAdapter extends ArrayAdapter<Ingredient> {
         @InjectView(R.id.ingredient_chk)
         CheckBox ingredientChecked;
 
-        public ViewHolder(View view, final Ingredient ingredient) {
+        public ViewHolder(View view) {
             ButterKnife.inject(this, view);
-            ingredientChecked.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View arg0) {
-                    ingredient.checked = ingredientChecked.isChecked();
-                    ingredient.save();
-                }
-            });
         }
     }
 
