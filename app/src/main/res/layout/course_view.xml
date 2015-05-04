@@ -33,5 +33,11 @@
             android:layout_height="wrap_content"
             android:text="@string/second_course"
             android:id="@+id/radio_btn_second" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/second_both"
+            android:id="@+id/radio_btn_both" />
     </RadioGroup>
 </LinearLayout>

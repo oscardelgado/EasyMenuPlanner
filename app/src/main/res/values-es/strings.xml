@@ -31,4 +31,5 @@
     <string name="second_course_needed">Es necesario que añadas algún segundo plato más.</string>
     <string name="go_to_courses">Ir a Platos</string>
     <string name="action_restore_default_courses">Volver a cargar platos por defecto</string>
+    <string name="second_both">Ambos</string>
 </resources>

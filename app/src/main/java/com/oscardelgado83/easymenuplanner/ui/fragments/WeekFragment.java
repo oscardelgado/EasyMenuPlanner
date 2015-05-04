@@ -168,7 +168,7 @@ public class WeekFragment extends Fragment {
                     currentCoursesList = allSecondCourses;
                 }
                 if (currentCoursesList != null) {
-                    if (currentCourse != null) {
+                    if (currentCourse != null && currentCoursesList.contains(currentCourse)) {
                         it = currentCoursesList.listIterator(currentCoursesList.indexOf(currentCourse));
                     } else {
                         it = currentCoursesList.listIterator(0);

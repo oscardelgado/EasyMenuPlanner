@@ -46,6 +46,10 @@ import java.util.List;
 import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
 
+import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.FIRST;
+import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.NONE;
+import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.SECOND;
+
 /**
  * A fragment representing a list of Items.
  * <p/>
@@ -289,13 +293,14 @@ public class CourseFragment extends ListFragment {
         RadioGroup courseTypeRG = ButterKnife.findById(d, R.id.course_type_radio);
         switch (courseTypeRG.getCheckedRadioButtonId()) {
             case R.id.radio_btn_first:
-                courseType = Course.CourseType.FIRST;
+                courseType = FIRST;
                 break;
             case R.id.radio_btn_second:
-                courseType = Course.CourseType.SECOND;
+                courseType = SECOND;
                 break;
+            case R.id.radio_btn_both:
             default:
-                courseType = Course.CourseType.NONE;
+                courseType = NONE;
                 break;
         }
         return courseType;
@@ -489,10 +494,12 @@ public class CourseFragment extends ListFragment {
         d.show();
 
         RadioGroup courseTypeRG = ButterKnife.findById(d, R.id.course_type_radio);
-        if (c.courseType == Course.CourseType.FIRST) {
+        if (c.courseType == FIRST) {
             courseTypeRG.check(R.id.radio_btn_first);
-        } else if (c.courseType == Course.CourseType.SECOND) {
+        } else if (c.courseType == SECOND) {
             courseTypeRG.check(R.id.radio_btn_second);
+        } else if (c.courseType == NONE) {
+            courseTypeRG.check(R.id.radio_btn_both);
         }
 
         Button positiveButton = d.getButton(AlertDialog.BUTTON_POSITIVE);
