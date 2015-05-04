@@ -2,6 +2,8 @@ package com.oscardelgado83.easymenuplanner.ui;
 
 import android.app.Dialog;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -34,6 +36,7 @@ import com.oscardelgado83.easymenuplanner.ui.fragments.WeekFragment;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Method;
 import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -79,13 +82,20 @@ public class MainActivity extends AppCompatActivity
     @DebugLog
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (isTabletDevice()) {
+            setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+
         setContentView(R.layout.activity_main);
 
         inject(this);
 
         adView.loadAd(new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)       // Emulator
-                .addTestDevice("980B7CBB4875D26814D3B29D1B669AEB") // Nexus 7
+                .addTestDevice(getString(R.string.nexus_7_device_id)) // Nexus 7
                 .build());
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -228,6 +238,22 @@ public class MainActivity extends AppCompatActivity
         fragmentManager.beginTransaction()
                 .replace(R.id.container, currentFrg)
                 .commitAllowingStateLoss();
+    }
+
+    @DebugLog
+    private boolean isTabletDevice() {
+        if (android.os.Build.VERSION.SDK_INT >= 11) { // honeycomb
+            // test screen size, use reflection because isLayoutSizeAtLeast is only available since 11
+            Configuration con = getResources().getConfiguration();
+            try {
+                Method mIsLayoutSizeAtLeast = con.getClass().getMethod("isLayoutSizeAtLeast");
+                Boolean r = (Boolean) mIsLayoutSizeAtLeast.invoke(con, 0x00000004); // Configuration.SCREENLAYOUT_SIZE_XLARGE
+                return r;
+            } catch (Exception x) {
+                return false;
+            }
+        }
+        return false;
     }
 
     public void onSectionAttached(Fragment frg) {
