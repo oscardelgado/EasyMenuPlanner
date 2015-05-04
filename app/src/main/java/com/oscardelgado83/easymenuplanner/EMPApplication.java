@@ -1,6 +1,7 @@
 package com.oscardelgado83.easymenuplanner;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
@@ -14,6 +15,8 @@ public class EMPApplication extends Application {
 
     private Tracker tracker;
 
+    private static final String LOG_TAG = EMPApplication.class.getSimpleName();
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -24,6 +27,7 @@ public class EMPApplication extends Application {
         if (tracker == null) {
             GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
             analytics.setDryRun(DEBUGGING);
+            Log.d(LOG_TAG, "GA DryRun has benn set to: " + DEBUGGING);
             tracker = analytics.newTracker(getString(R.string.ga_property_id));
 
             // Enable Display Features.
