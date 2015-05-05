@@ -35,4 +35,6 @@
     <string name="go_to_courses">Go to Dishes</string>
     <string name="action_restore_default_courses">Restore default courses</string>
     <string name="second_both">Both</string>
+    <string name="action_hide_completed">Hide completed items</string>
+    <string name="action_show_completed">Show all items</string>
 </resources>

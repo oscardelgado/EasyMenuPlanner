@@ -284,6 +284,8 @@ public class MainActivity extends AppCompatActivity
                 getMenuInflater().inflate(R.menu.week_fragment, menu);
             } else if (currentFrg instanceof CourseFragment) {
                 getMenuInflater().inflate(R.menu.courses_fragment, menu);
+            } else if (currentFrg instanceof ShoppingListFragment) {
+                getMenuInflater().inflate(R.menu.shoppinglist_fragment, menu);
             } else {
                 getMenuInflater().inflate(R.menu.global, menu);
             }
@@ -309,7 +311,7 @@ public class MainActivity extends AppCompatActivity
                 ((WeekFragment)currentFrg).randomFillAllCourses();
                 return true;
             }
-        } else if( currentFrg instanceof CourseFragment) {
+        } else if (currentFrg instanceof CourseFragment) {
             if (id == R.id.action_add) {
                 ((CourseFragment) currentFrg).addCourseClicked();
                 return true;
@@ -317,6 +319,12 @@ public class MainActivity extends AppCompatActivity
                 prePopulateDB();
                 ((CourseFragment) currentFrg).refreshCourseList();
                 return true;
+            }
+        } else if (currentFrg instanceof ShoppingListFragment) {
+            if (id == R.id.action_hide_completed) {
+                ((ShoppingListFragment) currentFrg).hideCompletedItems();
+            } else if (id == R.id.action_show_completed) {
+                ((ShoppingListFragment) currentFrg).showCompletedItems();
             }
         }
 
