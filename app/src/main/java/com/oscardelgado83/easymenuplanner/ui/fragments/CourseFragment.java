@@ -261,7 +261,9 @@ public class CourseFragment extends ListFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
-                }).create();
+                })
+                .setInverseBackgroundForced(true)
+                .create();
         d.show();
         Button positiveButton = d.getButton(AlertDialog.BUTTON_POSITIVE);
         positiveButton.setOnClickListener(new View.OnClickListener(){
@@ -369,6 +371,7 @@ public class CourseFragment extends ListFragment {
         builder.setMessage(getString(R.string.dialog_delete_confirmation))
                 .setPositiveButton(android.R.string.yes, dialogClickListener)
                 .setNegativeButton(android.R.string.no, dialogClickListener)
+                .setInverseBackgroundForced(true)
                 .show();
         GA.sendEvent(
                 ((EMPApplication) getActivity().getApplication()).getTracker(),
@@ -426,7 +429,8 @@ public class CourseFragment extends ListFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(context.getString(R.string.days_with_this_course_exist, deletedCourse.name))
                 .setPositiveButton(R.string.delete_it_anyway, new ConfirmDeleteCourseOnClickListener(daysWithCourseAsFirst, daysWithCourseAsSecond,  deletedCourse))
-                .setNegativeButton(android.R.string.cancel, null);
+                .setNegativeButton(android.R.string.cancel, null)
+                .setInverseBackgroundForced(true);
         if ( ! (daysWithCourseAsFirst.isEmpty() && daysWithCourseAsSecond.isEmpty())) {
             builder.show();
         } else {
@@ -490,7 +494,8 @@ public class CourseFragment extends ListFragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
                             }
-                        }).create();
+                        }).setInverseBackgroundForced(true)
+                        .create();
         d.show();
 
         RadioGroup courseTypeRG = ButterKnife.findById(d, R.id.course_type_radio);

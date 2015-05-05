@@ -20,9 +20,8 @@ public class Ingredient extends Model implements Serializable {
 
     @Override
     public String toString() {
-        return "Ingredient{" +
-                "name='" + name + '\'' +
-                ", checked=" + checked +
-                '}';
+
+        // Mantain like this for the Autocomplete
+        return name;
     }
 }
