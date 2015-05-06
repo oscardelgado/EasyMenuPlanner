@@ -25,7 +25,6 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
         <meta-data
             android:name="AA_DB_NAME"
             android:value="EasyMenuPlanner.db" />
@@ -40,15 +39,21 @@
         -->
         <meta-data
             android:name="AA_MODELS"
-            android:value="com.oscardelgado83.easymenuplanner.model.Course,
-                com.oscardelgado83.easymenuplanner.model.CourseIngredient,
-                com.oscardelgado83.easymenuplanner.model.Ingredient,
-                com.oscardelgado83.easymenuplanner.model.Day"/>
+            android:value="com.oscardelgado83.easymenuplanner.model.Course,                 com.oscardelgado83.easymenuplanner.model.CourseIngredient,                 com.oscardelgado83.easymenuplanner.model.Ingredient,                 com.oscardelgado83.easymenuplanner.model.Day" />
 
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize" />
 
+        <activity
+            android:name=".ui.CoursesInDialogActivity"
+            android:label="@string/title_activity_courses_in_dialog"
+            android:parentActivityName=".ui.MainActivity"
+            android:theme="@style/AppDialogTheme" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.oscardelgado83.easymenuplanner.ui.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

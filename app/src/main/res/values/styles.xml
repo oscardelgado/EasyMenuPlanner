@@ -13,6 +13,11 @@
         <item name="colorAccent">@color/accent</item>
     </style>
 
+    <style name="AppDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+    </style>
+
+    <!--TODO: Black text in EditText of Dialog in API10-->
+
     <color name="primary">#669801</color>
     <color name="primary_dark">#3B5A01</color>
     <color name="accent">#0072AF</color>

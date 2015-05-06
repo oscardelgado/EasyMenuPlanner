@@ -3,7 +3,7 @@
     <string name="navigation_drawer_close">Cerrar barra lateral</string>
     <string name="navigation_drawer_open">Mostrar barra lateral</string>
     <string name="title_section_week">Menú de la semana</string>
-    <string name="title_section_dishes">Platos</string>
+    <string name="title_section_course">Platos</string>
     <string name="title_section_shopping_list">Compra de la semana</string>
     <string name="action_automatic_fill">Rellenar automáticamente</string>
     <string name="action_settings">Ajustes</string>
@@ -34,4 +34,5 @@
     <string name="second_both">Ambos</string>
     <string name="action_hide_completed">Ocultar completados</string>
     <string name="action_show_completed">Mostrar todos</string>
+    <string name="select_course">Selecciona un plato</string>
 </resources>

@@ -15,8 +15,6 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/textViewA"
-            android:layout_column="0"
-            android:layout_weight="1"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
@@ -27,8 +25,7 @@
             android:layout_height="wrap_content"
             android:text="x"
             android:id="@+id/buttonDelA"
-            android:layout_weight="1"
-            android:layout_below="@+id/textViewA"
+            android:layout_below="@id/textViewA"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />
 
@@ -38,8 +35,7 @@
             android:layout_height="wrap_content"
             android:text="&lt;"
             android:id="@+id/buttonLeftA"
-            android:layout_weight="1"
-            android:layout_below="@+id/textViewA"
+            android:layout_alignTop="@id/buttonDelA"
             android:layout_toRightOf="@id/buttonDelA"/>
 
         <Button
@@ -48,9 +44,17 @@
             android:layout_height="wrap_content"
             android:text=">"
             android:id="@+id/buttonRightA"
-            android:layout_weight="1"
-            android:layout_alignTop="@+id/buttonLeftA"
-            android:layout_toRightOf="@+id/buttonLeftA"/>
+            android:layout_alignTop="@id/buttonDelA"
+            android:layout_toRightOf="@id/buttonLeftA"/>
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"
+            android:id="@+id/buttonSearchA"
+            android:layout_alignTop="@id/buttonDelA"
+            android:layout_toRightOf="@id/buttonRightA"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -58,18 +62,17 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:id="@+id/textViewB"
             android:layout_column="1"
-            android:layout_weight="1"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true" />
+
 
         <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=">"
-            android:id="@+id/buttonRightB"
-            android:layout_weight="1"
+            android:text="+"
+            android:id="@+id/buttonSearchB"
             android:layout_below="@id/textViewB"
             android:layout_alignParentRight="true"/>
 
@@ -77,10 +80,18 @@
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text=">"
+            android:id="@+id/buttonRightB"
+            android:layout_alignTop="@id/buttonSearchB"
+            android:layout_toLeftOf="@id/buttonSearchB"/>
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="&lt;"
             android:id="@+id/buttonLeftB"
-            android:layout_weight="1"
-            android:layout_alignTop="@id/buttonRightB"
+            android:layout_alignTop="@id/buttonSearchB"
             android:layout_toLeftOf="@id/buttonRightB"/>
 
         <Button
@@ -89,7 +100,6 @@
             android:layout_height="wrap_content"
             android:text="x"
             android:id="@+id/buttonDelB"
-            android:layout_weight="1"
             android:layout_alignTop="@id/buttonLeftB"
             android:layout_toLeftOf="@id/buttonLeftB"/>
 

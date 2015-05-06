@@ -55,9 +55,7 @@ import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.SECOND;
 
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationDrawerFragment.NavigationDrawerCallbacks,
-        CourseFragment.OnFragmentInteractionListener,
-        ShoppingListFragment.OnFragmentInteractionListener {
+        implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
     @InjectView(R.id.adView)
     AdView adView;
@@ -93,10 +91,7 @@ public class MainActivity extends AppCompatActivity
 
         inject(this);
 
-        adView.loadAd(new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)       // Emulator
-                .addTestDevice(getString(R.string.nexus_7_device_id)) // Nexus 7
-                .build());
+        loadAdMob();
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
@@ -370,9 +365,12 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
-    @Override
-    //http://stackoverflow.com/a/24778951/1464013
-    public void onFragmentInteraction(Long courseId) {
+    @DebugLog
+    private void loadAdMob() {
+        adView.loadAd(new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)       // Emulator
+                .addTestDevice(getString(R.string.nexus_7_device_id)) // Nexus 7
+                .build());
     }
 
     public List<Day> getWeek() {

@@ -64,7 +64,7 @@ public class NavigationDrawerFragment extends Fragment {
     public enum Section {
         WEEK_MENU(R.string.title_section_week),
         WEEK_SHOPPINGLIST(R.string.title_section_shopping_list),
-        COURSES(R.string.title_section_dishes);
+        COURSES(R.string.title_section_course);
 
         private final int titleKey;
 

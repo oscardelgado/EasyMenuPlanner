@@ -59,7 +59,6 @@ import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.SECOND;
  */
 public class CourseFragment extends ListFragment {
 
-    private OnFragmentInteractionListener mListener;
     private List<Course> courseList;
 
     private static final String LOG_TAG = CourseFragment.class.getSimpleName();
@@ -188,19 +187,9 @@ public class CourseFragment extends ListFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        ((MainActivity) activity).onSectionAttached(this);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
+        if (activity instanceof MainActivity) {
+            ((MainActivity) activity).onSectionAttached(this);
         }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -208,26 +197,6 @@ public class CourseFragment extends ListFragment {
         super.onListItemClick(l, v, position, id);
 
         editCourse(position);
-
-        if (null != mListener) {
-            // Notify the active callbacks interface (the activity, if the
-            // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(courseList.get(position).getId());
-        }
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        public void onFragmentInteraction(Long courseId);
     }
 
     @Override

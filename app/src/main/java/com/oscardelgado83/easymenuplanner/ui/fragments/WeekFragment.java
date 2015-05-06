@@ -3,6 +3,7 @@ package com.oscardelgado83.easymenuplanner.ui.fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -19,6 +20,7 @@ import com.oscardelgado83.easymenuplanner.EMPApplication;
 import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Course;
 import com.oscardelgado83.easymenuplanner.model.Day;
+import com.oscardelgado83.easymenuplanner.ui.CoursesInDialogActivity;
 import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 import com.oscardelgado83.easymenuplanner.util.GA;
 
@@ -137,6 +139,8 @@ public class WeekFragment extends Fragment {
             findById(tr, R.id.buttonRightA).setOnClickListener(courseBtnClickListener(tvA, i, 0));
             findById(tr, R.id.buttonLeftB).setOnClickListener(courseBtnClickListener(tvB, i, 1));
             findById(tr, R.id.buttonRightB).setOnClickListener(courseBtnClickListener(tvB, i, 1));
+            findById(tr, R.id.buttonSearchA).setOnClickListener(courseBtnClickListener(tvB, i, 1));
+            findById(tr, R.id.buttonSearchB).setOnClickListener(courseBtnClickListener(tvB, i, 1));
             btnDelA.setOnClickListener(courseBtnClickListener(tvA, i, 0));
             btnDelB.setOnClickListener(courseBtnClickListener(tvB, i, 1));
         }
@@ -175,6 +179,11 @@ public class WeekFragment extends Fragment {
                     }
                 }
                 switch (v.getId()) {
+                    case R.id.buttonSearchA:
+                    case R.id.buttonSearchB:
+                        Intent myIntent = new Intent(getActivity(), CoursesInDialogActivity.class);
+                        getActivity().startActivity(myIntent);
+                        break;
                     case R.id.buttonLeftA:
                     case R.id.buttonLeftB:
                         if (col == 0) {

@@ -9,7 +9,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="title_section_week">Week menu</string>
-    <string name="title_section_dishes">Dishes</string>
+    <string name="title_section_course">Courses</string>
     <string name="title_section_shopping_list">Week shopping list</string>
     <string name="error_loadingInitialConfig">Problem loading initial configuration</string>
     <string name="action_add">Add</string>
@@ -32,9 +32,12 @@
     <string name="first_courses_needed">You need to add some more first courses.</string>
     <string name="not_enough_courses">Not enough courses exist!</string>
     <string name="second_course_needed">You need to add some more second courses.</string>
-    <string name="go_to_courses">Go to Dishes</string>
+    <string name="go_to_courses">Go to Courses</string>
     <string name="action_restore_default_courses">Restore default courses</string>
     <string name="second_both">Both</string>
     <string name="action_hide_completed">Hide completed items</string>
     <string name="action_show_completed">Show all items</string>
+    <string name="title_activity_courses_in_dialog">CoursesInDialogActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="select_course">Select course</string>
 </resources>
