@@ -241,7 +241,7 @@ public class MainActivity extends AppCompatActivity
             // test screen size, use reflection because isLayoutSizeAtLeast is only available since 11
             Configuration con = getResources().getConfiguration();
             try {
-                Method mIsLayoutSizeAtLeast = con.getClass().getMethod("isLayoutSizeAtLeast");
+                Method mIsLayoutSizeAtLeast = con.getClass().getMethod("isLayoutSizeAtLeast", int.class);
                 Boolean r = (Boolean) mIsLayoutSizeAtLeast.invoke(con, 0x00000004); // Configuration.SCREENLAYOUT_SIZE_XLARGE
                 return r;
             } catch (Exception x) {
