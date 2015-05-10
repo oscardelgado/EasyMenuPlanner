@@ -37,8 +37,6 @@
     <string name="second_both">Both</string>
     <string name="action_hide_completed">Hide completed items</string>
     <string name="action_show_completed">Show all items</string>
-    <string name="title_activity_courses_in_dialog">CoursesInDialogActivity</string>
-    <string name="hello_world">Hello world!</string>
     <string name="select_course">Select course</string>
     <string name="ingredients">Ingredients</string>
 </resources>
