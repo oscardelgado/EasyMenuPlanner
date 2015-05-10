@@ -3,13 +3,13 @@ package com.oscardelgado83.easymenuplanner.ui.fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -20,8 +20,8 @@ import com.oscardelgado83.easymenuplanner.EMPApplication;
 import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Course;
 import com.oscardelgado83.easymenuplanner.model.Day;
-import com.oscardelgado83.easymenuplanner.ui.CoursesInDialogActivity;
 import com.oscardelgado83.easymenuplanner.ui.MainActivity;
+import com.oscardelgado83.easymenuplanner.ui.adapters.CourseAdapter;
 import com.oscardelgado83.easymenuplanner.util.GA;
 
 import java.util.ArrayList;
@@ -41,8 +41,8 @@ import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.SECOND;
 import static com.oscardelgado83.easymenuplanner.ui.fragments.NavigationDrawerFragment.Section.COURSES;
 
 /**
-* Created by oscar on 23/03/15.
-*/
+ * Created by oscar on 23/03/15.
+ */
 public class WeekFragment extends Fragment {
 
     @InjectView(R.id.day1)
@@ -112,7 +112,7 @@ public class WeekFragment extends Fragment {
         }
 
         allTableRows = new TableRow[]{tableRow1, tableRow2, tableRow3, tableRow4, tableRow5, tableRow6, tableRow7};
-        for(int i = 0; i < allTableRows.length; i++) {
+        for (int i = 0; i < allTableRows.length; i++) {
             TableRow tr = allTableRows[i];
             tr.setTag(i);
 
@@ -162,7 +162,7 @@ public class WeekFragment extends Fragment {
             public void onClick(View v) {
                 List<Day> week = ((MainActivity) getActivity()).getWeek();
                 Day selectedDay = week.get(row);
-                Course currentCourse = (col == 0)? selectedDay.firstCourse : selectedDay.secondCourse;
+                Course currentCourse = (col == 0) ? selectedDay.firstCourse : selectedDay.secondCourse;
                 Course newCourse = null;
                 ListIterator<Course> it = null;
                 List<Course> currentCoursesList = null;
@@ -181,8 +181,7 @@ public class WeekFragment extends Fragment {
                 switch (v.getId()) {
                     case R.id.buttonSearchA:
                     case R.id.buttonSearchB:
-                        Intent myIntent = new Intent(getActivity(), CoursesInDialogActivity.class);
-                        getActivity().startActivity(myIntent);
+                        showCoursesDialog(tv, row, col);
                         break;
                     case R.id.buttonLeftA:
                     case R.id.buttonLeftB:
@@ -237,6 +236,30 @@ public class WeekFragment extends Fragment {
         };
     }
 
+    private void showCoursesDialog(final TextView tv, final int row, final int col) {
+        final List<Course> allCourses = new Select().from(Course.class).orderBy("UPPER(name) ASC").execute();
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.select_course);
+        ArrayAdapter<Course> adapter = new CourseAdapter(getActivity(), allCourses);
+        builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Course selectedCourse = allCourses.get(which);
+                List<Day> week = ((MainActivity) getActivity()).getWeek();
+                Day selectedDay = week.get(row);
+                if (col == 0) {
+                    selectedDay.firstCourse = selectedCourse;
+                } else if (col == 1) {
+                    selectedDay.secondCourse = selectedCourse;
+                }
+                tv.setText(selectedCourse.name);
+                dirty = true;
+            }
+        });
+        AlertDialog alert = builder.create();
+        alert.show();
+    }
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
@@ -264,7 +287,7 @@ public class WeekFragment extends Fragment {
         try {
             ActiveAndroid.beginTransaction();
             List<Day> week = ((MainActivity) getActivity()).getWeek();
-            for(int i = 0; i < allTableRows.length; i++) {
+            for (int i = 0; i < allTableRows.length; i++) {
                 Day day = week.get(i);
                 day.save();
             }
@@ -276,7 +299,7 @@ public class WeekFragment extends Fragment {
 
     public void clearAllCourses() {
         List<Day> week = ((MainActivity) getActivity()).getWeek();
-        for(int i = 0; i < allTableRows.length; i++) {
+        for (int i = 0; i < allTableRows.length; i++) {
             TableRow tr = allTableRows[i];
             TextView tvA = findById(tr, R.id.textViewA);
             tvA.setText("");
@@ -305,14 +328,14 @@ public class WeekFragment extends Fragment {
             if (day.secondCourse != null) notUsedSecondCourses.remove(day.secondCourse);
         }
 
-        for(int i = 0; i < allTableRows.length; i++) {
+        for (int i = 0; i < allTableRows.length; i++) {
             TableRow tr = allTableRows[i];
             TextView tvA = (TextView) tr.findViewById(R.id.textViewA);
             if (tvA.getText().equals("")) {
                 rand = new Random();
 
                 //Avoid repeating if possible
-                if (! notUsedFirstCourses.isEmpty()) {
+                if (!notUsedFirstCourses.isEmpty()) {
                     int randomInt = rand.nextInt(notUsedFirstCourses.size());
                     course = notUsedFirstCourses.get(randomInt);
                 } else {
@@ -330,7 +353,7 @@ public class WeekFragment extends Fragment {
                 rand = new Random();
 
                 //Avoid repeating if possible
-                if (! notUsedFirstCourses.isEmpty()) {
+                if (!notUsedFirstCourses.isEmpty()) {
                     int randomInt = rand.nextInt(notUsedSecondCourses.size());
                     course = notUsedSecondCourses.get(randomInt);
                 } else {

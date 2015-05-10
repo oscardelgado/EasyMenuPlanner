@@ -52,10 +52,6 @@ import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.SECOND;
 
 /**
  * A fragment representing a list of Items.
- * <p/>
- * <p/>
- * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
- * interface.
  */
 public class CourseFragment extends ListFragment {
 
@@ -88,10 +84,10 @@ public class CourseFragment extends ListFragment {
         super.onViewCreated(view, savedInstanceState);
 
         int currentapiVersion = Build.VERSION.SDK_INT;
-        if (currentapiVersion >= Build.VERSION_CODES.HONEYCOMB){
+        if (currentapiVersion >= Build.VERSION_CODES.HONEYCOMB) {
             setMultichoiceModeListener(getListView());
-        } else{
-           addFloatingContextMenuListener(getListView());
+        } else {
+            addFloatingContextMenuListener(getListView());
         }
     }
 
@@ -195,7 +191,6 @@ public class CourseFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-
         editCourse(position);
     }
 
@@ -235,7 +230,7 @@ public class CourseFragment extends ListFragment {
                 .create();
         d.show();
         Button positiveButton = d.getButton(AlertDialog.BUTTON_POSITIVE);
-        positiveButton.setOnClickListener(new View.OnClickListener(){
+        positiveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 EditText nameET = ButterKnife.findById(d, R.id.name_edit_text);
@@ -280,7 +275,7 @@ public class CourseFragment extends ListFragment {
     // If the last item wasn't confirmed, we manually confirm it so it doesn't get lost
     private void addUnconfirmedIngredient(IngredientsCompletionView completionView) {
         String[] strings = completionView.getText().toString().split(",");
-        if (! strings[strings.length - 1].trim().equals("")) {
+        if (!strings[strings.length - 1].trim().equals("")) {
             completionView.append(",");
         }
     }
@@ -293,7 +288,7 @@ public class CourseFragment extends ListFragment {
         completionView.allowDuplicates(false);
         completionView.setThreshold(1);
         completionView.setAdapter(ingrAdapter);
-//        completionView.performBestGuess(false); //Turn off making a best guess when converting text into a token (allows free entry)
+//        completionView. performBestGuess(false); //Turn off making a best guess when converting text into a token (allows free entry) (Not available on version compatible with API<15)
 
         return completionView;
     }
@@ -359,7 +354,7 @@ public class CourseFragment extends ListFragment {
 
         @Override
         public void onClick(DialogInterface dialog, int which) {
-            switch (which){
+            switch (which) {
                 case DialogInterface.BUTTON_POSITIVE:
                     Log.d(LOG_TAG, "checkedItemPositions: " + checkedItemPositions);
 
@@ -367,7 +362,7 @@ public class CourseFragment extends ListFragment {
                         ActiveAndroid.beginTransaction();
 
                         // Inverse order to avoid possible IndexOutOfBoundsException after remove.
-                        for (int i = checkedItemPositions.size() - 1; i >= 0; i --) {
+                        for (int i = checkedItemPositions.size() - 1; i >= 0; i--) {
                             if (checkedItemPositions.valueAt(i)) {
                                 deleteCourse(checkedItemPositions.keyAt(i));
                             }
@@ -392,15 +387,15 @@ public class CourseFragment extends ListFragment {
         List<Day> daysWithCourseAsFirst = new Select().from(Day.class)
                 .where("firstCourse = ?", deletedCourse.getId())
                 .execute();
-        List<Day> daysWithCourseAsSecond= new Select().from(Day.class)
+        List<Day> daysWithCourseAsSecond = new Select().from(Day.class)
                 .where("secondCourse = ?", deletedCourse.getId())
                 .execute();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(context.getString(R.string.days_with_this_course_exist, deletedCourse.name))
-                .setPositiveButton(R.string.delete_it_anyway, new ConfirmDeleteCourseOnClickListener(daysWithCourseAsFirst, daysWithCourseAsSecond,  deletedCourse))
+                .setPositiveButton(R.string.delete_it_anyway, new ConfirmDeleteCourseOnClickListener(daysWithCourseAsFirst, daysWithCourseAsSecond, deletedCourse))
                 .setNegativeButton(android.R.string.cancel, null)
                 .setInverseBackgroundForced(true);
-        if ( ! (daysWithCourseAsFirst.isEmpty() && daysWithCourseAsSecond.isEmpty())) {
+        if (!(daysWithCourseAsFirst.isEmpty() && daysWithCourseAsSecond.isEmpty())) {
             builder.show();
         } else {
             deletedCourse.delete();

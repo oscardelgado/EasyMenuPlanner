@@ -40,4 +40,5 @@
     <string name="title_activity_courses_in_dialog">CoursesInDialogActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="select_course">Select course</string>
+    <string name="ingredients">Ingredients</string>
 </resources>

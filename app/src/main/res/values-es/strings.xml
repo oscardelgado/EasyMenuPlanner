@@ -35,4 +35,5 @@
     <string name="action_hide_completed">Ocultar completados</string>
     <string name="action_show_completed">Mostrar todos</string>
     <string name="select_course">Selecciona un plato</string>
+    <string name="ingredients">Ingredientes</string>
 </resources>

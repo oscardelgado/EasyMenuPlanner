@@ -13,7 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/ingredients_edit_text"
-        android:hint="Ingredientes"/>
+        android:hint="@string/ingredients"
+        android:textColor="@android:color/black"/>
 
     <RadioGroup
         android:layout_width="match_parent"
