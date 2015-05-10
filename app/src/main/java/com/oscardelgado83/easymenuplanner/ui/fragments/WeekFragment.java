@@ -137,9 +137,9 @@ public class WeekFragment extends Fragment {
             }
             findById(tr, R.id.buttonLeftA).setOnClickListener(courseBtnClickListener(tvA, i, 0));
             findById(tr, R.id.buttonRightA).setOnClickListener(courseBtnClickListener(tvA, i, 0));
+            findById(tr, R.id.buttonSearchA).setOnClickListener(courseBtnClickListener(tvA, i, 1));
             findById(tr, R.id.buttonLeftB).setOnClickListener(courseBtnClickListener(tvB, i, 1));
             findById(tr, R.id.buttonRightB).setOnClickListener(courseBtnClickListener(tvB, i, 1));
-            findById(tr, R.id.buttonSearchA).setOnClickListener(courseBtnClickListener(tvB, i, 1));
             findById(tr, R.id.buttonSearchB).setOnClickListener(courseBtnClickListener(tvB, i, 1));
             btnDelA.setOnClickListener(courseBtnClickListener(tvA, i, 0));
             btnDelB.setOnClickListener(courseBtnClickListener(tvB, i, 1));

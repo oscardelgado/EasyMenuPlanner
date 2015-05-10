@@ -35,7 +35,6 @@ public class IngredientsCompletionView extends TokenCompleteTextView {
 
     @Override
     protected Object defaultObject(String completionText) {
-        //Stupid simple example of guessing if we have an email or not
         Ingredient ingr = new Ingredient();
         ingr.name = completionText;
         return ingr;
