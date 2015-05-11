@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
+import com.squareup.leakcanary.LeakCanary;
 
 /**
  * Created by oscar on 12/04/15.
@@ -21,6 +22,7 @@ public class EMPApplication extends Application {
     public void onCreate() {
         super.onCreate();
         DEBUGGING = getResources().getBoolean(R.bool.debug_mode);
+        LeakCanary.install(this);
     }
 
     public synchronized Tracker getTracker() {
