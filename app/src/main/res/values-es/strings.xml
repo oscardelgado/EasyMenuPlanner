@@ -36,4 +36,7 @@
     <string name="action_show_completed">Mostrar todos</string>
     <string name="select_course">Selecciona un plato</string>
     <string name="ingredients">Ingredientes</string>
+    <string name="day_course_add">añadir...</string>
+    <string name="day_course_remove">Quitar</string>
+    <string name="day_course_change">Cambiar...</string>
 </resources>
