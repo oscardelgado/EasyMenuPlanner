@@ -112,6 +112,8 @@ public class WeekFragment extends Fragment {
                     .create().show();
         }
 
+        int currentDayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK); //Sunday is 1, Saturday is 7.
+
         allTableRows = new TableRow[]{tableRow1, tableRow2, tableRow3, tableRow4, tableRow5, tableRow6, tableRow7};
         for (int i = 0; i < allTableRows.length; i++) {
             TableRow tr = allTableRows[i];
@@ -123,7 +125,12 @@ public class WeekFragment extends Fragment {
 
             String[] dayNames = new DateFormatSymbols().getShortWeekdays();
             int firstDay = Calendar.getInstance().getFirstDayOfWeek();
-            weekDayName.setText(dayNames[((i + firstDay - 1) % (dayNames.length - 1) + 1)]);
+            int indexWithCurrentOrder = (i + firstDay - 1) % (dayNames.length - 1) + 1;
+            weekDayName.setText(dayNames[indexWithCurrentOrder]);
+            if (indexWithCurrentOrder == currentDayOfWeek) {
+                tr.setBackgroundColor(getResources().getColor(R.color.background));
+                weekDayName.setTextColor(getResources().getColor(android.R.color.white));
+            }
 
             if (week == null || week.isEmpty()) {
                 Log.w(LOG_TAG, "The week has not been initialized.");
