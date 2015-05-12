@@ -25,7 +25,7 @@
         android:layout_column="0"
         android:layout_marginBottom="4dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
+        android:layout_marginRight="4dp"
         android:layout_marginTop="4dp"
         android:layout_weight="1"
         card_view:cardCornerRadius="4dp">
@@ -84,7 +84,7 @@
         android:layout_height="match_parent"
         android:layout_column="1"
         android:layout_marginBottom="4dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="4dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="4dp"
         android:layout_weight="1"
