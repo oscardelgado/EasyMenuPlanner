@@ -318,8 +318,8 @@ public class MainActivity extends AppCompatActivity
         } else if (currentFrg instanceof ShoppingListFragment) {
             if (id == R.id.action_hide_completed) {
                 ((ShoppingListFragment) currentFrg).hideCompletedItems();
-            } else if (id == R.id.action_show_completed) {
-                ((ShoppingListFragment) currentFrg).showCompletedItems();
+            } else if (id == R.id.action_show_all) {
+                ((ShoppingListFragment) currentFrg).showAllItems();
             }
         }
 
@@ -375,5 +375,10 @@ public class MainActivity extends AppCompatActivity
 
     public List<Day> getWeek() {
         return week;
+    }
+
+    @DebugLog
+    public void refreshShoppinglistMenu() {
+        ((ShoppingListFragment) currentFrg).refreshMenu();
     }
 }

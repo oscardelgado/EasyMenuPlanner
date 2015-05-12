@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Ingredient;
+import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 
 import java.util.List;
 
@@ -25,8 +26,11 @@ public class ShoppingListAdapter extends ArrayAdapter<Ingredient> {
 
     private static final String LOG_TAG = ShoppingListAdapter.class.getSimpleName();
 
+    MainActivity context;
+
     public ShoppingListAdapter(Context context, List<Ingredient> ingredientList) {
         super(context, 0, ingredientList);
+        this.context = (MainActivity) context;
     }
 
     @Override
@@ -57,6 +61,7 @@ public class ShoppingListAdapter extends ArrayAdapter<Ingredient> {
                 ingredient.save();
                 Log.d(LOG_TAG, "Ingredient saved: " + ingredient);
                 holder.ingredientChecked.setChecked(ingredient.checked);
+                context.refreshShoppinglistMenu();
             }
         });
 

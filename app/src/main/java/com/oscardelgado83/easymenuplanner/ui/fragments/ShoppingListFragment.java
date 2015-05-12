@@ -3,6 +3,7 @@ package com.oscardelgado83.easymenuplanner.ui.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -15,20 +16,22 @@ import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 import com.oscardelgado83.easymenuplanner.ui.adapters.ShoppingListAdapter;
 import com.oscardelgado83.easymenuplanner.util.GA;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
 
 /**
-* Created by oscar on 23/03/15.
-*/
+ * Created by oscar on 23/03/15.
+ */
 public class ShoppingListFragment extends ListFragment {
 
-    private List<Ingredient> ingredientList;
+    private List<Ingredient> currentIngredientsList;
+    private List<Ingredient> allIngredientsList;
 
     private MenuItem hideCompleted;
-    private MenuItem showCompleted;
+    private MenuItem showAll;
 
     private static final String LOG_TAG = ShoppingListFragment.class.getSimpleName();
 
@@ -38,8 +41,10 @@ public class ShoppingListFragment extends ListFragment {
 
         setHasOptionsMenu(true);
 
-        ingredientList = getIngredients();
-        setListAdapter(new ShoppingListAdapter(getActivity(), ingredientList));
+        allIngredientsList = getIngredients();
+        currentIngredientsList = new ArrayList<>(allIngredientsList);
+
+        setListAdapter(new ShoppingListAdapter(getActivity(), currentIngredientsList));
     }
 
     @DebugLog
@@ -91,23 +96,51 @@ public class ShoppingListFragment extends ListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.shoppinglist_fragment, menu);
         hideCompleted = menu.findItem(R.id.action_hide_completed);
-        showCompleted = menu.findItem(R.id.action_show_completed);
+        showAll = menu.findItem(R.id.action_show_all);
+        refreshMenu();
     }
 
     public void hideCompletedItems() {
-        showCompleted.setVisible(true);
-        hideCompleted.setVisible(false);
-        ingredientList.clear();
-        ingredientList.addAll(getNotMarkedIngredients());
+        currentIngredientsList.clear();
+        currentIngredientsList.addAll(getNotMarkedIngredients());
         ((ShoppingListAdapter) getListAdapter()).notifyDataSetChanged();
+        refreshMenu();
     }
 
-    public void showCompletedItems() {
-        showCompleted.setVisible(false);
-        hideCompleted.setVisible(true);
-        ingredientList.clear();
-        ingredientList.addAll(getIngredients());
+    public void showAllItems() {
+        currentIngredientsList.clear();
+        currentIngredientsList.addAll(allIngredientsList);
         ((ShoppingListAdapter) getListAdapter()).notifyDataSetChanged();
+        refreshMenu();
+    }
+
+    public void refreshMenu() {
+        int visibleCheckedItems = countVisibleChecked();
+        int hiddenItems = allIngredientsList.size() - currentIngredientsList.size();
+
+        Log.d(LOG_TAG, "checkedItems: " + visibleCheckedItems);
+        Log.d(LOG_TAG, "hiddenItems:" + hiddenItems);
+
+        hideCompleted.setVisible(visibleCheckedItems > 0);
+        showAll.setVisible(hiddenItems > 0);
+    }
+
+    @DebugLog
+    private int countVisibleChecked() {
+        List<Ingredient> allUncheckedItems = new Select().from(Ingredient.class)
+                .where("Id IN (SELECT CI.ingredient FROM CourseIngredients CI, Days D " +
+                        "WHERE CI.course = D.firstCourse OR CI.course = D.secondCourse) " +
+                        "AND checked = 0")
+                .execute();
+
+        // All visible items.
+        List<Ingredient> visibleCheckedItems = new ArrayList<>(currentIngredientsList);
+
+        // Remove unchecked -> now we have checked visible items.
+        visibleCheckedItems.removeAll(allUncheckedItems);
+
+        return visibleCheckedItems.size();
     }
 }
