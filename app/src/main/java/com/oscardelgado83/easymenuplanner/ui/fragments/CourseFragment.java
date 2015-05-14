@@ -83,8 +83,7 @@ public class CourseFragment extends ListFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        int currentapiVersion = Build.VERSION.SDK_INT;
-        if (currentapiVersion >= Build.VERSION_CODES.HONEYCOMB) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             setMultichoiceModeListener(getListView());
         } else {
             addFloatingContextMenuListener(getListView());
@@ -198,6 +197,11 @@ public class CourseFragment extends ListFragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.reset(this);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            getListView().setMultiChoiceModeListener(null);
+        } else {
+            getListView().setOnCreateContextMenuListener(null);
+        }
     }
 
     @Override

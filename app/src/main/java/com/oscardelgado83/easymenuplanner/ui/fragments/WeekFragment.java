@@ -285,6 +285,18 @@ public class WeekFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
+        allTableRows = new TableRow[]{tableRow1, tableRow2, tableRow3, tableRow4, tableRow5, tableRow6, tableRow7};
+        for (int i = 0; i < allTableRows.length; i++) {
+            TableRow tr = allTableRows[i];
+            TextView tvA = findById(tr, R.id.textViewA);
+            TextView tvB = findById(tr, R.id.textViewB);
+            findById(tr, R.id.buttonLeftA).setOnClickListener(null);
+            findById(tr, R.id.buttonRightA).setOnClickListener(null);
+            tvA.setOnClickListener(null);
+            findById(tr, R.id.buttonLeftB).setOnClickListener(null);
+            findById(tr, R.id.buttonRightB).setOnClickListener(null);
+            tvB.setOnClickListener(null);
+        }
         reset(this);
     }
 

@@ -134,6 +134,12 @@ public class NavigationDrawerFragment extends Fragment {
         return mDrawerListView;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mDrawerListView.setOnItemClickListener(null);
+    }
+
     public boolean isDrawerOpen() {
         return mDrawerLayout != null && mDrawerLayout.isDrawerOpen(mFragmentContainerView);
     }
