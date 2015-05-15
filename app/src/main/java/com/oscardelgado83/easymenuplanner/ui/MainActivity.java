@@ -60,8 +60,9 @@ public class MainActivity extends AppCompatActivity
     @InjectView(R.id.adView)
     AdView adView;
 
-    public static final int WEEKDAYS = 7;
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
+
+    public static final int WEEKDAYS = 7;
     public static final String PREFERENCE_DB_STARTED = "dbStarted";
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.

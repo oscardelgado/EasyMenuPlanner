@@ -55,9 +55,11 @@ import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.SECOND;
  */
 public class CourseFragment extends ListFragment {
 
+    // Instead of class.getSimpleName() to avoid proGuard changing it.
+    public static final String FRAGMENT_NAME = "CourseFragment";
     private List<Course> courseList;
 
-    private static final String LOG_TAG = CourseFragment.class.getSimpleName();
+    private static final String LOG_TAG = FRAGMENT_NAME;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -210,7 +212,7 @@ public class CourseFragment extends ListFragment {
 
         GA.sendScreenHit(
                 ((EMPApplication) getActivity().getApplication()).getTracker(),
-                "CourseFragment");
+                FRAGMENT_NAME);
     }
 
     public void addCourseClicked() {
@@ -253,7 +255,7 @@ public class CourseFragment extends ListFragment {
         });
         GA.sendEvent(
                 ((EMPApplication) getActivity().getApplication()).getTracker(),
-                getClass().getSimpleName(),
+                FRAGMENT_NAME,
                 "open dialog",
                 "add course");
     }
@@ -343,7 +345,7 @@ public class CourseFragment extends ListFragment {
                 .show();
         GA.sendEvent(
                 ((EMPApplication) getActivity().getApplication()).getTracker(),
-                getClass().getSimpleName(),
+                FRAGMENT_NAME,
                 "open dialog",
                 "delete course");
     }
@@ -495,7 +497,7 @@ public class CourseFragment extends ListFragment {
         });
         GA.sendEvent(
                 ((EMPApplication) getActivity().getApplication()).getTracker(),
-                getClass().getSimpleName(),
+                FRAGMENT_NAME,
                 "open dialog",
                 "edit course");
     }
@@ -529,7 +531,7 @@ public class CourseFragment extends ListFragment {
 
         GA.sendEvent(
                 ((EMPApplication) getActivity().getApplication()).getTracker(),
-                getClass().getSimpleName(),
+                "CourseFragmentS",
                 "action tapped",
                 "reload default courses");
     }
