@@ -36,18 +36,14 @@
             android:layout_column="1"
             >
 
-            <TextView
+            <include
                 android:id="@+id/textViewA"
+                layout="@layout/week_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:gravity="center_vertical"
-                android:hint="@string/day_course_add"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:textColor="@color/primary_dark"
-                android:textColorHint="#888888"/>
+                android:gravity="center_vertical"/>
 
             <Button
                 android:id="@+id/buttonRightA"
@@ -97,18 +93,14 @@
             android:layout_column="1"
             >
 
-            <TextView
+            <include
                 android:id="@+id/textViewB"
+                layout="@layout/week_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:gravity="center_vertical"
-                android:hint="@string/day_course_add"
-                android:paddingLeft="30dp"
-                android:paddingRight="30dp"
-                android:textColor="@color/primary_dark"
-                android:textColorHint="#888888"/>
+                android:gravity="center_vertical"/>
 
             <Button
                 android:id="@+id/buttonRightB"
