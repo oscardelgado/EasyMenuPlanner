@@ -531,7 +531,7 @@ public class CourseFragment extends ListFragment {
 
         GA.sendEvent(
                 ((EMPApplication) getActivity().getApplication()).getTracker(),
-                "CourseFragmentS",
+                FRAGMENT_NAME,
                 "action tapped",
                 "reload default courses");
     }
