@@ -85,8 +85,11 @@ public class CourseFragment extends ListFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        getListView().setFastScrollEnabled(true);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             setMultichoiceModeListener(getListView());
+            getListView().setFastScrollAlwaysVisible(true);
         } else {
             addFloatingContextMenuListener(getListView());
         }

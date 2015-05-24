@@ -3,6 +3,7 @@ package com.oscardelgado83.easymenuplanner.ui.fragments;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -274,6 +275,11 @@ public class WeekFragment extends Fragment {
         });
         AlertDialog alert = builder.create();
         alert.show();
+
+        alert.getListView().setFastScrollEnabled(true);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            alert.getListView().setFastScrollAlwaysVisible(true);
+        }
     }
 
     @Override
