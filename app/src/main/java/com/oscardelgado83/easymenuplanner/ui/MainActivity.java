@@ -132,36 +132,45 @@ public class MainActivity extends AppCompatActivity
 
             splitter.setString(loadInitialCoursesFromFile());
             for (String line : splitter) {
-                Course course = new Course();
                 StringTokenizer tknzr = new StringTokenizer(line, ",");
-                course.name = tknzr.nextToken().trim();
+                String courseName = tknzr.nextToken().trim();
                 Course existingCourse = new Select().from(Course.class).where("UPPER(name) = ?",
-                        course.name.toUpperCase()).executeSingle();
-                if (existingCourse != null) existingCourse.delete();
-                switch (Integer.parseInt(tknzr.nextToken().trim())) {
-                    case 1:
-                        course.courseType = FIRST;
-                        break;
-                    case 2:
-                        course.courseType = SECOND;
-                        break;
-                    default:
-                        course.courseType = NONE;
-                        break;
-                }
-                course.save();
+                        courseName.toUpperCase()).executeSingle();
+                if (existingCourse != null) {
+                    // The initial idea was delete and re-create, but there is a
+                    // bug in SQLite regarding Foreign Keys
+                    // https://github.com/pardom/ActiveAndroid/issues/127
+                    // So, simply ignore and maintain existing course.
 
-                while (tknzr.hasMoreElements()) {
-                    String ingredientName = tknzr.nextToken().trim();
-                    Ingredient ingr = new Select().from(Ingredient.class)
-                            .where("UPPER(name) = ?", ingredientName.toUpperCase()).executeSingle();
-                    if (ingr == null) {
-                        ingr = new Ingredient();
-                        ingr.name = ingredientName;
-                        ingr.save();
+//                    existingCourse.delete();
+                } else {
+                    Course course = new Course();
+                    course.name = courseName;
+                    switch (Integer.parseInt(tknzr.nextToken().trim())) {
+                        case 1:
+                            course.courseType = FIRST;
+                            break;
+                        case 2:
+                            course.courseType = SECOND;
+                            break;
+                        default:
+                            course.courseType = NONE;
+                            break;
                     }
-                    CourseIngredient ci = new CourseIngredient(course, ingr);
-                    ci.save();
+                    course.save();
+
+                    while (tknzr.hasMoreElements()) {
+                        String ingredientName = tknzr.nextToken().trim();
+                        Ingredient ingr = new Select().from(Ingredient.class)
+                                .where("UPPER(name) = ?", ingredientName.toUpperCase()).executeSingle();
+                        if (ingr == null) {
+                            ingr = new Ingredient();
+                            ingr.name = ingredientName;
+                            ingr.save();
+                        }
+                        CourseIngredient ci = new CourseIngredient(course, ingr);
+                        ci.save();
+                    }
                 }
             }
 

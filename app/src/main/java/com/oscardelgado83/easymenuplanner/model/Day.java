@@ -17,10 +17,10 @@ public class Day extends Model {
     @Column (index = true)
     public Date date;
 
-    @Column
+    @Column(onDelete = Column.ForeignKeyAction.SET_NULL)
     public Course firstCourse;
 
-    @Column
+    @Column(onDelete = Column.ForeignKeyAction.SET_NULL)
     public Course secondCourse;
 
     public static List<Day> findAll() {
