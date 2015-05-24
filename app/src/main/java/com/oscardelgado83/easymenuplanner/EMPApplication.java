@@ -12,7 +12,7 @@ import com.squareup.leakcanary.LeakCanary;
  */
 public class EMPApplication extends Application {
 
-    public static boolean DEBUGGING;
+    public boolean DEBUGGING;
 
     private Tracker tracker;
 

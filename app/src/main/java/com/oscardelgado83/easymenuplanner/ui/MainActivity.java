@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -22,6 +23,7 @@ import com.activeandroid.query.Select;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.oscardelgado83.easymenuplanner.EMPApplication;
 import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Course;
 import com.oscardelgado83.easymenuplanner.model.CourseIngredient;
@@ -34,9 +36,13 @@ import com.oscardelgado83.easymenuplanner.ui.fragments.ShoppingListFragment;
 import com.oscardelgado83.easymenuplanner.ui.fragments.WeekFragment;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.nio.channels.FileChannel;
 import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -76,6 +82,7 @@ public class MainActivity extends AppCompatActivity
     private Fragment currentFrg;
 
     private List<Day> week;
+    private int exportDBMenuId;
 
     @Override
     @DebugLog
@@ -285,6 +292,12 @@ public class MainActivity extends AppCompatActivity
             } else {
                 getMenuInflater().inflate(R.menu.global, menu);
             }
+
+            exportDBMenuId = menu.size() + 1;
+            if (((EMPApplication) getApplication()).DEBUGGING) {
+                menu.add(0, exportDBMenuId, Menu.NONE, "Export DB");
+            }
+
             restoreActionBar();
             return true;
         }
@@ -299,7 +312,9 @@ public class MainActivity extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if (currentFrg instanceof WeekFragment) {
+        if (id == exportDBMenuId) {
+            exportDB();
+        } else if (currentFrg instanceof WeekFragment) {
             if (id == R.id.action_clear_all) {
                 ((WeekFragment)currentFrg).clearAllCourses();
                 return true;
@@ -381,5 +396,27 @@ public class MainActivity extends AppCompatActivity
     @DebugLog
     public void refreshShoppinglistMenu() {
         ((ShoppingListFragment) currentFrg).refreshMenu();
+    }
+
+    @DebugLog
+    private void exportDB(){
+        String DB_NAME = "EasyMenuPlanner.db";
+        String currentDBPath = "/data/com.oscardelgado83.easymenuplanner/databases/" + DB_NAME;
+        File sd = Environment.getExternalStorageDirectory();
+        File data = Environment.getDataDirectory();
+        String backupDBPath = DB_NAME;
+        File currentDB = new File(data, currentDBPath);
+        File backupDB = new File(sd, backupDBPath);
+        try {
+            FileChannel source = new FileInputStream(currentDB).getChannel();
+            FileChannel destination = new FileOutputStream(backupDB).getChannel();
+            destination.transferFrom(source, 0, source.size());
+            source.close();
+            destination.close();
+            Toast.makeText(this, "DB Exported!", Toast.LENGTH_LONG).show();
+            Log.i(LOG_TAG, "DB Exported to: " + backupDB.getAbsolutePath());
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 }

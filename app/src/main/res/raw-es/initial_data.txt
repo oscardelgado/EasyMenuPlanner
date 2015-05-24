@@ -7,7 +7,7 @@ Ensalada, 1, Lechuga, Tomates, Aceite, Vinagre
 Espinacas, 1, Espinacas
 Alubias verdes, 1, Alubias verdes
 Macarrones, 1, Macarrones, Tomate frito
-Arroz, 1, Arroz,Tomate frito
+Arroz, 1, Arroz, Tomate frito
 Puré, 1, Patatas
 Calamares, 2, Calamares
 Pizza, 3, Pizza
@@ -16,7 +16,7 @@ Gazpacho (natural), 1, Tomates, Pepino, Pimiento, Cebolla, Ajo
 Gazpacho (precocinado), 1, Gazpacho (precocinado)
 Patatas, 1, Patatas
 Lentejas, 1, Lentejas
-Pimientos rellenos, 3, Pimientos
+Pimientos rellenos, 3, Pimientos rellenos
 Pechugas de pollo, 2, Pechugas de pollo
 Trucha, 2, Trucha
 Hamburguesa, 2, Hamburguesa
