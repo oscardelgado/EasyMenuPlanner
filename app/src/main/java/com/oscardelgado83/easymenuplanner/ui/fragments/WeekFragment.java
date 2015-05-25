@@ -228,23 +228,23 @@ public class WeekFragment extends Fragment {
     }
 
     private void showDeleteOrSearchDialog(final TextView tv, final int row, final int col) {
-        String[] items = {getString(R.string.day_course_remove), getString(R.string.day_course_change)};
+        String[] items = {getString(R.string.day_course_change), getString(R.string.day_course_remove), };
         new AlertDialog.Builder(getActivity()).setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case 0:
+                        showCoursesDialog(tv, row, col);
+                        break;
+                    case 1:
                         List<Day> week = ((MainActivity) getActivity()).getWeek();
                         Day selectedDay = week.get(row);
                         if (col == 0) {
-                            selectedDay.firstCourse = null;
-                        } else if (col == 1) {
-                            selectedDay.secondCourse = null;
-                        }
+                                selectedDay.firstCourse = null;
+                            } else if (col == 1) {
+                                selectedDay.secondCourse = null;
+                            }
                         tv.setText("");
                         dirty = true;
-                        break;
-                    case 1:
-                        showCoursesDialog(tv, row, col);
                         break;
                     default:
                         break;
@@ -254,14 +254,20 @@ public class WeekFragment extends Fragment {
     }
 
     private void showCoursesDialog(final TextView tv, final int row, final int col) {
-        final List<Course> allCourses = new Select().from(Course.class).orderBy("UPPER(name) ASC").execute();
+        List<Course> allCourses = null;
+        if (col == 0) {
+            allCourses = allFirstCourses;
+        } else if (col == 1) {
+            allCourses = allSecondCourses;
+        }
+        final List<Course> finalAllCourses = allCourses;
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(R.string.select_course);
         ArrayAdapter<Course> adapter = new CourseAdapter(getActivity(), allCourses);
         builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Course selectedCourse = allCourses.get(which);
+                Course selectedCourse = finalAllCourses.get(which);
                 List<Day> week = ((MainActivity) getActivity()).getWeek();
                 Day selectedDay = week.get(row);
                 if (col == 0) {
@@ -284,7 +290,7 @@ public class WeekFragment extends Fragment {
 
     @Override
     public void onAttach(Activity activity) {
-        super.onAttach(activity);
+            super.onAttach(activity);
         ((MainActivity) activity).onSectionAttached(this);
     }
 
@@ -309,7 +315,7 @@ public class WeekFragment extends Fragment {
     @DebugLog
     @Override
     public void onPause() {
-        super.onPause();
+            super.onPause();
 
         if (dirty) {
             persist();
