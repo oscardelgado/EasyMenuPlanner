@@ -145,10 +145,10 @@ public class WeekFragment extends Fragment {
             }
             findById(tr, R.id.buttonLeftA).setOnClickListener(courseBtnClickListener(tvA, i, 0));
             findById(tr, R.id.buttonRightA).setOnClickListener(courseBtnClickListener(tvA, i, 0));
-            tvA.setOnClickListener(courseBtnClickListener(tvA, i, 0));
+            findById(tr, R.id.card_view_left).setOnClickListener(courseBtnClickListener(tvA, i, 0));
             findById(tr, R.id.buttonLeftB).setOnClickListener(courseBtnClickListener(tvB, i, 1));
             findById(tr, R.id.buttonRightB).setOnClickListener(courseBtnClickListener(tvB, i, 1));
-            tvB.setOnClickListener(courseBtnClickListener(tvB, i, 1));
+            findById(tr, R.id.card_view_right).setOnClickListener(courseBtnClickListener(tvB, i, 1));
         }
         return view;
     }
@@ -205,8 +205,8 @@ public class WeekFragment extends Fragment {
                             }
                         } while (newCourse == currentCourse);
                         break;
-                    case R.id.textViewA:
-                    case R.id.textViewB:
+                    case R.id.card_view_left:
+                    case R.id.card_view_right:
                         if (tv.getText().equals("")) {
                             showCoursesDialog(tv, row, col);
                         } else {
@@ -300,14 +300,12 @@ public class WeekFragment extends Fragment {
         allTableRows = new TableRow[]{tableRow1, tableRow2, tableRow3, tableRow4, tableRow5, tableRow6, tableRow7};
         for (int i = 0; i < allTableRows.length; i++) {
             TableRow tr = allTableRows[i];
-            TextView tvA = findById(tr, R.id.textViewA);
-            TextView tvB = findById(tr, R.id.textViewB);
             findById(tr, R.id.buttonLeftA).setOnClickListener(null);
             findById(tr, R.id.buttonRightA).setOnClickListener(null);
-            tvA.setOnClickListener(null);
+            findById(tr, R.id.card_view_left).setOnClickListener(null);
             findById(tr, R.id.buttonLeftB).setOnClickListener(null);
             findById(tr, R.id.buttonRightB).setOnClickListener(null);
-            tvB.setOnClickListener(null);
+            findById(tr, R.id.card_view_right).setOnClickListener(null);
         }
         reset(this);
     }
