@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:paddingLeft="8dp"
+          android:paddingStart="8dp"
+          tools:showIn="@layout/fragment_week">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:text="   "
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/accent"
+        android:textSize="@dimen/abc_text_size_medium_material"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="@string/first_course"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/accent"
+        android:textSize="@dimen/abc_text_size_medium_material"
+        android:layout_column="0"
+        android:layout_weight="1"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="4dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="@string/second_course"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/accent"
+        android:textSize="@dimen/abc_text_size_medium_material"
+        android:layout_column="1"
+        android:layout_weight="1"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="4dp"/>
+</TableRow>
