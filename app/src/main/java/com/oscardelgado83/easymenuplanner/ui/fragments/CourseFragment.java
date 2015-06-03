@@ -49,6 +49,7 @@ import hugo.weaving.DebugLog;
 import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.FIRST;
 import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.NONE;
 import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.SECOND;
+import static com.oscardelgado83.easymenuplanner.util.Cons.DEBUGGING;
 
 /**
  * A fragment representing a list of Items.
@@ -365,7 +366,7 @@ public class CourseFragment extends ListFragment {
         public void onClick(DialogInterface dialog, int which) {
             switch (which) {
                 case DialogInterface.BUTTON_POSITIVE:
-                    Log.d(LOG_TAG, "checkedItemPositions: " + checkedItemPositions);
+                    if (DEBUGGING) Log.d(LOG_TAG, "checkedItemPositions: " + checkedItemPositions);
 
                     try {
                         ActiveAndroid.beginTransaction();
@@ -392,7 +393,7 @@ public class CourseFragment extends ListFragment {
         CourseAdapter listAdapter = (CourseAdapter) getListAdapter();
         Context context = listAdapter.getContext();
         Course deletedCourse = listAdapter.getItem(position);
-        Log.d(LOG_TAG, "deletedCourse: " + deletedCourse);
+        if (DEBUGGING) Log.d(LOG_TAG, "deletedCourse: " + deletedCourse);
         List<Day> daysWithCourseAsFirst = new Select().from(Day.class)
                 .where("firstCourse = ?", deletedCourse.getId())
                 .execute();
@@ -427,12 +428,12 @@ public class CourseFragment extends ListFragment {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             for (Day day : daysWithCourseAsFirst) {
-                Log.i(LOG_TAG, "Removing first course assigned to day: " + day);
+                if (DEBUGGING) Log.i(LOG_TAG, "Removing first course assigned to day: " + day);
                 day.firstCourse = null;
                 day.save();
             }
             for (Day day : daysWithCourseAsSecond) {
-                Log.i(LOG_TAG, "Removing second course assigned to day: " + day);
+                if (DEBUGGING) Log.i(LOG_TAG, "Removing second course assigned to day: " + day);
                 day.secondCourse = null;
                 day.save();
             }

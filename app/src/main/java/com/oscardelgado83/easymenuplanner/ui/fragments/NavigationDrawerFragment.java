@@ -22,8 +22,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.oscardelgado83.easymenuplanner.EMPApplication;
 import com.oscardelgado83.easymenuplanner.R;
+
+import static com.oscardelgado83.easymenuplanner.util.Cons.DEBUGGING;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -127,7 +128,7 @@ public class NavigationDrawerFragment extends Fragment {
                 }));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 
-        if (((EMPApplication) getActivity().getApplication()).DEBUGGING ) {
+        if (DEBUGGING) {
             Toast.makeText(getActivity(), "Debug mode is ON", Toast.LENGTH_LONG).show();
         }
 

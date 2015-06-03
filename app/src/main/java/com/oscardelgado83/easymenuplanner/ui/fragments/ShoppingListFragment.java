@@ -22,6 +22,8 @@ import java.util.List;
 import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
 
+import static com.oscardelgado83.easymenuplanner.util.Cons.DEBUGGING;
+
 /**
  * Created by oscar on 23/03/15.
  */
@@ -120,8 +122,8 @@ public class ShoppingListFragment extends ListFragment {
         int visibleCheckedItems = countVisibleChecked();
         int hiddenItems = allIngredientsList.size() - currentIngredientsList.size();
 
-        Log.d(LOG_TAG, "checkedItems: " + visibleCheckedItems);
-        Log.d(LOG_TAG, "hiddenItems:" + hiddenItems);
+        if (DEBUGGING) Log.d(LOG_TAG, "checkedItems: " + visibleCheckedItems);
+        if (DEBUGGING) Log.d(LOG_TAG, "hiddenItems:" + hiddenItems);
 
         hideCompleted.setVisible(visibleCheckedItems > 0);
         showAll.setVisible(hiddenItems > 0);

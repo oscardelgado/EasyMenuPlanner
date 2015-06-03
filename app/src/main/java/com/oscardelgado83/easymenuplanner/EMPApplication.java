@@ -7,14 +7,15 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.squareup.leakcanary.LeakCanary;
 
+import static com.oscardelgado83.easymenuplanner.util.Cons.DEBUGGING;
+
 /**
  * Created by oscar on 12/04/15.
  */
 public class EMPApplication extends Application {
 
-    public boolean DEBUGGING;
-
-    private Tracker tracker;
+    public static GoogleAnalytics analytics;
+    public static Tracker tracker;
 
     private static final String LOG_TAG = EMPApplication.class.getSimpleName();
 
@@ -27,13 +28,17 @@ public class EMPApplication extends Application {
 
     public synchronized Tracker getTracker() {
         if (tracker == null) {
-            GoogleAnalytics analytics = GoogleAnalytics.getInstance(this);
-            analytics.setDryRun(DEBUGGING);
-            Log.d(LOG_TAG, "GA DryRun has benn set to: " + DEBUGGING);
-            tracker = analytics.newTracker(getString(R.string.ga_property_id));
+            analytics = GoogleAnalytics.getInstance(this);
 
-            // Enable Display Features.
+            analytics.setDryRun(DEBUGGING);
+            if (DEBUGGING) Log.d(LOG_TAG, "GA DryRun enabled");
+
+            analytics.setLocalDispatchPeriod(1800);
+
+            tracker = analytics.newTracker(getString(R.string.ga_property_id));
+            tracker.enableExceptionReporting(true);
             tracker.enableAdvertisingIdCollection(true);
+            tracker.enableAutoActivityTracking(true);
         }
         return tracker;
     }

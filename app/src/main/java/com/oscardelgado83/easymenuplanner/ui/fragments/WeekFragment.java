@@ -41,6 +41,7 @@ import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.FIRST;
 import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.NONE;
 import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.SECOND;
 import static com.oscardelgado83.easymenuplanner.ui.fragments.NavigationDrawerFragment.Section.COURSES;
+import static com.oscardelgado83.easymenuplanner.util.Cons.DEBUGGING;
 
 /**
  * Created by oscar on 23/03/15.
@@ -134,7 +135,7 @@ public class WeekFragment extends Fragment {
             }
 
             if (week == null || week.isEmpty()) {
-                Log.w(LOG_TAG, "The week has not been initialized.");
+                if (DEBUGGING) Log.w(LOG_TAG, "The week has not been initialized.");
             } else {
                 if (week.get(i).firstCourse != null) {
                     tvA.setText(week.get(i).firstCourse.name);

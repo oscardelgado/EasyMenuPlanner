@@ -19,6 +19,8 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import hugo.weaving.DebugLog;
 
+import static com.oscardelgado83.easymenuplanner.util.Cons.DEBUGGING;
+
 /**
  * Created by oscar on 15/04/15.
  */
@@ -59,7 +61,7 @@ public class ShoppingListAdapter extends ArrayAdapter<Ingredient> {
             public void onClick(View v) {
                 ingredient.checked = ! ingredient.checked;
                 ingredient.save();
-                Log.d(LOG_TAG, "Ingredient saved: " + ingredient);
+                if (DEBUGGING) Log.d(LOG_TAG, "Ingredient saved: " + ingredient);
                 holder.ingredientChecked.setChecked(ingredient.checked);
                 context.refreshShoppinglistMenu();
             }

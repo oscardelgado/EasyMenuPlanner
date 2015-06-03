@@ -23,7 +23,6 @@ import com.activeandroid.query.Select;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.oscardelgado83.easymenuplanner.EMPApplication;
 import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Course;
 import com.oscardelgado83.easymenuplanner.model.CourseIngredient;
@@ -58,6 +57,7 @@ import static com.google.android.gms.common.ConnectionResult.SUCCESS;
 import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.FIRST;
 import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.NONE;
 import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.SECOND;
+import static com.oscardelgado83.easymenuplanner.util.Cons.DEBUGGING;
 
 
 public class MainActivity extends AppCompatActivity
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         week = Day.findAll();
-        Log.d(LOG_TAG, "week: " + week);
+        if (DEBUGGING) Log.d(LOG_TAG, "week: " + week);
     }
 
     @DebugLog
@@ -303,7 +303,7 @@ public class MainActivity extends AppCompatActivity
             }
 
             exportDBMenuId = menu.size() + 1;
-            if (((EMPApplication) getApplication()).DEBUGGING) {
+            if (DEBUGGING) {
                 menu.add(0, exportDBMenuId, Menu.NONE, "Export DB");
             }
 
@@ -423,7 +423,7 @@ public class MainActivity extends AppCompatActivity
             source.close();
             destination.close();
             Toast.makeText(this, "DB Exported!", Toast.LENGTH_LONG).show();
-            Log.i(LOG_TAG, "DB Exported to: " + backupDB.getAbsolutePath());
+            if (DEBUGGING) Log.i(LOG_TAG, "DB Exported to: " + backupDB.getAbsolutePath());
         } catch(IOException e) {
             e.printStackTrace();
         }
