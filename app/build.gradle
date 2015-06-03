@@ -9,11 +9,12 @@ android {
         applicationId "com.oscardelgado83.easymenuplanner"
         minSdkVersion 10
         targetSdkVersion 22
-        versionCode 14
-        versionName "1.1"
+        versionCode 17
+        versionName "1.2.1"
         resValue "string", "admob_unit_id", admob_unit_id
         resValue "string", "ga_property_id", ga_property_id
         resValue "string", "nexus_7_device_id", nexus_7_device_id
+        resValue "string", "genymotion_2_3_7_device_id", genymotion_2_3_7_device_id
         resValue "string", "ad_buddiz_publisher_key", ad_buddiz_publisher_key
     }
     buildTypes {
