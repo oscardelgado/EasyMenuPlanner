@@ -9,7 +9,7 @@ android {
         applicationId "com.oscardelgado83.easymenuplanner"
         minSdkVersion 10
         targetSdkVersion 22
-        versionCode 17
+        versionCode 18
         versionName "1.2.1"
         resValue "string", "admob_unit_id", admob_unit_id
         resValue "string", "ga_property_id", ga_property_id
