@@ -247,11 +247,15 @@ public class CourseFragment extends ListFragment {
 
                 if (nameET.getText().toString().trim().length() == 0) {
                     Toast.makeText(getActivity(), getString(R.string.empty_name_not_allowed), Toast.LENGTH_LONG).show();
+                } else if (new Select().from(Course.class).where("upper(name) = ?", nameET.getText().toString().trim().toUpperCase()).exists()) {
+                    Toast.makeText(getActivity(), getString(R.string.course_already_exists), Toast.LENGTH_LONG).show();
                 } else {
                     IngredientsCompletionView completionView = ButterKnife.findById(d, R.id.ingredients_edit_text);
                     addUnconfirmedIngredient(completionView);
 
-                    createCourse(nameET.getText().toString(), completionView.getObjects(), getCourseType(d));
+                    String courseName = nameET.getText().toString().trim();
+                    courseName = courseName.substring(0,1).toUpperCase() + courseName.substring(1);
+                    createCourse(courseName, completionView.getObjects(), getCourseType(d));
 
                     d.dismiss();
                 }
