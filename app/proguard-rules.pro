@@ -51,7 +51,7 @@
     @com.activeandroid.annotation.Column *;
 }
 
-# Remove logs
+# Strip calls to any of the Log methods
 -assumenosideeffects class android.util.Log {
     public static boolean isLoggable(java.lang.String, int);
     public static int v(...);
