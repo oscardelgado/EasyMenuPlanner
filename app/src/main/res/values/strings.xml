@@ -39,7 +39,8 @@
     <string name="action_show_completed">Show all items</string>
     <string name="select_course">Select course</string>
     <string name="ingredients">Ingredients</string>
-    <string name="day_course_add">add...</string>
-    <string name="day_course_change">Change...</string>
+    <string name="day_course_add">add…</string>
+    <string name="day_course_change">Change…</string>
     <string name="day_course_remove">Remove</string>
+    <string name="course_already_exists">This course already exists</string>
 </resources>
