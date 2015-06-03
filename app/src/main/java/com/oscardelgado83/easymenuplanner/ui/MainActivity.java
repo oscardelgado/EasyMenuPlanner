@@ -405,8 +405,9 @@ public class MainActivity extends AppCompatActivity
     @DebugLog
     private void loadAdMob() {
         adView.loadAd(new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)       // Emulator
-                .addTestDevice(getString(R.string.nexus_7_device_id)) // Nexus 7
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .addTestDevice(getString(R.string.nexus_7_device_id))
+                .addTestDevice(getString(R.string.genymotion_2_3_7_device_id))
                 .build());
     }
 
