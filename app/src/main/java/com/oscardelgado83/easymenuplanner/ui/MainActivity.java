@@ -33,6 +33,8 @@ import com.oscardelgado83.easymenuplanner.ui.fragments.NavigationDrawerFragment;
 import com.oscardelgado83.easymenuplanner.ui.fragments.NavigationDrawerFragment.Section;
 import com.oscardelgado83.easymenuplanner.ui.fragments.ShoppingListFragment;
 import com.oscardelgado83.easymenuplanner.ui.fragments.WeekFragment;
+import com.oscardelgado83.easymenuplanner.util.Cons;
+import com.purplebrain.adbuddiz.sdk.AdBuddiz;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -67,9 +69,10 @@ public class MainActivity extends AppCompatActivity
     AdView adView;
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
-
     public static final int WEEKDAYS = 7;
     public static final String PREFERENCE_DB_STARTED = "dbStarted";
+    public static final String PREFERENCE_LAUCH_COUNT = "launchCount";
+
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -84,10 +87,21 @@ public class MainActivity extends AppCompatActivity
     private List<Day> week;
     private int exportDBMenuId;
 
+    private FragmentManager fragmentManager;
+
     @Override
     @DebugLog
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // AdBuddiz: request to cache adds
+        AdBuddiz.setPublisherKey(getResources().getString(R.string.ad_buddiz_publisher_key));
+        if (Cons.DEBUGGING) AdBuddiz.setTestModeActive();
+        AdBuddiz.cacheAds(this); // this = current Activity
+
+        // Restore preferences
+        SharedPreferences settings = getPreferences(MODE_PRIVATE);
+        boolean dbStarted = settings.getBoolean(PREFERENCE_DB_STARTED, false);
 
         if (isTabletDevice()) {
             setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -96,9 +110,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         setContentView(R.layout.activity_main);
-
         inject(this);
-
         loadAdMob();
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -112,16 +124,15 @@ public class MainActivity extends AppCompatActivity
 
         ActiveAndroid.initialize(this);
 
-        // Restore preferences
-        SharedPreferences settings = getPreferences(MODE_PRIVATE);
-        boolean dbStarted = settings.getBoolean(PREFERENCE_DB_STARTED, false);
-
         if (!dbStarted) {
             prePopulateDB();
         }
 
         week = Day.findAll();
         if (DEBUGGING) Log.d(LOG_TAG, "week: " + week);
+
+        int launchCount = settings.getInt(PREFERENCE_LAUCH_COUNT, 0);
+        settings.edit().putInt(PREFERENCE_LAUCH_COUNT, ++launchCount).apply();
     }
 
     @DebugLog
@@ -188,7 +199,7 @@ public class MainActivity extends AppCompatActivity
             SharedPreferences.Editor editor = settings.edit();
             editor.putBoolean(PREFERENCE_DB_STARTED, true);
 
-            editor.commit();
+            editor.apply();
         } finally {
             ActiveAndroid.endTransaction();
         }
@@ -227,19 +238,20 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onNavigationDrawerItemSelected(int position) {
+
         // update the main content by replacing fragments
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
 
         currentFrg = null;
 
-        switch (position) {
-            case 0:
+        switch (Section.values()[position]) {
+            case WEEK_MENU:
                 currentFrg = new WeekFragment();
                 break;
-            case 1:
+            case WEEK_SHOPPINGLIST:
                 currentFrg = new ShoppingListFragment();
                 break;
-            case 2:
+            case COURSES:
                 currentFrg = new CourseFragment();
                 break;
             default:
