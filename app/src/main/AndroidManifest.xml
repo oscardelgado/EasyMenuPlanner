@@ -71,6 +71,14 @@
         <!--AdBudiz-->
         <activity android:name="com.purplebrain.adbuddiz.sdk.AdBuddizActivity"
                   android:theme="@android:style/Theme.Translucent" />
+
+        <receiver android:name="WeekMenuWidgetProvider" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data android:name="android.appwidget.provider"
+                       android:resource="@xml/week_menu_appwidget_info" />
+        </receiver>
     </application>
 
 </manifest>
