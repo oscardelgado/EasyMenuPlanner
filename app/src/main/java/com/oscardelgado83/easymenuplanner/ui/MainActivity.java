@@ -122,8 +122,6 @@ public class MainActivity extends AppCompatActivity
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
-        ActiveAndroid.initialize(this);
-
         if (!dbStarted) {
             prePopulateDB();
         }

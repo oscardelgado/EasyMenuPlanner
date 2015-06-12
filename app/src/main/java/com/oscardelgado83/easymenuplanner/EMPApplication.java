@@ -3,6 +3,7 @@ package com.oscardelgado83.easymenuplanner;
 import android.app.Application;
 import android.util.Log;
 
+import com.activeandroid.ActiveAndroid;
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.squareup.leakcanary.LeakCanary;
@@ -22,7 +23,11 @@ public class EMPApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
         DEBUGGING = getResources().getBoolean(R.bool.debug_mode);
+
+        ActiveAndroid.initialize(this);
+
         LeakCanary.install(this);
     }
 

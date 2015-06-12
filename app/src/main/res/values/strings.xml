@@ -43,4 +43,6 @@
     <string name="day_course_change">Change…</string>
     <string name="day_course_remove">Remove</string>
     <string name="course_already_exists">This course already exists</string>
+    <string name="appwidget_text">EXAMPLE!</string>
+    <string name="add_widget">Add widget</string>
 </resources>
