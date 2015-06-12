@@ -378,6 +378,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onDestroy() {
         adView.destroy();
+        AdBuddiz.onDestroy();
         super.onDestroy();
     }
 
