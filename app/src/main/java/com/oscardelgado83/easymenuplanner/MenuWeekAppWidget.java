@@ -30,6 +30,8 @@ import hugo.weaving.DebugLog;
 public class MenuWeekAppWidget extends AppWidgetProvider {
     public static final int WEEKDAYS = 7;
     private static final String LOG_TAG = MenuWeekAppWidget.class.getSimpleName();
+    public static final int INITIAL = 80; // maxHeight for first tile
+    public static final int JUMP = 120; // maxHeight increment for each tile
 
     private static List<Day> allWeek;
     private static Map<Integer, Integer> tilesByWidget = new HashMap<>();
@@ -84,32 +86,43 @@ public class MenuWeekAppWidget extends AppWidgetProvider {
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
         allWeek = Day.findAll();
+        Log.d(LOG_TAG, "allWeek size: " + allWeek.size());
         List<Day> printedDays = null;
 
         int currentDayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK); //Sunday is 1, Saturday is 7.
 
+        int maxTiles = (WEEKDAYS + 2) / 3;
+        int todayPos = daysCurrOrder.indexOf(currentDayOfWeek);
+        int tiles;
         if (tilesByWidget.containsKey(appWidgetId)) {
-            int todayPos = daysCurrOrder.indexOf(currentDayOfWeek);
-            int maxTiles = (WEEKDAYS + 2) / 3;
-            int tiles = Math.min(maxTiles, tilesByWidget.get(appWidgetId));
 
-            /*
-            1 tile: 1 row
-                todayPos
-            2 tiles: 4 rows
-                todayPos and 3 more, or last 4. [todayPos, todayPos+4) or [last-4, last)
-            3 tiles: 7 rows
-                todayPos and 6 more, or last 7. [todayPos, last)
-            n tiles: 3n - 2 rows
-                todayPos and (3n-2)-1 = more, or last (3n-2). [todayPos, todayPos+(3n-2)) or [last-(3n-2), last)
-             */
-            lastPos = Math.min(todayPos + (3 * tiles - 2), WEEKDAYS);
-            firstPos = lastPos - (3 * tiles - 2);
-            Log.d(LOG_TAG, "It wil print from " + firstPos + " to " + lastPos);
-            printedDays = allWeek.subList(firstPos, lastPos);
+            // The widget has been just resized.
+            tiles = Math.min(maxTiles, tilesByWidget.get(appWidgetId));
         } else {
-            printedDays = allWeek;
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+
+                // The widget may have been resized before.
+                tiles = Math.min(maxTiles, getHeightCells(appWidgetManager, appWidgetId));
+            } else {
+                tiles = 1;
+            }
         }
+
+        /*
+        1 tile: 1 row
+            todayPos
+        2 tiles: 4 rows
+            todayPos and 3 more, or last 4. [todayPos, todayPos+4) or [last-4, last)
+        3 tiles: 7 rows
+            todayPos and 6 more, or last 7. [todayPos, last)
+        n tiles: 3n - 2 rows
+            todayPos and (3n-2)-1 = more, or last (3n-2). [todayPos, todayPos+(3n-2)) or [last-(3n-2), last)
+         */
+        lastPos = Math.min(todayPos + (3 * tiles - 2), WEEKDAYS);
+        firstPos = lastPos - (3 * tiles - 2);
+        Log.d(LOG_TAG, "It wil print from " + firstPos + " to " + lastPos);
+        printedDays = allWeek.subList(firstPos, lastPos);
 
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.menu_week_app_widget);
@@ -145,10 +158,17 @@ public class MenuWeekAppWidget extends AppWidgetProvider {
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @DebugLog
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
+        int heightCells = getHeightCells(appWidgetManager, appWidgetId);
+
+        tilesByWidget.put(appWidgetId, heightCells);
+        updateAppWidget(context, appWidgetManager, appWidgetId);
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    private static int getHeightCells(AppWidgetManager appWidgetManager, int appWidgetId) {
         Bundle opt = appWidgetManager.getAppWidgetOptions(appWidgetId);
 
         int minWidth = opt.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
@@ -157,11 +177,9 @@ public class MenuWeekAppWidget extends AppWidgetProvider {
         int maxHeith = opt.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
         Log.d(LOG_TAG, minWidth + ", " + maxWidth + ", " + minHeith + ", " + maxHeith);
 
-        int heightCells = (((maxHeith - 80) / 120) + 1);
+        int heightCells = (((maxHeith - INITIAL) / JUMP) + 1);
         Log.d(LOG_TAG, "heightCells: " + heightCells); //TODO: check in different devices.
-
-        tilesByWidget.put(appWidgetId, heightCells);
-        updateAppWidget(context, appWidgetManager, appWidgetId);
+        return heightCells;
     }
 }
 
