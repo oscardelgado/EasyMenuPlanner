@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.oscardelgado83.easymenuplanner.model.Course;
 import com.oscardelgado83.easymenuplanner.model.Day;
 import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 
@@ -133,12 +134,15 @@ public class MenuWeekAppWidget extends AppWidgetProvider {
         views.removeAllViews(R.id.linear_layout);
         views.addView(R.id.linear_layout, new RemoteViews(context.getPackageName(), R.layout.menu_week_app_widget_header));
         for (int i = firstPos; i < lastPos; i++) {
+            Course course = null;
             subviews[i - firstPos] = new RemoteViews(context.getPackageName(), R.layout.menu_week_app_widget_row);
             int indexWithCurrentOrder = daysCurrOrder.get(i % WEEKDAYS);
             if (printedDays.get(i - firstPos) != null) {
                 subviews[i - firstPos].setTextViewText(R.id.week_day_name, dayNames[indexWithCurrentOrder]);
-                subviews[i - firstPos].setTextViewText(R.id.left_text, printedDays.get(i - firstPos).firstCourse.name);
-                subviews[i - firstPos].setTextViewText(R.id.right_text, printedDays.get(i - firstPos).secondCourse.name);
+                course = printedDays.get(i - firstPos).firstCourse;
+                if (course != null) subviews[i - firstPos].setTextViewText(R.id.left_text, course.name);
+                course = printedDays.get(i - firstPos).secondCourse;
+                if (course != null) subviews[i - firstPos].setTextViewText(R.id.right_text, course.name);
             }
             if (indexWithCurrentOrder == currentDayOfWeek) {
                 subviews[i - firstPos].setTextColor(R.id.week_day_name, context.getResources().getColor(R.color.primary));
@@ -171,14 +175,14 @@ public class MenuWeekAppWidget extends AppWidgetProvider {
     private static int getHeightCells(AppWidgetManager appWidgetManager, int appWidgetId) {
         Bundle opt = appWidgetManager.getAppWidgetOptions(appWidgetId);
 
-        int minWidth = opt.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
-        int maxWidth = opt.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
-        int minHeith = opt.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
+//        int minWidth = opt.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
+//        int maxWidth = opt.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
+//        int minHeith = opt.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
         int maxHeith = opt.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
-        Log.d(LOG_TAG, minWidth + ", " + maxWidth + ", " + minHeith + ", " + maxHeith);
+//        Log.d(LOG_TAG, minWidth + ", " + maxWidth + ", " + minHeith + ", " + maxHeith);
 
         int heightCells = (((maxHeith - INITIAL) / JUMP) + 1);
-        Log.d(LOG_TAG, "heightCells: " + heightCells); //TODO: check in different devices.
+        Log.d(LOG_TAG, "heightCells: " + heightCells);
         return heightCells;
     }
 }

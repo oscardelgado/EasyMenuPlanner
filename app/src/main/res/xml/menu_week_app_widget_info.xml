@@ -6,6 +6,5 @@
                     android:previewImage="@drawable/example_appwidget_preview"
                     android:initialLayout="@layout/menu_week_app_widget"
                     android:resizeMode="horizontal|vertical"
-                    android:widgetCategory="home_screen"
-                    android:initialKeyguardLayout="@layout/menu_week_app_widget">
+                    android:widgetCategory="home_screen">
 </appwidget-provider>

@@ -22,12 +22,11 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/accent"
         android:textSize="11sp"
-        android:paddingLeft="20dp"
+        android:paddingLeft="15dp"
         android:layout_marginLeft="4dp"
         android:layout_marginRight="2dp"
-        android:paddingRight="20dp"
         android:gravity="center_vertical"
-        />
+        android:paddingRight="15dp"/>
 
     <TextView
         android:layout_width="match_parent"
@@ -39,9 +38,8 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/accent"
         android:textSize="11sp"
-        android:paddingLeft="20dp"
+        android:paddingLeft="15dp"
         android:layout_marginRight="4dp"
         android:layout_marginLeft="2dp"
-        android:paddingRight="20dp"
-        />
+        android:paddingRight="15dp"/>
 </LinearLayout>
