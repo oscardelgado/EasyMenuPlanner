@@ -1,6 +1,9 @@
 package com.oscardelgado83.easymenuplanner.ui;
 
 import android.app.Dialog;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
@@ -23,6 +26,7 @@ import com.activeandroid.query.Select;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.oscardelgado83.easymenuplanner.MenuWeekAppWidget;
 import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Course;
 import com.oscardelgado83.easymenuplanner.model.CourseIngredient;
@@ -94,11 +98,6 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // AdBuddiz: request to cache adds
-        AdBuddiz.setPublisherKey(getResources().getString(R.string.ad_buddiz_publisher_key));
-        if (Cons.DEBUGGING) AdBuddiz.setTestModeActive();
-        AdBuddiz.cacheAds(this); // this = current Activity
-
         // Restore preferences
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
         boolean dbStarted = settings.getBoolean(PREFERENCE_DB_STARTED, false);
@@ -131,6 +130,11 @@ public class MainActivity extends AppCompatActivity
 
         int launchCount = settings.getInt(PREFERENCE_LAUCH_COUNT, 0);
         settings.edit().putInt(PREFERENCE_LAUCH_COUNT, ++launchCount).apply();
+
+        // AdBuddiz: request to cache adds
+        AdBuddiz.setPublisherKey(getResources().getString(R.string.ad_buddiz_publisher_key));
+        if (Cons.DEBUGGING) AdBuddiz.setTestModeActive();
+        AdBuddiz.cacheAds(this); // this = current Activity
     }
 
     @DebugLog
@@ -369,9 +373,21 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @DebugLog
     @Override
     public void onPause() {
         adView.pause();
+
+        // Update the widget.
+        // http://stackoverflow.com/a/7738687/1464013
+        Intent intent = new Intent(this, MenuWeekAppWidget.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        // Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
+        // since it seems the onUpdate() is only fired on that:
+        int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), MenuWeekAppWidget.class));
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+        sendBroadcast(intent);
+
         super.onPause();
     }
 

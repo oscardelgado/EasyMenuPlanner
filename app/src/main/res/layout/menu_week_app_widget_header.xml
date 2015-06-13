@@ -1,45 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
               android:orientation="horizontal"
-              tools:showIn="@layout/menu_week_app_widget"
               android:layout_width="match_parent"
-              android:layout_height="20dp">
+              android:layout_height="38dp"
+    >
 
-    <TextView
-        android:layout_width="wrap_content"
+    <ImageView
+        android:layout_width="28dp"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
-        android:text="   "
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/accent"
-        android:textSize="@dimen/abc_text_size_small_material"/>
+        android:src="@mipmap/ic_launcher"
+        android:paddingLeft="2dp"
+        android:layout_gravity="top"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_column="0"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="4dp"
         android:layout_weight="1"
-        android:gravity="center_vertical|center_horizontal"
         android:text="@string/first_course"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/accent"
-        android:textSize="@dimen/abc_text_size_small_material"/>
+        android:textSize="11sp"
+        android:paddingLeft="20dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="2dp"
+        android:paddingRight="20dp"
+        android:gravity="center_vertical"
+        />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_column="1"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="4dp"
         android:layout_weight="1"
-        android:gravity="center_vertical|center_horizontal"
+        android:gravity="center_vertical"
         android:text="@string/second_course"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/accent"
-        android:textSize="@dimen/abc_text_size_small_material"/>
+        android:textSize="11sp"
+        android:paddingLeft="20dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginLeft="2dp"
+        android:paddingRight="20dp"
+        />
 </LinearLayout>

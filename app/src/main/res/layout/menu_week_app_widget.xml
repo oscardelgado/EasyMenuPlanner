@@ -1,19 +1,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="#757c7c7c"
+              android:background="#b4ffffff"
               android:baselineAligned="false"
               android:padding="@dimen/widget_margin"
-              android:orientation="vertical">
-
-    <include layout="@layout/menu_week_app_widget_header"/>
-
-    <include layout="@layout/menu_week_app_widget_row"/>
-    <include layout="@layout/menu_week_app_widget_row"/>
-    <include layout="@layout/menu_week_app_widget_row"/>
-    <include layout="@layout/menu_week_app_widget_row"/>
-    <include layout="@layout/menu_week_app_widget_row"/>
-    <include layout="@layout/menu_week_app_widget_row"/>
-    <include layout="@layout/menu_week_app_widget_row"/>
+              android:orientation="vertical"
+    android:id="@+id/linear_layout">
 
 </LinearLayout>
