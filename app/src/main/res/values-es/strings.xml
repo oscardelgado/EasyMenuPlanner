@@ -40,4 +40,6 @@
     <string name="day_course_remove">Quitar</string>
     <string name="day_course_change">Cambiar…</string>
     <string name="course_already_exists">Este plato ya existe</string>
+    <string name="week_widget_label_small">Easy Menu Planner - Planning semana (3x1)</string>
+    <string name="week_widget_label_med">Easy Menu Planner - Planning semana (3x2)</string>
 </resources>

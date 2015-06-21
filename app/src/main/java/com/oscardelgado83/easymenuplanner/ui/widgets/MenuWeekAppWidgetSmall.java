@@ -1,4 +1,4 @@
-package com.oscardelgado83.easymenuplanner;
+package com.oscardelgado83.easymenuplanner.ui.widgets;
 
 import android.annotation.TargetApi;
 import android.app.PendingIntent;
@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.oscardelgado83.easymenuplanner.EMPApplication;
+import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Course;
 import com.oscardelgado83.easymenuplanner.model.Day;
 import com.oscardelgado83.easymenuplanner.ui.MainActivity;
@@ -29,11 +31,11 @@ import hugo.weaving.DebugLog;
 /**
  * Implementation of App Widget functionality.
  */
-public class MenuWeekAppWidget extends AppWidgetProvider {
+public class MenuWeekAppWidgetSmall extends AppWidgetProvider {
 
     // Instead of class.getSimpleName() to avoid proGuard changing it.
-    public static final String WIDGET_NAME = "MenuWeekAppWidget";
-    private static final String LOG_TAG = WIDGET_NAME;
+    public static String WIDGET_NAME = "MenuWeekAppWidget";
+    protected static final String LOG_TAG = WIDGET_NAME;
 
     public static final int WEEKDAYS = 7;
     public static final int INITIAL = 80; // maxHeight for first tile
@@ -173,7 +175,7 @@ public class MenuWeekAppWidget extends AppWidgetProvider {
             views.addView(R.id.linear_layout, subviews[i - firstPos]);
         }
 
-        // Create an Intent to launch ExampleActivity
+        // Create an Intent to launch Activity
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
@@ -207,7 +209,7 @@ public class MenuWeekAppWidget extends AppWidgetProvider {
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private static int getHeightCells(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
+    protected static int getHeightCells(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         Bundle opt = appWidgetManager.getAppWidgetOptions(appWidgetId);
 
 //        int minWidth = opt.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);

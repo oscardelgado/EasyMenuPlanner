@@ -43,4 +43,6 @@
     <string name="day_course_change">Change…</string>
     <string name="day_course_remove">Remove</string>
     <string name="course_already_exists">This course already exists</string>
+    <string name="week_widget_label_small">Easy Menu Planner - Week planning (3x1)</string>
+    <string name="week_widget_label_med">Easy Menu Planner - Week planning (3x2)</string>
 </resources>

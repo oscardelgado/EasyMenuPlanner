@@ -26,7 +26,6 @@ import com.activeandroid.query.Select;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.oscardelgado83.easymenuplanner.MenuWeekAppWidget;
 import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Course;
 import com.oscardelgado83.easymenuplanner.model.CourseIngredient;
@@ -37,6 +36,8 @@ import com.oscardelgado83.easymenuplanner.ui.fragments.NavigationDrawerFragment;
 import com.oscardelgado83.easymenuplanner.ui.fragments.NavigationDrawerFragment.Section;
 import com.oscardelgado83.easymenuplanner.ui.fragments.ShoppingListFragment;
 import com.oscardelgado83.easymenuplanner.ui.fragments.WeekFragment;
+import com.oscardelgado83.easymenuplanner.ui.widgets.MenuWeekAppWidgetMedium;
+import com.oscardelgado83.easymenuplanner.ui.widgets.MenuWeekAppWidgetSmall;
 import com.oscardelgado83.easymenuplanner.util.Cons;
 import com.purplebrain.adbuddiz.sdk.AdBuddiz;
 
@@ -385,16 +386,21 @@ public class MainActivity extends AppCompatActivity
         adView.pause();
 
         // Update the widget.
+        updateWidgets(MenuWeekAppWidgetSmall.class);
+        updateWidgets(MenuWeekAppWidgetMedium.class);
+
+        super.onPause();
+    }
+
+    private void updateWidgets(Class clazz) {
         // http://stackoverflow.com/a/7738687/1464013
-        Intent intent = new Intent(this, MenuWeekAppWidget.class);
+        Intent intent = new Intent(this, clazz);
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
         // Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
         // since it seems the onUpdate() is only fired on that:
-        int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), MenuWeekAppWidget.class));
+        int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), MenuWeekAppWidgetSmall.class));
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
         sendBroadcast(intent);
-
-        super.onPause();
     }
 
     @Override

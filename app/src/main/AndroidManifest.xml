@@ -79,14 +79,24 @@
             android:name="com.purplebrain.adbuddiz.sdk.AdBuddizActivity"
             android:theme="@android:style/Theme.Translucent" />
 
-        <receiver android:name=".MenuWeekAppWidget" >
+        <receiver android:name=".ui.widgets.MenuWeekAppWidgetSmall" android:label="@string/week_widget_label_small">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/menu_week_app_widget_info" />
+                android:resource="@xml/week_widget_3x1" />
+        </receiver>
+
+        <receiver android:name=".ui.widgets.MenuWeekAppWidgetMedium" android:label="@string/week_widget_label_med">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/week_widget_3x2" />
         </receiver>
     </application>
 
