@@ -4,13 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import com.activeandroid.query.Select;
 import com.oscardelgado83.easymenuplanner.EMPApplication;
-import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Ingredient;
 import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 import com.oscardelgado83.easymenuplanner.ui.adapters.ShoppingListAdapter;
@@ -34,10 +31,9 @@ public class ShoppingListFragment extends ListFragment {
     private static final String LOG_TAG = FRAGMENT_NAME;
 
     private List<Ingredient> currentIngredientsList;
-
     private List<Ingredient> allIngredientsList;
-    private MenuItem hideCompleted;
 
+    private MenuItem hideCompleted;
     private MenuItem showAll;
 
     @Override
@@ -98,15 +94,6 @@ public class ShoppingListFragment extends ListFragment {
                 FRAGMENT_NAME);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.shoppinglist_fragment, menu);
-        hideCompleted = menu.findItem(R.id.action_hide_completed);
-        showAll = menu.findItem(R.id.action_show_all);
-        refreshMenu();
-    }
-
     public void hideCompletedItems() {
         currentIngredientsList.clear();
         currentIngredientsList.addAll(getNotMarkedIngredients());
@@ -147,5 +134,13 @@ public class ShoppingListFragment extends ListFragment {
         visibleCheckedItems.removeAll(allUncheckedItems);
 
         return visibleCheckedItems.size();
+    }
+
+    public void setHideCompleted(MenuItem hideCompleted) {
+        this.hideCompleted = hideCompleted;
+    }
+
+    public void setShowAll(MenuItem showAll) {
+        this.showAll = showAll;
     }
 }

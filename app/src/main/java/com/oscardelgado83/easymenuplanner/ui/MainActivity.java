@@ -299,7 +299,7 @@ public class MainActivity extends AppCompatActivity
         actionBar.setTitle(mTitle);
     }
 
-
+    @DebugLog
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (!mNavigationDrawerFragment.isDrawerOpen()) {
@@ -312,6 +312,10 @@ public class MainActivity extends AppCompatActivity
                 getMenuInflater().inflate(R.menu.courses_fragment, menu);
             } else if (currentFrg instanceof ShoppingListFragment) {
                 getMenuInflater().inflate(R.menu.shoppinglist_fragment, menu);
+                ShoppingListFragment sf = (ShoppingListFragment) currentFrg;
+                sf.setHideCompleted(menu.findItem(R.id.action_hide_completed));
+                sf.setShowAll(menu.findItem(R.id.action_show_all));
+                sf.refreshMenu();
             } else {
                 getMenuInflater().inflate(R.menu.global, menu);
             }
@@ -357,8 +361,10 @@ public class MainActivity extends AppCompatActivity
         } else if (currentFrg instanceof ShoppingListFragment) {
             if (id == R.id.action_hide_completed) {
                 ((ShoppingListFragment) currentFrg).hideCompletedItems();
+                return true;
             } else if (id == R.id.action_show_all) {
                 ((ShoppingListFragment) currentFrg).showAllItems();
+                return true;
             }
         }
 
