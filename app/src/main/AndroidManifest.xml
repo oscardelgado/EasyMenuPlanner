@@ -88,12 +88,6 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/menu_week_app_widget_info" />
         </receiver>
-
-        <service
-            android:name=".service.MenuWeekRemoteViewService"
-            android:enabled="true"
-            android:exported="false" >
-        </service>
     </application>
 
 </manifest>
