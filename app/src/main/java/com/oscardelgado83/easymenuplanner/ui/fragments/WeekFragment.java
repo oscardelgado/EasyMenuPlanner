@@ -48,6 +48,10 @@ import static com.oscardelgado83.easymenuplanner.util.Cons.DEBUGGING;
  */
 public class WeekFragment extends Fragment {
 
+    // Instead of class.getSimpleName() to avoid proGuard changing it.
+    private static final String FRAGMENT_NAME = "WeekFragment";
+    private static final String LOG_TAG = FRAGMENT_NAME;
+
     @InjectView(R.id.day1)
     TableRow tableRow1;
 
@@ -70,15 +74,13 @@ public class WeekFragment extends Fragment {
     TableRow tableRow7;
 
     private TableRow[] allTableRows;
-
     private List<Course> allFirstCourses;
+
     private List<Course> allSecondCourses;
 
     private boolean dirty;
 
     private Random rand;
-
-    private static final String LOG_TAG = WeekFragment.class.getSimpleName();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -160,7 +162,7 @@ public class WeekFragment extends Fragment {
 
         GA.sendScreenHit(
                 ((EMPApplication) getActivity().getApplication()).getTracker(),
-                "WeekFragment");
+                FRAGMENT_NAME);
     }
 
     private View.OnClickListener courseBtnClickListener(final TextView tv, final int row, final int col) {
@@ -350,6 +352,12 @@ public class WeekFragment extends Fragment {
             week.get(i).secondCourse = null;
         }
         dirty = true;
+
+        GA.sendEvent(
+                ((EMPApplication) getActivity().getApplication()).getTracker(),
+                FRAGMENT_NAME,
+                "action tapped",
+                "clear all");
     }
 
     public void randomFillAllCourses() {
@@ -401,6 +409,12 @@ public class WeekFragment extends Fragment {
             notUsedSecondCourses.remove(course);
         }
         dirty = true;
+
+        GA.sendEvent(
+                ((EMPApplication) getActivity().getApplication()).getTracker(),
+                FRAGMENT_NAME,
+                "action tapped",
+                "random fill");
     }
 
     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {

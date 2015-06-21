@@ -14,6 +14,7 @@ import android.widget.RemoteViews;
 import com.oscardelgado83.easymenuplanner.model.Course;
 import com.oscardelgado83.easymenuplanner.model.Day;
 import com.oscardelgado83.easymenuplanner.ui.MainActivity;
+import com.oscardelgado83.easymenuplanner.util.GA;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
@@ -29,8 +30,12 @@ import hugo.weaving.DebugLog;
  * Implementation of App Widget functionality.
  */
 public class MenuWeekAppWidget extends AppWidgetProvider {
+
+    // Instead of class.getSimpleName() to avoid proGuard changing it.
+    public static final String WIDGET_NAME = "MenuWeekAppWidget";
+    private static final String LOG_TAG = WIDGET_NAME;
+
     public static final int WEEKDAYS = 7;
-    private static final String LOG_TAG = MenuWeekAppWidget.class.getSimpleName();
     public static final int INITIAL = 80; // maxHeight for first tile
     public static final int JUMP = 120; // maxHeight increment for each tile
 
@@ -69,18 +74,36 @@ public class MenuWeekAppWidget extends AppWidgetProvider {
         for (int i = 0; i < appWidgetIds.length; i++) {
             updateAppWidget(context, appWidgetManager, appWidgetIds[i]);
         }
+
+        GA.sendEvent(
+                ((EMPApplication) context.getApplicationContext()).getTracker(),
+                WIDGET_NAME,
+                "widget callback called",
+                "onUpdate with " + appWidgetIds.length + " widgets");
     }
 
     @DebugLog
     @Override
     public void onEnabled(Context context) {
         // Enter relevant functionality for when the first widget is created
+
+        GA.sendEvent(
+                ((EMPApplication) context.getApplicationContext()).getTracker(),
+                WIDGET_NAME,
+                "widget callback called",
+                "onEnabled");
     }
 
     @DebugLog
     @Override
     public void onDisabled(Context context) {
         // Enter relevant functionality for when the last widget is disabled
+
+        GA.sendEvent(
+                ((EMPApplication) context.getApplicationContext()).getTracker(),
+                WIDGET_NAME,
+                "widget callback called",
+                "onDisabled");
     }
 
     @DebugLog
@@ -104,7 +127,7 @@ public class MenuWeekAppWidget extends AppWidgetProvider {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 
                 // The widget may have been resized before.
-                tiles = Math.min(maxTiles, getHeightCells(appWidgetManager, appWidgetId));
+                tiles = Math.min(maxTiles, getHeightCells(context, appWidgetManager, appWidgetId));
             } else {
                 tiles = 1;
             }
@@ -160,19 +183,31 @@ public class MenuWeekAppWidget extends AppWidgetProvider {
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
+
+        GA.sendEvent(
+                ((EMPApplication) context.getApplicationContext()).getTracker(),
+                WIDGET_NAME,
+                "updateAppWidget",
+                "It wil print from " + firstPos + " to " + lastPos);
     }
 
     @DebugLog
     @Override
     public void onAppWidgetOptionsChanged(Context context, AppWidgetManager appWidgetManager, int appWidgetId, Bundle newOptions) {
-        int heightCells = getHeightCells(appWidgetManager, appWidgetId);
+        int heightCells = getHeightCells(context, appWidgetManager, appWidgetId);
 
         tilesByWidget.put(appWidgetId, heightCells);
         updateAppWidget(context, appWidgetManager, appWidgetId);
+
+        GA.sendEvent(
+                ((EMPApplication) context.getApplicationContext()).getTracker(),
+                WIDGET_NAME,
+                "widget callback called",
+                "onAppWidgetOptionsChanged");
     }
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-    private static int getHeightCells(AppWidgetManager appWidgetManager, int appWidgetId) {
+    private static int getHeightCells(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
         Bundle opt = appWidgetManager.getAppWidgetOptions(appWidgetId);
 
 //        int minWidth = opt.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
@@ -183,6 +218,13 @@ public class MenuWeekAppWidget extends AppWidgetProvider {
 
         int heightCells = (((maxHeith - INITIAL) / JUMP) + 1);
         Log.d(LOG_TAG, "heightCells: " + heightCells);
+
+        GA.sendEvent(
+                ((EMPApplication) context.getApplicationContext()).getTracker(),
+                WIDGET_NAME,
+                "getHeightCells",
+                "AppWidgetOptions: " + opt + ". heightCells: " + heightCells);
+
         return heightCells;
     }
 }

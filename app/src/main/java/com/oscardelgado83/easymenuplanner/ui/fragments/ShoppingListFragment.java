@@ -29,13 +29,16 @@ import static com.oscardelgado83.easymenuplanner.util.Cons.DEBUGGING;
  */
 public class ShoppingListFragment extends ListFragment {
 
+    // Instead of class.getSimpleName() to avoid proGuard changing it.
+    public static final String FRAGMENT_NAME = "ShoppingListFragment";
+    private static final String LOG_TAG = FRAGMENT_NAME;
+
     private List<Ingredient> currentIngredientsList;
+
     private List<Ingredient> allIngredientsList;
-
     private MenuItem hideCompleted;
-    private MenuItem showAll;
 
-    private static final String LOG_TAG = ShoppingListFragment.class.getSimpleName();
+    private MenuItem showAll;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -92,7 +95,7 @@ public class ShoppingListFragment extends ListFragment {
 
         GA.sendScreenHit(
                 ((EMPApplication) getActivity().getApplication()).getTracker(),
-                "ShoppingListFragment");
+                FRAGMENT_NAME);
     }
 
     @Override
