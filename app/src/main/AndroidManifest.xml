@@ -87,6 +87,10 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/week_widget_3x1" />
+
+            <!--this is the part that you will need to add-->
+            <meta-data android:name="LauncherMetadata.Requirements.Scrollable"
+                       android:value="true" />
         </receiver>
 
         <receiver android:name=".ui.widgets.MenuWeekAppWidgetMedium" android:label="@string/week_widget_label_med">
@@ -97,6 +101,20 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/week_widget_3x2" />
+
+            <!--this is the part that you will need to add-->
+            <meta-data android:name="LauncherMetadata.Requirements.Scrollable"
+                       android:value="true" />
+        </receiver>
+
+        <receiver android:name=".ui.widgets.ShoppingListWidget" android:label="Easy Menu Planner - Shopping List">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/shopping_list_widget" />
         </receiver>
     </application>
 
