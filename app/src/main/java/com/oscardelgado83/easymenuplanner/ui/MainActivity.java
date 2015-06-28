@@ -38,7 +38,6 @@ import com.oscardelgado83.easymenuplanner.ui.fragments.ShoppingListFragment;
 import com.oscardelgado83.easymenuplanner.ui.fragments.WeekFragment;
 import com.oscardelgado83.easymenuplanner.ui.widgets.MenuWeekAppWidgetMedium;
 import com.oscardelgado83.easymenuplanner.ui.widgets.MenuWeekAppWidgetSmall;
-import com.oscardelgado83.easymenuplanner.util.Cons;
 import com.purplebrain.adbuddiz.sdk.AdBuddiz;
 
 import java.io.ByteArrayOutputStream;
@@ -132,10 +131,13 @@ public class MainActivity extends AppCompatActivity
         int launchCount = settings.getInt(PREFERENCE_LAUCH_COUNT, 0);
         settings.edit().putInt(PREFERENCE_LAUCH_COUNT, ++launchCount).apply();
 
-        // AdBuddiz: request to cache adds
-        AdBuddiz.setPublisherKey(getResources().getString(R.string.ad_buddiz_publisher_key));
-        if (Cons.DEBUGGING) AdBuddiz.setTestModeActive();
-        AdBuddiz.cacheAds(this); // this = current Activity
+        if (! DEBUGGING) {
+
+            // AdBuddiz: request to cache adds
+            AdBuddiz.setPublisherKey(getResources().getString(R.string.ad_buddiz_publisher_key));
+//            if (Cons.DEBUGGING) AdBuddiz.setTestModeActive();
+            AdBuddiz.cacheAds(this); // this = current Activity
+        }
     }
 
     @DebugLog
@@ -399,14 +401,14 @@ public class MainActivity extends AppCompatActivity
         // Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
         // since it seems the onUpdate() is only fired on that:
         int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), MenuWeekAppWidgetSmall.class));
-        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS,ids);
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
         sendBroadcast(intent);
     }
 
     @Override
     public void onDestroy() {
         adView.destroy();
-        AdBuddiz.onDestroy();
+        if (! DEBUGGING) AdBuddiz.onDestroy();
         super.onDestroy();
     }
 
