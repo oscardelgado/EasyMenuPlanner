@@ -190,7 +190,7 @@ public class MenuWeekAppWidgetSmall extends AppWidgetProvider {
                 ((EMPApplication) context.getApplicationContext()).getTracker(),
                 WIDGET_NAME,
                 "updateAppWidget",
-                "It wil print from " + firstPos + " to " + lastPos);
+                "It will print from " + firstPos + " to " + lastPos);
     }
 
     @DebugLog
@@ -214,11 +214,13 @@ public class MenuWeekAppWidgetSmall extends AppWidgetProvider {
 
 //        int minWidth = opt.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH);
 //        int maxWidth = opt.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH);
-//        int minHeith = opt.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
-        int maxHeith = opt.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
+        int minHeith = opt.getInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT);
+//        int maxHeith = opt.getInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT);
 //        Log.d(LOG_TAG, minWidth + ", " + maxWidth + ", " + minHeith + ", " + maxHeith);
 
-        int heightCells = (((maxHeith - INITIAL) / JUMP) + 1);
+        // http://developer.android.com/guide/practices/ui_guidelines/widget_design.html#anatomy
+        int heightCells = (minHeith + 30) / 70;
+        heightCells = Math.max(heightCells, 1);
         Log.d(LOG_TAG, "heightCells: " + heightCells);
 
         GA.sendEvent(
