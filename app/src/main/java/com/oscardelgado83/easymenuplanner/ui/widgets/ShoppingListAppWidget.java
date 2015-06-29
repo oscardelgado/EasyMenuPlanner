@@ -29,7 +29,7 @@ public class ShoppingListAppWidget extends AppWidgetProvider {
                 widget = new RemoteViews(ctxt.getPackageName(),
                         R.layout.shopping_list_widget_layout);
 
-                widget.setRemoteAdapter(appWidgetIds[i], R.id.words,
+                widget.setRemoteAdapter(appWidgetIds[i], R.id.ingredient_name,
                         svcIntent);
 
                 Intent clickIntent = new Intent(ctxt, MainActivity.class);
@@ -38,8 +38,8 @@ public class ShoppingListAppWidget extends AppWidgetProvider {
                                 clickIntent,
                                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-                widget.setPendingIntentTemplate(R.id.words, clickPI);
-                widget.setRemoteAdapter(appWidgetIds[i], R.id.words,
+                widget.setPendingIntentTemplate(R.id.ingredient_name, clickPI);
+                widget.setRemoteAdapter(appWidgetIds[i], R.id.ingredient_name,
                         svcIntent);
             } else {
                 widget = new RemoteViews(ctxt.getPackageName(),

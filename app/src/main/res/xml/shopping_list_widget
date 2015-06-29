@@ -1,9 +1,9 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:minWidth="146dip"
-                    android:minHeight="146dip"
+                    android:minWidth="80dip"
+                    android:minHeight="80dip"
                     android:updatePeriodMillis="0"
                     android:initialLayout="@layout/shopping_list_widget_layout"
-                    android:autoAdvanceViewId="@+id/words"
+                    android:autoAdvanceViewId="@+id/ingredient_name"
                     android:previewImage="@drawable/preview"
                     android:resizeMode="vertical"
     />

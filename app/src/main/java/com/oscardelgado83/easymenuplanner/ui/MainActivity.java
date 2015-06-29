@@ -403,7 +403,7 @@ public class MainActivity extends AppCompatActivity
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void updateShoppingListWidgets() {
         int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), ShoppingListAppWidget.class));
-        AppWidgetManager.getInstance(getApplication()).notifyAppWidgetViewDataChanged(ids, R.id.words);
+        AppWidgetManager.getInstance(getApplication()).notifyAppWidgetViewDataChanged(ids, R.id.ingredient_name);
     }
 
     private void updateWidgets(Class clazz) {

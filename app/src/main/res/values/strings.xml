@@ -47,4 +47,6 @@
     <string name="week_widget_label_med">Easy Menu Planner - Week planning (3x2)</string>
     <string name="shopping_list_widget_label">Easy Menu Planner - Shopping list</string>
     <string name="android_3_required">Android 3.0 is required at least for this widget to work</string>
+    <string name="checked" translatable="false">☑</string>
+    <string name="not_checked" translatable="false">☐</string>
 </resources>

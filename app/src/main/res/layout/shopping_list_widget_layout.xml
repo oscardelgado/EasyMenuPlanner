@@ -1,8 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ListView xmlns:android="http://schemas.android.com/apk/res/android"
-          android:id="@+id/words"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent"
-          android:layout_marginTop="3dp"
-          android:layout_marginLeft="3dp"
-    />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#b4ffffff"
+              android:baselineAligned="false"
+              android:padding="@dimen/widget_margin"
+              android:orientation="vertical"
+              android:id="@+id/linear_layout">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <ImageView
+            android:layout_width="28dp"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:src="@mipmap/ic_launcher"
+            android:paddingLeft="2dp"
+            android:layout_gravity="top"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="@string/title_section_shopping_list"
+            android:textColor="@color/accent"
+            android:textSize="10sp"
+            android:paddingLeft="15dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="2dp"
+            android:gravity="center_vertical"
+            android:paddingRight="15dp"/>
+    </LinearLayout>
+
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/ingredient_name"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+        />
+</LinearLayout>

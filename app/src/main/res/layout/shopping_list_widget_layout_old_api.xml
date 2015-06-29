@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+          android:text="@string/android_3_required"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
-          android:layout_marginTop="3dp"
-          android:layout_marginLeft="3dp"
-          android:text="@string/android_3_required"
+          android:gravity="center_vertical"
+          android:paddingLeft="15dp"
+          android:paddingRight="15dp"
+          android:textColor="@color/primary_dark"
+          android:textSize="12sp"
+          android:background="#b4ffffff"
     />
