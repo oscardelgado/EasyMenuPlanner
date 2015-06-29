@@ -14,6 +14,8 @@ import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 
 public class ShoppingListAppWidget extends AppWidgetProvider {
 
+    public static final String EXTRA_ITEM = "ShoppingListAppWidget_extra_item";
+
     @Override
     public void onUpdate(Context ctxt, AppWidgetManager appWidgetManager,
                          int[] appWidgetIds) {

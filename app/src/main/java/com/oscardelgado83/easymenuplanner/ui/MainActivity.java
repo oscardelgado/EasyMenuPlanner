@@ -383,6 +383,21 @@ public class MainActivity extends AppCompatActivity
         if (ensureGooglePlayServices()) {
             adView.resume();
         }
+
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        Log.d(LOG_TAG, "extras: " + extras);
+
+        if (extras.containsKey(ShoppingListAppWidget.EXTRA_ITEM)) {
+            Log.d(LOG_TAG, "Changing to ShoppingListFragment");
+
+            currentFrg = new ShoppingListFragment();
+
+            //http://stackoverflow.com/a/10261449/1464013
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, currentFrg)
+                    .commitAllowingStateLoss();
+        }
     }
 
     @DebugLog
