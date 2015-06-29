@@ -140,7 +140,7 @@ public class CourseFragment extends ListFragment {
                 public void didHideAd() {
                 }
             });
-            AdBuddiz.showAd(getActivity());
+            if (! DEBUGGING) AdBuddiz.showAd(getActivity());
         }
     }
 
