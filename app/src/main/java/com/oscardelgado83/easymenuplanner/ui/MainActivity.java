@@ -386,9 +386,8 @@ public class MainActivity extends AppCompatActivity
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-        Log.d(LOG_TAG, "extras: " + extras);
 
-        if (extras.containsKey(ShoppingListAppWidget.EXTRA_ITEM)) {
+        if (extras != null && extras.containsKey(ShoppingListAppWidget.EXTRA_ITEM)) {
             Log.d(LOG_TAG, "Changing to ShoppingListFragment");
 
             currentFrg = new ShoppingListFragment();
