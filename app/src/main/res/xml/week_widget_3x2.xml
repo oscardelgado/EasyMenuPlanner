@@ -4,7 +4,7 @@
                     android:minHeight="110dp"
                     android:minResizeHeight="40dp"
                     android:updatePeriodMillis="0"
-                    android:previewImage="@drawable/widget_preview_3x2"
+                    android:previewImage="@drawable/widget_preview3x2"
                     android:initialLayout="@layout/menu_week_app_widget"
                     android:resizeMode="horizontal|vertical"
                     android:widgetCategory="home_screen">

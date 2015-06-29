@@ -4,6 +4,6 @@
                     android:updatePeriodMillis="0"
                     android:initialLayout="@layout/shopping_list_widget_layout"
                     android:autoAdvanceViewId="@+id/ingredient_name"
-                    android:previewImage="@drawable/preview"
+                    android:previewImage="@drawable/widget_shopping_list"
                     android:resizeMode="vertical"
     />

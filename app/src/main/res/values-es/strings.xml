@@ -44,4 +44,6 @@
     <string name="week_widget_label_med">Easy Menu Planner - Planning semana (3x2)</string>
     <string name="shopping_list_widget_label">Easy Menu Planner - Lista de la compra</string>
     <string name="android_3_required">Se necesita al menos Android 3 para este widget</string>
+    <string name="bought">Comprado</string>
+    <string name="not_bought">No comprado</string>
 </resources>

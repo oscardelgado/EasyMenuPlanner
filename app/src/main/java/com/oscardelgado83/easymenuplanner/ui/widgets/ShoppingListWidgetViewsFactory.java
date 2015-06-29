@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
@@ -65,8 +66,14 @@ public class ShoppingListWidgetViewsFactory implements RemoteViewsService.Remote
         RemoteViews row = new RemoteViews(ctxt.getPackageName(),
                 R.layout.shopping_list_widget_row_layout);
 
-        String checkbox = items.get(position).checked ? ctxt.getString(R.string.checked) : ctxt.getString(R.string.not_checked);
-        row.setTextViewText(android.R.id.text1, checkbox + " " + items.get(position).name);
+        if (items.get(position).checked) {
+            row.setViewVisibility(R.id.checked, View.VISIBLE);
+            row.setViewVisibility(R.id.unchecked, View.GONE);
+        } else {
+            row.setViewVisibility(R.id.unchecked, View.VISIBLE);
+            row.setViewVisibility(R.id.checked, View.GONE);
+        }
+        row.setTextViewText(android.R.id.text1, items.get(position).name);
 
         Intent i = new Intent();
         row.setOnClickFillInIntent(android.R.id.text1, i);
