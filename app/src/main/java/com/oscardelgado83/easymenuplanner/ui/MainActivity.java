@@ -1,5 +1,6 @@
 package com.oscardelgado83.easymenuplanner.ui;
 
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
@@ -8,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
@@ -38,6 +40,7 @@ import com.oscardelgado83.easymenuplanner.ui.fragments.ShoppingListFragment;
 import com.oscardelgado83.easymenuplanner.ui.fragments.WeekFragment;
 import com.oscardelgado83.easymenuplanner.ui.widgets.MenuWeekAppWidgetMedium;
 import com.oscardelgado83.easymenuplanner.ui.widgets.MenuWeekAppWidgetSmall;
+import com.oscardelgado83.easymenuplanner.ui.widgets.ShoppingListAppWidget;
 import com.purplebrain.adbuddiz.sdk.AdBuddiz;
 
 import java.io.ByteArrayOutputStream;
@@ -387,11 +390,20 @@ public class MainActivity extends AppCompatActivity
     public void onPause() {
         adView.pause();
 
-        // Update the widget.
         updateWidgets(MenuWeekAppWidgetSmall.class);
         updateWidgets(MenuWeekAppWidgetMedium.class);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            updateShoppingListWidgets();
+        }
+
         super.onPause();
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    private void updateShoppingListWidgets() {
+        int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), ShoppingListAppWidget.class));
+        AppWidgetManager.getInstance(getApplication()).notifyAppWidgetViewDataChanged(ids, R.id.words);
     }
 
     private void updateWidgets(Class clazz) {
@@ -400,7 +412,7 @@ public class MainActivity extends AppCompatActivity
         intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
         // Use an array and EXTRA_APPWIDGET_IDS instead of AppWidgetManager.EXTRA_APPWIDGET_ID,
         // since it seems the onUpdate() is only fired on that:
-        int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), MenuWeekAppWidgetSmall.class));
+        int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), clazz));
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
         sendBroadcast(intent);
     }
@@ -437,6 +449,7 @@ public class MainActivity extends AppCompatActivity
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .addTestDevice(getString(R.string.nexus_7_device_id))
                 .addTestDevice(getString(R.string.genymotion_2_3_7_device_id))
+                .addTestDevice(getString(R.string.genymotion_4_4_4_device_id))
                 .build());
     }
 

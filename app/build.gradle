@@ -15,6 +15,7 @@ android {
         resValue "string", "ga_property_id", ga_property_id
         resValue "string", "nexus_7_device_id", nexus_7_device_id
         resValue "string", "genymotion_2_3_7_device_id", genymotion_2_3_7_device_id
+        resValue "string", "genymotion_4_4_4_device_id", genymotion_4_4_4_device_id
         resValue "string", "ad_buddiz_publisher_key", ad_buddiz_publisher_key
     }
     buildTypes {

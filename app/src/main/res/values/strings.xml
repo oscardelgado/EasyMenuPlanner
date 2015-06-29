@@ -45,4 +45,6 @@
     <string name="course_already_exists">This course already exists</string>
     <string name="week_widget_label_small">Easy Menu Planner - Week planning (3x1)</string>
     <string name="week_widget_label_med">Easy Menu Planner - Week planning (3x2)</string>
+    <string name="shopping_list_widget_label">Easy Menu Planner - Shopping list</string>
+    <string name="android_3_required">Android 3.0 is required at least for this widget to work</string>
 </resources>
