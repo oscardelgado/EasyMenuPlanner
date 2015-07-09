@@ -55,10 +55,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import butterknife.InjectView;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
 
-import static butterknife.ButterKnife.inject;
 import static com.google.android.gms.common.ConnectionResult.SERVICE_DISABLED;
 import static com.google.android.gms.common.ConnectionResult.SERVICE_MISSING;
 import static com.google.android.gms.common.ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED;
@@ -72,7 +72,7 @@ import static com.oscardelgado83.easymenuplanner.util.Cons.DEBUGGING;
 public class MainActivity extends AppCompatActivity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
-    @InjectView(R.id.adView)
+    @Bind(R.id.adView)
     AdView adView;
 
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         setContentView(R.layout.activity_main);
-        inject(this);
+        ButterKnife.bind(this);
         loadAdMob();
 
         mNavigationDrawerFragment = (NavigationDrawerFragment)
@@ -384,7 +384,7 @@ public class MainActivity extends AppCompatActivity
             adView.resume();
         }
 
-        Intent intent = getIntent();
+        Intent intent = getIntent(); //TODO: check if possible NPE
         Bundle extras = intent.getExtras();
 
         if (extras != null && extras.containsKey(ShoppingListAppWidget.EXTRA_ITEM)) {
@@ -396,6 +396,15 @@ public class MainActivity extends AppCompatActivity
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, currentFrg)
                     .commitAllowingStateLoss();
+//        } else if() { //TODO: add new extra for week widget
+//            Log.d(LOG_TAG, "Changing to WeekFragment");
+//
+//            currentFrg = new WeekFragment();
+//
+//            //http://stackoverflow.com/a/10261449/1464013
+//            getSupportFragmentManager().beginTransaction()
+//                    .replace(R.id.container, currentFrg)
+//                    .commitAllowingStateLoss();
         }
     }
 

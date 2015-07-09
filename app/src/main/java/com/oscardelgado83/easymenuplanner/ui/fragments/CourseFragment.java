@@ -250,7 +250,7 @@ public class CourseFragment extends ListFragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.reset(this);
+        ButterKnife.unbind(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             getListView().setMultiChoiceModeListener(null);
         } else {
@@ -271,7 +271,7 @@ public class CourseFragment extends ListFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         View newCourseView = LayoutInflater.from(getActivity()).inflate(R.layout.course_view, null);
-        ButterKnife.inject(this, newCourseView);
+        ButterKnife.bind(this, newCourseView);
 
         // Auto-complete for Ingredients
         setIngredientsAutocompleteAdapter(newCourseView);
@@ -501,7 +501,7 @@ public class CourseFragment extends ListFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
         View editCourseView = LayoutInflater.from(getActivity()).inflate(R.layout.course_view, null);
-        ButterKnife.inject(this, editCourseView);
+        ButterKnife.bind(this, editCourseView);
 
         IngredientsCompletionView completionView = setIngredientsAutocompleteAdapter(editCourseView);
 

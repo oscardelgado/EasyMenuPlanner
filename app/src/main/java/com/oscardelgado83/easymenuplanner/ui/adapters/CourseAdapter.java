@@ -17,8 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * Created by oscar on 2/04/15.
@@ -128,11 +128,11 @@ public class CourseAdapter extends ArrayAdapter<Course> implements SectionIndexe
     }
 
     static class ViewHolder {
-        @InjectView(R.id.course_name)
+        @Bind(R.id.course_name)
         TextView courseName;
 
         public ViewHolder(View view) {
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
         }
     }
 

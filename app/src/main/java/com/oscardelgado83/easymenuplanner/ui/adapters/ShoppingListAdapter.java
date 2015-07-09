@@ -15,8 +15,8 @@ import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import hugo.weaving.DebugLog;
 
 import static com.oscardelgado83.easymenuplanner.util.Cons.DEBUGGING;
@@ -72,14 +72,14 @@ public class ShoppingListAdapter extends ArrayAdapter<Ingredient> {
     }
 
     static class ViewHolder {
-        @InjectView(R.id.ingredient_name)
+        @Bind(R.id.ingredient_name)
         TextView ingredientName;
 
-        @InjectView(R.id.ingredient_chk)
+        @Bind(R.id.ingredient_chk)
         CheckBox ingredientChecked;
 
         public ViewHolder(View view) {
-            ButterKnife.inject(this, view);
+            ButterKnife.bind(this, view);
         }
     }
 

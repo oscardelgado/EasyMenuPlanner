@@ -16,7 +16,6 @@ import com.oscardelgado83.easymenuplanner.util.GA;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
 
 import static com.oscardelgado83.easymenuplanner.util.Cons.DEBUGGING;
@@ -77,12 +76,6 @@ public class ShoppingListFragment extends ListFragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         ((MainActivity) activity).onSectionAttached(this);
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.reset(this);
     }
 
     @Override

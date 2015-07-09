@@ -31,12 +31,12 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
 
-import butterknife.InjectView;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
 
 import static butterknife.ButterKnife.findById;
-import static butterknife.ButterKnife.inject;
-import static butterknife.ButterKnife.reset;
+import static butterknife.ButterKnife.unbind;
 import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.FIRST;
 import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.NONE;
 import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.SECOND;
@@ -52,25 +52,25 @@ public class WeekFragment extends Fragment {
     private static final String FRAGMENT_NAME = "WeekFragment";
     private static final String LOG_TAG = FRAGMENT_NAME;
 
-    @InjectView(R.id.day1)
+    @Bind(R.id.day1)
     TableRow tableRow1;
 
-    @InjectView(R.id.day2)
+    @Bind(R.id.day2)
     TableRow tableRow2;
 
-    @InjectView(R.id.day3)
+    @Bind(R.id.day3)
     TableRow tableRow3;
 
-    @InjectView(R.id.day4)
+    @Bind(R.id.day4)
     TableRow tableRow4;
 
-    @InjectView(R.id.day5)
+    @Bind(R.id.day5)
     TableRow tableRow5;
 
-    @InjectView(R.id.day6)
+    @Bind(R.id.day6)
     TableRow tableRow6;
 
-    @InjectView(R.id.day7)
+    @Bind(R.id.day7)
     TableRow tableRow7;
 
     private TableRow[] allTableRows;
@@ -86,7 +86,7 @@ public class WeekFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_week, container, false);
-        inject(this, view);
+        ButterKnife.bind(this, view);
 
         List<Day> week = ((MainActivity) getActivity()).getWeek();
 
@@ -310,7 +310,7 @@ public class WeekFragment extends Fragment {
             findById(tr, R.id.buttonRightB).setOnClickListener(null);
             findById(tr, R.id.card_view_right).setOnClickListener(null);
         }
-        reset(this);
+        unbind(this);
     }
 
     @DebugLog
