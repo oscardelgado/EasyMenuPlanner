@@ -37,9 +37,9 @@ public class MenuWeekAppWidgetSmall extends AppWidgetProvider {
     public static String WIDGET_NAME = "MenuWeekAppWidget";
     protected static final String LOG_TAG = WIDGET_NAME;
 
+    public static final String EXTRA_ITEM = "MenuWeekAppWidget_ExtraItem";
+
     public static final int WEEKDAYS = 7;
-    public static final int INITIAL = 80; // maxHeight for first tile
-    public static final int JUMP = 120; // maxHeight increment for each tile
 
     private static List<Day> allWeek;
     private static Map<Integer, Integer> tilesByWidget = new HashMap<>();
@@ -177,7 +177,10 @@ public class MenuWeekAppWidgetSmall extends AppWidgetProvider {
 
         // Create an Intent to launch Activity
         Intent intent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+        Bundle extras = new Bundle();
+        extras.putBoolean(EXTRA_ITEM, true);
+        intent.putExtras(extras);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Get the layout for the App Widget and attach an on-click listener
         // to the button

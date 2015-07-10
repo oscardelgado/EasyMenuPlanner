@@ -389,22 +389,11 @@ public class MainActivity extends AppCompatActivity
 
         if (extras != null && extras.containsKey(ShoppingListAppWidget.EXTRA_ITEM)) {
             Log.d(LOG_TAG, "Changing to ShoppingListFragment");
+            mNavigationDrawerFragment.selectItem(Section.WEEK_SHOPPINGLIST.ordinal());
 
-            currentFrg = new ShoppingListFragment();
-
-            //http://stackoverflow.com/a/10261449/1464013
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, currentFrg)
-                    .commitAllowingStateLoss();
-//        } else if() { //TODO: add new extra for week widget
-//            Log.d(LOG_TAG, "Changing to WeekFragment");
-//
-//            currentFrg = new WeekFragment();
-//
-//            //http://stackoverflow.com/a/10261449/1464013
-//            getSupportFragmentManager().beginTransaction()
-//                    .replace(R.id.container, currentFrg)
-//                    .commitAllowingStateLoss();
+        } else if (extras != null && extras.containsKey(MenuWeekAppWidgetSmall.EXTRA_ITEM)) {
+            Log.d(LOG_TAG, "Changing to WeekFragment");
+            mNavigationDrawerFragment.selectItem(Section.WEEK_MENU.ordinal());
         }
     }
 
