@@ -82,7 +82,7 @@ public class ShoppingListWidgetViewsFactory implements RemoteViewsService.Remote
         extras.putInt(ShoppingListAppWidget.EXTRA_ITEM, position);
         i.putExtras(extras);
 
-        row.setOnClickFillInIntent(android.R.id.text1, i);
+        row.setOnClickFillInIntent(R.id.row, i);
 
         return (row);
     }
@@ -112,5 +112,18 @@ public class ShoppingListWidgetViewsFactory implements RemoteViewsService.Remote
     public void onDataSetChanged() {
         items.clear();
         items.addAll(queryIngredients());
+    }
+
+    private class CheckedClicked implements View.OnClickListener {
+        /**
+         * Called when a view has been clicked.
+         *
+         * @param v The view that was clicked.
+         */
+        @DebugLog
+        @Override
+        public void onClick(View v) {
+
+        }
     }
 }
