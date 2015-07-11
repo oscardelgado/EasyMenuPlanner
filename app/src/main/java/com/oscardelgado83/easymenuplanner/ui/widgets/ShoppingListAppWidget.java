@@ -31,18 +31,17 @@ public class ShoppingListAppWidget extends AppWidgetProvider {
                 widget = new RemoteViews(ctxt.getPackageName(),
                         R.layout.shopping_list_widget_layout);
 
-                widget.setRemoteAdapter(appWidgetIds[i], R.id.ingredient_name,
-                        svcIntent);
-
                 Intent clickIntent = new Intent(ctxt, MainActivity.class);
                 PendingIntent clickPI = PendingIntent
                         .getActivity(ctxt, 0,
                                 clickIntent,
                                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-                widget.setPendingIntentTemplate(R.id.ingredient_name, clickPI);
-                widget.setRemoteAdapter(appWidgetIds[i], R.id.ingredient_name,
+                widget.setPendingIntentTemplate(R.id.list_view, clickPI);
+
+                widget.setRemoteAdapter(appWidgetIds[i], R.id.list_view,
                         svcIntent);
+                widget.setEmptyView(R.id.list_view, R.id.empty_view);
             } else {
                 widget = new RemoteViews(ctxt.getPackageName(),
                         R.layout.shopping_list_widget_layout_old_api);
