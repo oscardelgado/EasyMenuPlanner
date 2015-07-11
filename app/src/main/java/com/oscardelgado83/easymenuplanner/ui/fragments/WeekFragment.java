@@ -368,8 +368,18 @@ public class WeekFragment extends Fragment {
         List<Course> notUsedSecondCourses = new ArrayList<>(allSecondCourses);
 
         for (Day day : ((MainActivity) getActivity()).getWeek()) {
-            if (day.firstCourse != null) notUsedFirstCourses.remove(day.firstCourse);
-            if (day.secondCourse != null) notUsedSecondCourses.remove(day.secondCourse);
+            if (day.firstCourse != null) {
+
+                // Remove from both lists (If type is "both", it might be in both lists).
+                notUsedFirstCourses.remove(day.firstCourse);
+                notUsedSecondCourses.remove(day.firstCourse);
+            }
+            if (day.secondCourse != null) {
+
+                // Remove from both lists (If type is "both", it might be in both lists).
+                notUsedFirstCourses.remove(day.secondCourse);
+                notUsedSecondCourses.remove(day.secondCourse);
+            }
         }
 
         for (int i = 0; i < allTableRows.length; i++) {
@@ -389,7 +399,6 @@ public class WeekFragment extends Fragment {
                 week.get(i).firstCourse = course;
                 tvA.setText(course.name);
             }
-            notUsedFirstCourses.remove(course);
 
             TextView tvB = (TextView) tr.findViewById(R.id.textViewB);
             if (tvB.getText().equals("")) {
@@ -406,6 +415,9 @@ public class WeekFragment extends Fragment {
                 week.get(i).secondCourse = course;
                 tvB.setText(course.name);
             }
+
+            // Remove from both lists (If type is "both", it might be in both lists).
+            notUsedFirstCourses.remove(course);
             notUsedSecondCourses.remove(course);
         }
         dirty = true;
