@@ -367,6 +367,8 @@ public class WeekFragment extends Fragment {
         List<Course> notUsedFirstCourses = new ArrayList<>(allFirstCourses);
         List<Course> notUsedSecondCourses = new ArrayList<>(allSecondCourses);
 
+        rand = new Random();
+
         for (Day day : ((MainActivity) getActivity()).getWeek()) {
             if (day.firstCourse != null) {
 
@@ -386,7 +388,6 @@ public class WeekFragment extends Fragment {
             TableRow tr = allTableRows[i];
             TextView tvA = (TextView) tr.findViewById(R.id.textViewA);
             if (tvA.getText().equals("")) {
-                rand = new Random();
 
                 //Avoid repeating if possible
                 if (!notUsedFirstCourses.isEmpty()) {
@@ -400,12 +401,15 @@ public class WeekFragment extends Fragment {
                 tvA.setText(course.name);
             }
 
+            // Remove from both lists (If type is "both", it might be in both lists).
+            notUsedFirstCourses.remove(course);
+            notUsedSecondCourses.remove(course);
+
             TextView tvB = (TextView) tr.findViewById(R.id.textViewB);
             if (tvB.getText().equals("")) {
-                rand = new Random();
 
                 //Avoid repeating if possible
-                if (!notUsedFirstCourses.isEmpty()) {
+                if (!notUsedSecondCourses.isEmpty()) {
                     int randomInt = rand.nextInt(notUsedSecondCourses.size());
                     course = notUsedSecondCourses.get(randomInt);
                 } else {
