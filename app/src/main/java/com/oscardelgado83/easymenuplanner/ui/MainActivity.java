@@ -384,16 +384,17 @@ public class MainActivity extends AppCompatActivity
             adView.resume();
         }
 
-        Intent intent = getIntent(); //TODO: check if possible NPE
-        Bundle extras = intent.getExtras();
+        Intent intent = getIntent();
 
-        if (extras != null && extras.containsKey(ShoppingListAppWidget.EXTRA_ITEM)) {
-            Log.d(LOG_TAG, "Changing to ShoppingListFragment");
-            mNavigationDrawerFragment.selectItem(Section.WEEK_SHOPPINGLIST.ordinal());
-
-        } else if (extras != null && extras.containsKey(MenuWeekAppWidgetSmall.EXTRA_ITEM)) {
-            Log.d(LOG_TAG, "Changing to WeekFragment");
-            mNavigationDrawerFragment.selectItem(Section.WEEK_MENU.ordinal());
+        if (intent != null) {
+            Bundle extras = intent.getExtras();
+            if (extras != null && extras.containsKey(ShoppingListAppWidget.EXTRA_ITEM)) {
+                Log.d(LOG_TAG, "Changing to ShoppingListFragment");
+                mNavigationDrawerFragment.selectItem(Section.WEEK_SHOPPINGLIST.ordinal());
+            } else if (extras != null && extras.containsKey(MenuWeekAppWidgetSmall.EXTRA_ITEM)) {
+                Log.d(LOG_TAG, "Changing to WeekFragment");
+                mNavigationDrawerFragment.selectItem(Section.WEEK_MENU.ordinal());
+            }
         }
     }
 
