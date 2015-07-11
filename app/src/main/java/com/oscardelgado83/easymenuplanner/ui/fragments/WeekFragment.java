@@ -367,16 +367,27 @@ public class WeekFragment extends Fragment {
         List<Course> notUsedFirstCourses = new ArrayList<>(allFirstCourses);
         List<Course> notUsedSecondCourses = new ArrayList<>(allSecondCourses);
 
+        rand = new Random();
+
         for (Day day : ((MainActivity) getActivity()).getWeek()) {
-            if (day.firstCourse != null) notUsedFirstCourses.remove(day.firstCourse);
-            if (day.secondCourse != null) notUsedSecondCourses.remove(day.secondCourse);
+            if (day.firstCourse != null) {
+
+                // Remove from both lists (If type is "both", it might be in both lists).
+                notUsedFirstCourses.remove(day.firstCourse);
+                notUsedSecondCourses.remove(day.firstCourse);
+            }
+            if (day.secondCourse != null) {
+
+                // Remove from both lists (If type is "both", it might be in both lists).
+                notUsedFirstCourses.remove(day.secondCourse);
+                notUsedSecondCourses.remove(day.secondCourse);
+            }
         }
 
         for (int i = 0; i < allTableRows.length; i++) {
             TableRow tr = allTableRows[i];
             TextView tvA = (TextView) tr.findViewById(R.id.textViewA);
             if (tvA.getText().equals("")) {
-                rand = new Random();
 
                 //Avoid repeating if possible
                 if (!notUsedFirstCourses.isEmpty()) {
@@ -389,14 +400,16 @@ public class WeekFragment extends Fragment {
                 week.get(i).firstCourse = course;
                 tvA.setText(course.name);
             }
+
+            // Remove from both lists (If type is "both", it might be in both lists).
             notUsedFirstCourses.remove(course);
+            notUsedSecondCourses.remove(course);
 
             TextView tvB = (TextView) tr.findViewById(R.id.textViewB);
             if (tvB.getText().equals("")) {
-                rand = new Random();
 
                 //Avoid repeating if possible
-                if (!notUsedFirstCourses.isEmpty()) {
+                if (!notUsedSecondCourses.isEmpty()) {
                     int randomInt = rand.nextInt(notUsedSecondCourses.size());
                     course = notUsedSecondCourses.get(randomInt);
                 } else {
@@ -406,6 +419,9 @@ public class WeekFragment extends Fragment {
                 week.get(i).secondCourse = course;
                 tvB.setText(course.name);
             }
+
+            // Remove from both lists (If type is "both", it might be in both lists).
+            notUsedFirstCourses.remove(course);
             notUsedSecondCourses.remove(course);
         }
         dirty = true;
