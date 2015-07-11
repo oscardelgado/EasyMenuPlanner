@@ -3,7 +3,7 @@
                     android:minHeight="80dip"
                     android:updatePeriodMillis="0"
                     android:initialLayout="@layout/shopping_list_widget_layout"
-                    android:autoAdvanceViewId="@+id/ingredient_name"
+                    android:autoAdvanceViewId="@+id/list_view"
                     android:previewImage="@drawable/widget_shopping_list"
                     android:resizeMode="horizontal|vertical"
     />

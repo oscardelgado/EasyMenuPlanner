@@ -5,9 +5,12 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.activeandroid.query.Select;
 import com.oscardelgado83.easymenuplanner.EMPApplication;
+import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Ingredient;
 import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 import com.oscardelgado83.easymenuplanner.ui.adapters.ShoppingListAdapter;
@@ -45,6 +48,16 @@ public class ShoppingListFragment extends ListFragment {
         currentIngredientsList = new ArrayList<>(allIngredientsList);
 
         setListAdapter(new ShoppingListAdapter(getActivity(), currentIngredientsList));
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        View  emptyView = getActivity().getLayoutInflater().inflate(R.layout.shopping_list_empty, null);
+
+        ((ViewGroup)getListView().getParent()).addView(emptyView);
+        getListView().setEmptyView(emptyView);
     }
 
     @DebugLog

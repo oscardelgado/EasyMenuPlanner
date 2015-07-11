@@ -46,4 +46,5 @@
     <string name="android_3_required">Se necesita al menos Android 3 para este widget</string>
     <string name="bought">Comprado</string>
     <string name="not_bought">No comprado</string>
+    <string name="shopping_list_empty">Tu lista de la compra está vacía</string>
 </resources>
