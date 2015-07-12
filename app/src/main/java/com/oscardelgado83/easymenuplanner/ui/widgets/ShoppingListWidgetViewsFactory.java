@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -75,6 +76,14 @@ public class ShoppingListWidgetViewsFactory implements RemoteViewsService.Remote
         }
         row.setTextViewText(android.R.id.text1, items.get(position).name);
 
+        Intent i = new Intent();
+
+        Bundle extras = new Bundle();
+        extras.putInt(ShoppingListAppWidget.EXTRA_ITEM, position);
+        i.putExtras(extras);
+
+        row.setOnClickFillInIntent(R.id.row, i);
+
         return (row);
     }
 
@@ -103,5 +112,18 @@ public class ShoppingListWidgetViewsFactory implements RemoteViewsService.Remote
     public void onDataSetChanged() {
         items.clear();
         items.addAll(queryIngredients());
+    }
+
+    private class CheckedClicked implements View.OnClickListener {
+        /**
+         * Called when a view has been clicked.
+         *
+         * @param v The view that was clicked.
+         */
+        @DebugLog
+        @Override
+        public void onClick(View v) {
+
+        }
     }
 }

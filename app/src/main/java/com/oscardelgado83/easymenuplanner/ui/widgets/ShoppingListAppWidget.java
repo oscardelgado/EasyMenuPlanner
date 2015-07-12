@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Bundle;
 import android.widget.RemoteViews;
 
 import com.oscardelgado83.easymenuplanner.R;
@@ -33,20 +32,16 @@ public class ShoppingListAppWidget extends AppWidgetProvider {
                         R.layout.shopping_list_widget_layout);
 
                 Intent clickIntent = new Intent(ctxt, MainActivity.class);
-
-                Bundle extras = new Bundle();
-                extras.putBoolean(EXTRA_ITEM, true); //TODO: in MainActivity there is a MenuWeekAppWidget_ExtraItem. Try a clean...
-                clickIntent.putExtras(extras);
-
                 PendingIntent clickPI = PendingIntent
                         .getActivity(ctxt, 0,
                                 clickIntent,
                                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-                widget.setOnClickPendingIntent(R.id.shopping_list_linear_layout, clickPI);
+                widget.setPendingIntentTemplate(R.id.list_view, clickPI);
 
                 widget.setRemoteAdapter(appWidgetIds[i], R.id.list_view,
                         svcIntent);
+
                 widget.setEmptyView(R.id.list_view, R.id.empty_view);
             } else {
                 widget = new RemoteViews(ctxt.getPackageName(),
