@@ -37,10 +37,7 @@ public class ShoppingListAppWidget extends AppWidgetProvider {
                                 clickIntent,
                                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-                widget.setPendingIntentTemplate(R.id.list_view, clickPI);
-
-                widget.setRemoteAdapter(appWidgetIds[i], R.id.list_view,
-                        svcIntent);
+                widget.setPendingIntentTemplate(R.id.list_view, clickPI); // Row
 
                 widget.setEmptyView(R.id.list_view, R.id.empty_view);
             } else {
