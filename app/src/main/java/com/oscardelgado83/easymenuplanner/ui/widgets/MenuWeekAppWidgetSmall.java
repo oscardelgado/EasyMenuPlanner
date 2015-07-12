@@ -183,7 +183,6 @@ public class MenuWeekAppWidgetSmall extends AppWidgetProvider {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         // Get the layout for the App Widget and attach an on-click listener
-        // to the button
         views.setOnClickPendingIntent(R.id.linear_layout, pendingIntent);
 
         // Instruct the widget manager to update the widget
