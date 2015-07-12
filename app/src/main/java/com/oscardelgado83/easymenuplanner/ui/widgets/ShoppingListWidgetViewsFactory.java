@@ -113,17 +113,4 @@ public class ShoppingListWidgetViewsFactory implements RemoteViewsService.Remote
         items.clear();
         items.addAll(queryIngredients());
     }
-
-    private class CheckedClicked implements View.OnClickListener {
-        /**
-         * Called when a view has been clicked.
-         *
-         * @param v The view that was clicked.
-         */
-        @DebugLog
-        @Override
-        public void onClick(View v) {
-
-        }
-    }
 }
