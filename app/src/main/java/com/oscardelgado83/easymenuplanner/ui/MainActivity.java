@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity
     private int exportDBMenuId;
 
     private FragmentManager fragmentManager;
+    private boolean dbStarted;
 
     @Override
     @DebugLog
@@ -103,7 +104,7 @@ public class MainActivity extends AppCompatActivity
 
         // Restore preferences
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
-        boolean dbStarted = settings.getBoolean(PREFERENCE_DB_STARTED, false);
+        dbStarted = settings.getBoolean(PREFERENCE_DB_STARTED, false);
 
         if (isTabletDevice()) {
             setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -193,11 +194,14 @@ public class MainActivity extends AppCompatActivity
                 }
             }
 
-            for (int i = 0; i < WEEKDAYS; i++) {
-                Day day = new Day();
-                day.date = new Date();
-                day.save();
-            }//TODO: if restored? too many days?
+            // We may arrive here from the "Restore default courses" action
+            if (!dbStarted) {
+                for (int i = 0; i < WEEKDAYS; i++) {
+                    Day day = new Day();
+                    day.date = new Date();
+                    day.save();
+                }
+            }
 
             ActiveAndroid.setTransactionSuccessful();
 
@@ -206,6 +210,7 @@ public class MainActivity extends AppCompatActivity
             SharedPreferences settings = getPreferences(MODE_PRIVATE);
             SharedPreferences.Editor editor = settings.edit();
             editor.putBoolean(PREFERENCE_DB_STARTED, true);
+            dbStarted = true;
 
             editor.apply();
         } finally {
