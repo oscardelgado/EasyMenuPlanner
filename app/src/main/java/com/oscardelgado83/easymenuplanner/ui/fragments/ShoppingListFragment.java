@@ -74,7 +74,7 @@ public class ShoppingListFragment extends ListFragment {
         List<Ingredient> ingrList = new Select().from(Ingredient.class)
                 .where("Id IN (SELECT CI.ingredient FROM CourseIngredients CI, Days D " +
                         "WHERE (CI.course = D.firstCourse OR CI.course = D.secondCourse) " +
-                        "AND D.Id > ?", weekdayIndexWithCurrentOrder) //0-6 sunday==0 /D.Id 1-7
+                        "AND D.Id > ?)", weekdayIndexWithCurrentOrder) //0-6 sunday==0 /D.Id 1-7
                 .orderBy("UPPER (name) ASC")
                 .execute();
         return ingrList;

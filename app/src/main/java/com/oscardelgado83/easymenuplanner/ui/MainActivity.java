@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity
                 Day day = new Day();
                 day.date = new Date();
                 day.save();
-            }
+            }//TODO: if restored? too many days?
 
             ActiveAndroid.setTransactionSuccessful();
 
