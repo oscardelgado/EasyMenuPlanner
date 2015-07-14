@@ -7,8 +7,8 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <!-- Temporal for debug of DB -->
-    <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->
-    <!-- <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" /> -->
+     <!--<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />-->
+     <!--<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />-->
 
 
     <!-- GA: Optional permission for reliable local dispatching on non-Google Play devices -->

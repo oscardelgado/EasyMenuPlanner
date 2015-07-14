@@ -17,6 +17,7 @@ import com.oscardelgado83.easymenuplanner.ui.adapters.ShoppingListAdapter;
 import com.oscardelgado83.easymenuplanner.util.GA;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import hugo.weaving.DebugLog;
@@ -37,12 +38,18 @@ public class ShoppingListFragment extends ListFragment {
 
     private MenuItem hideCompleted;
     private MenuItem showAll;
+    private int weekdayIndexWithCurrentOrder;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
+
+        int currentDayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK); //Sunday is 1, Saturday is 7.
+        int firstDay = Calendar.getInstance().getFirstDayOfWeek();
+        weekdayIndexWithCurrentOrder = (currentDayOfWeek - firstDay + 7) % 7;
+        Log.d(LOG_TAG, "weekdayIndexWithCurrentOrder: " + weekdayIndexWithCurrentOrder);
 
         allIngredientsList = getIngredients();
         currentIngredientsList = new ArrayList<>(allIngredientsList);
@@ -63,10 +70,13 @@ public class ShoppingListFragment extends ListFragment {
     @DebugLog
     private List<Ingredient> getIngredients() {
 
+
+
         // Day -> Course <- CI -> Ingredient
         List<Ingredient> ingrList = new Select().from(Ingredient.class)
                 .where("Id IN (SELECT CI.ingredient FROM CourseIngredients CI, Days D " +
-                        "WHERE CI.course = D.firstCourse OR CI.course = D.secondCourse)")
+                        "WHERE CI.course = D.firstCourse OR CI.course = D.secondCourse " +
+                        "AND strftime('%w', D.date) >= ?)", weekdayIndexWithCurrentOrder) //0-6 sunday==0 TODO: not working
                 .orderBy("UPPER (name) ASC")
                 .execute();
         return ingrList;
@@ -79,7 +89,8 @@ public class ShoppingListFragment extends ListFragment {
         List<Ingredient> ingrList = new Select().from(Ingredient.class)
                 .where("Id IN (SELECT CI.ingredient FROM CourseIngredients CI, Days D " +
                         "WHERE CI.course = D.firstCourse OR CI.course = D.secondCourse) " +
-                        "AND checked = 0")
+                        "AND checked = 0 " +
+                        "AND strftime('%w', D.date) >= ?)", weekdayIndexWithCurrentOrder)
                 .orderBy("checked ASC, UPPER (name) ASC")
                 .execute();
         return ingrList;
@@ -129,8 +140,9 @@ public class ShoppingListFragment extends ListFragment {
     private int countVisibleChecked() {
         List<Ingredient> allUncheckedItems = new Select().from(Ingredient.class)
                 .where("Id IN (SELECT CI.ingredient FROM CourseIngredients CI, Days D " +
-                        "WHERE CI.course = D.firstCourse OR CI.course = D.secondCourse) " +
-                        "AND checked = 0")
+                        "WHERE CI.course = D.firstCourse OR CI.course = D.secondCourse " +
+                        "AND checked = 0 " +
+                        "AND strftime('%w', D.date) >= ?)", weekdayIndexWithCurrentOrder)
                 .execute();
 
         // All visible items.

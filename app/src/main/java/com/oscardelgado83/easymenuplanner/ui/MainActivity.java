@@ -413,6 +413,7 @@ public class MainActivity extends AppCompatActivity
         super.onPause();
     }
 
+    @DebugLog
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private void updateShoppingListWidgets() {
         int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), ShoppingListAppWidget.class));

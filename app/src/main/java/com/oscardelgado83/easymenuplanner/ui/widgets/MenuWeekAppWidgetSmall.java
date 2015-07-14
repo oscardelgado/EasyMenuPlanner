@@ -147,7 +147,7 @@ public class MenuWeekAppWidgetSmall extends AppWidgetProvider {
          */
         lastPos = Math.min(todayPos + (3 * tiles - 2), WEEKDAYS);
         firstPos = lastPos - (3 * tiles - 2);
-        Log.d(LOG_TAG, "It wil print from " + firstPos + " to " + lastPos);
+        Log.d(LOG_TAG, "It will print from " + firstPos + " to " + lastPos);
         printedDays = allWeek.subList(firstPos, lastPos);
 
         // Construct the RemoteViews object

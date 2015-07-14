@@ -119,6 +119,9 @@ public class WeekFragment extends Fragment {
         int currentDayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK); //Sunday is 1, Saturday is 7.
 
         allTableRows = new TableRow[]{tableRow1, tableRow2, tableRow3, tableRow4, tableRow5, tableRow6, tableRow7};
+        String[] dayNames = new DateFormatSymbols().getShortWeekdays();
+        int firstDay = Calendar.getInstance().getFirstDayOfWeek();
+
         for (int i = 0; i < allTableRows.length; i++) {
             TableRow tr = allTableRows[i];
             tr.setTag(i);
@@ -127,8 +130,6 @@ public class WeekFragment extends Fragment {
             TextView tvB = findById(tr, R.id.textViewB);
             TextView weekDayName = findById(tr, R.id.week_day_name);
 
-            String[] dayNames = new DateFormatSymbols().getShortWeekdays();
-            int firstDay = Calendar.getInstance().getFirstDayOfWeek();
             int indexWithCurrentOrder = (i + firstDay - 1) % (dayNames.length - 1) + 1;
             weekDayName.setText(dayNames[indexWithCurrentOrder]);
             if (indexWithCurrentOrder == currentDayOfWeek) {
