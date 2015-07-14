@@ -2,7 +2,7 @@
                     android:autoAdvanceViewId="@+id/list_view"
                     android:initialLayout="@layout/shopping_list_widget_layout"
                     android:minHeight="80dip"
-                    android:minWidth="80dip"
+                    android:minWidth="110dip"
                     android:previewImage="@drawable/widget_shopping_list"
                     android:resizeMode="horizontal|vertical"
                     android:updatePeriodMillis="3600000"
