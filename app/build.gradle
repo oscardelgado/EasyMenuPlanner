@@ -18,6 +18,7 @@ android {
         resValue "string", "genymotion_4_4_4_device_id", genymotion_4_4_4_device_id
         resValue "string", "genymotion_tablet", genymotion_tablet
         resValue "string", "ad_buddiz_publisher_key", ad_buddiz_publisher_key
+        multiDexEnabled true
     }
     buildTypes {
         release {
