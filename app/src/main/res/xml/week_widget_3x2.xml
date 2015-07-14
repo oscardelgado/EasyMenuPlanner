@@ -3,7 +3,7 @@
                     android:minWidth="180dp"
                     android:minHeight="110dp"
                     android:minResizeHeight="40dp"
-                    android:updatePeriodMillis="0"
+                    android:updatePeriodMillis="3600000"
                     android:previewImage="@drawable/widget_preview3x2"
                     android:initialLayout="@layout/menu_week_app_widget"
                     android:resizeMode="horizontal|vertical"
