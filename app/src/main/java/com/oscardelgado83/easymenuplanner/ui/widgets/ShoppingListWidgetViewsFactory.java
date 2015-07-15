@@ -15,6 +15,7 @@ import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Ingredient;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import hugo.weaving.DebugLog;
@@ -37,9 +38,14 @@ public class ShoppingListWidgetViewsFactory implements RemoteViewsService.Remote
 
     @DebugLog
     private List<Ingredient> queryIngredients() {
+        int currentDayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK); //Sunday is 1, Saturday is 7.
+        int firstDay = Calendar.getInstance().getFirstDayOfWeek();
+        int weekdayIndexWithCurrentOrder = (currentDayOfWeek - firstDay + 7) % 7;
+
         return new Select().from(Ingredient.class)
                 .where("Id IN (SELECT CI.ingredient FROM CourseIngredients CI, Days D " +
-                        "WHERE CI.course = D.firstCourse OR CI.course = D.secondCourse)")
+                        "WHERE (CI.course = D.firstCourse OR CI.course = D.secondCourse) " +
+                        "AND D.Id > ?)", weekdayIndexWithCurrentOrder) //0-6 sunday==0 /D.Id 1-7)
                 .orderBy("checked ASC, UPPER (name) ASC")
                 .execute();
     }
