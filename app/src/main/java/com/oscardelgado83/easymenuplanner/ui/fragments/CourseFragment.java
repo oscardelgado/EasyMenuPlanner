@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -39,9 +38,6 @@ import com.oscardelgado83.easymenuplanner.ui.IngredientsCompletionView;
 import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 import com.oscardelgado83.easymenuplanner.ui.adapters.CourseAdapter;
 import com.oscardelgado83.easymenuplanner.util.GA;
-import com.purplebrain.adbuddiz.sdk.AdBuddiz;
-import com.purplebrain.adbuddiz.sdk.AdBuddizDelegate;
-import com.purplebrain.adbuddiz.sdk.AdBuddizError;
 
 import java.util.Collections;
 import java.util.Comparator;
@@ -62,8 +58,6 @@ public class CourseFragment extends ListFragment {
 
     // Instead of class.getSimpleName() to avoid proGuard changing it.
     public static final String FRAGMENT_NAME = "CourseFragment";
-    private static final String NO_MORE_AVAILABLE_ADS = "NO_MORE_AVAILABLE_ADS";
-    public static final int LAUNCHES_FOR_SHOWING_AD = 3;
     private List<Course> courseList;
 
     private static final String LOG_TAG = FRAGMENT_NAME;
@@ -99,48 +93,6 @@ public class CourseFragment extends ListFragment {
             getListView().setFastScrollAlwaysVisible(true);
         } else {
             addFloatingContextMenuListener(getListView());
-        }
-
-        showAdBuddizAd();
-    }
-
-    private void showAdBuddizAd() {
-        // We need an Editor object to make preference changes.
-        // All objects are from android.context.Context
-        SharedPreferences settings = getActivity().getPreferences(Context.MODE_PRIVATE);
-        int launchCount = settings.getInt(MainActivity.PREFERENCE_LAUCH_COUNT, 0);
-
-        Log.i(LOG_TAG, "launch count: " + launchCount);
-        Log.i(LOG_TAG, "launches between showing ad: " + LAUNCHES_FOR_SHOWING_AD);
-
-        if (launchCount % LAUNCHES_FOR_SHOWING_AD == 0) {
-            AdBuddiz.setDelegate(new AdBuddizDelegate() {
-                @Override
-                @DebugLog
-                public void didFailToShowAd(AdBuddizError adBuddizError) {
-                    Log.d(LOG_TAG, "AdBuddiz error: " + adBuddizError);
-                    if (adBuddizError.getName().equals(NO_MORE_AVAILABLE_ADS)) {
-                        Log.i(LOG_TAG, "AdBuddiz: NO_MORE_AVAILABLE_ADS");
-                    }
-                }
-                @Override
-                @DebugLog
-                public void didCacheAd() {
-                }
-                @Override
-                @DebugLog
-                public void didShowAd() {
-                }
-                @Override
-                @DebugLog
-                public void didClick() {
-                }
-                @Override
-                @DebugLog
-                public void didHideAd() {
-                }
-            });
-            if (! DEBUGGING) AdBuddiz.showAd(getActivity());
         }
     }
 

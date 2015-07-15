@@ -41,7 +41,6 @@ import com.oscardelgado83.easymenuplanner.ui.fragments.WeekFragment;
 import com.oscardelgado83.easymenuplanner.ui.widgets.MenuWeekAppWidgetMedium;
 import com.oscardelgado83.easymenuplanner.ui.widgets.MenuWeekAppWidgetSmall;
 import com.oscardelgado83.easymenuplanner.ui.widgets.ShoppingListAppWidget;
-import com.purplebrain.adbuddiz.sdk.AdBuddiz;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -134,14 +133,6 @@ public class MainActivity extends AppCompatActivity
 
         int launchCount = settings.getInt(PREFERENCE_LAUCH_COUNT, 0);
         settings.edit().putInt(PREFERENCE_LAUCH_COUNT, ++launchCount).apply();
-
-        if (! DEBUGGING) {
-
-            // AdBuddiz: request to cache adds
-            AdBuddiz.setPublisherKey(getResources().getString(R.string.ad_buddiz_publisher_key));
-//            if (Cons.DEBUGGING) AdBuddiz.setTestModeActive();
-            AdBuddiz.cacheAds(this); // this = current Activity
-        }
     }
 
     @DebugLog
@@ -439,7 +430,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onDestroy() {
         adView.destroy();
-        if (! DEBUGGING) AdBuddiz.onDestroy();
         super.onDestroy();
     }
 
