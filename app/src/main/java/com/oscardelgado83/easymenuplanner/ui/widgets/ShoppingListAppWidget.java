@@ -32,12 +32,15 @@ public class ShoppingListAppWidget extends AppWidgetProvider {
                         R.layout.shopping_list_widget_layout);
 
                 Intent clickIntent = new Intent(ctxt, MainActivity.class);
+
                 PendingIntent clickPI = PendingIntent
                         .getActivity(ctxt, 0,
                                 clickIntent,
                                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-                widget.setPendingIntentTemplate(R.id.list_view, clickPI); // Row
+                widget.setPendingIntentTemplate(R.id.list_view, clickPI);
+
+                widget.setOnClickPendingIntent(R.id.shopping_list_linear_layout, clickPI);
 
                 widget.setRemoteAdapter(appWidgetIds[i], R.id.list_view, svcIntent);
 
