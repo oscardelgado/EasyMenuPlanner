@@ -39,6 +39,8 @@ public class ShoppingListAppWidget extends AppWidgetProvider {
 
                 widget.setPendingIntentTemplate(R.id.list_view, clickPI); // Row
 
+                widget.setRemoteAdapter(appWidgetIds[i], R.id.list_view, svcIntent);
+
                 widget.setEmptyView(R.id.list_view, R.id.empty_view);
             } else {
                 widget = new RemoteViews(ctxt.getPackageName(),

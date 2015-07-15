@@ -1,5 +1,4 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:autoAdvanceViewId="@+id/list_view"
                     android:initialLayout="@layout/shopping_list_widget_layout"
                     android:minHeight="80dip"
                     android:minWidth="110dip"

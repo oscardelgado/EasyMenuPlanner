@@ -35,6 +35,7 @@ public class ShoppingListWidgetViewsFactory implements RemoteViewsService.Remote
         items = new ArrayList<>();
     }
 
+    @DebugLog
     private List<Ingredient> queryIngredients() {
         return new Select().from(Ingredient.class)
                 .where("Id IN (SELECT CI.ingredient FROM CourseIngredients CI, Days D " +
