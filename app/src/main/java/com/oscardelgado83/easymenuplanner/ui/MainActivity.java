@@ -461,7 +461,6 @@ public class MainActivity extends AppCompatActivity
                 .addTestDevice(getString(R.string.genymotion_4_4_4_device_id))
                 .addTestDevice(getString(R.string.genymotion_xperia_4_4_1_device_id))
                 .addTestDevice(getString(R.string.genymotion_tablet))
-
                 .build());
     }
 
