@@ -1,6 +1,7 @@
 package com.oscardelgado83.easymenuplanner.ui.adapters;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +56,14 @@ public class ShoppingListAdapter extends ArrayAdapter<Ingredient> {
 
         holder.ingredientChecked.setChecked(ingredient.checked);
 
+        if (ingredient.checked) {
+            holder.ingredientName.setEnabled(false);
+            holder.ingredientName.setPaintFlags(holder.ingredientName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        } else {
+            holder.ingredientName.setEnabled(true);
+            holder.ingredientName.setPaintFlags(holder.ingredientName.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+        }
+
         convertView.setOnClickListener(new View.OnClickListener() {
             @DebugLog
             @Override
@@ -63,6 +72,15 @@ public class ShoppingListAdapter extends ArrayAdapter<Ingredient> {
                 ingredient.save();
                 if (DEBUGGING) Log.d(LOG_TAG, "Ingredient saved: " + ingredient);
                 holder.ingredientChecked.setChecked(ingredient.checked);
+
+                if (ingredient.checked) {
+                    holder.ingredientName.setEnabled(false);
+                    holder.ingredientName.setPaintFlags(holder.ingredientName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                } else {
+                    holder.ingredientName.setEnabled(true);
+                    holder.ingredientName.setPaintFlags(holder.ingredientName.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
+                }
+
                 context.refreshShoppinglistMenu();
             }
         });
