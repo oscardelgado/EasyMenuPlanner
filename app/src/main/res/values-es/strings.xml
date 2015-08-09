@@ -8,7 +8,7 @@
     <string name="action_automatic_fill">Rellenar automáticamente</string>
     <string name="action_settings">Ajustes</string>
     <string name="error_loadingInitialConfig">Problema al cargar configuración inicial</string>
-    <string name="action_clear_all">Borrar todos</string>
+    <string name="action_clear_all">Vaciar el planning</string>
     <string name="action_add">Añadir</string>
     <string name="action_remove">Borrar</string>
     <string name="dialog_delete_confirmation">¿Borrar los platos seleccionados?</string>
