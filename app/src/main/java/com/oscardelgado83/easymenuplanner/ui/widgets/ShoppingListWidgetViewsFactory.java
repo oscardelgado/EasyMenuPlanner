@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -77,11 +78,17 @@ public class ShoppingListWidgetViewsFactory implements RemoteViewsService.Remote
         if (items.get(position).checked) {
             row.setViewVisibility(R.id.checked, View.VISIBLE);
             row.setViewVisibility(R.id.unchecked, View.GONE);
+            row.setViewVisibility(R.id.text_checked, View.VISIBLE);
+            row.setViewVisibility(R.id.text_unchecked, View.GONE);
+            row.setTextViewText(R.id.text_checked, items.get(position).name);
+            row.setInt(R.id.text_checked, "setPaintFlags", Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
         } else {
             row.setViewVisibility(R.id.unchecked, View.VISIBLE);
             row.setViewVisibility(R.id.checked, View.GONE);
+            row.setViewVisibility(R.id.text_unchecked, View.VISIBLE);
+            row.setViewVisibility(R.id.text_checked, View.GONE);
+            row.setTextViewText(R.id.text_unchecked, items.get(position).name);
         }
-        row.setTextViewText(android.R.id.text1, items.get(position).name);
 
         Intent i = new Intent();
 

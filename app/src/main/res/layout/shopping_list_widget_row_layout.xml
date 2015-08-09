@@ -26,7 +26,19 @@
         android:visibility="gone"/>
 
     <TextView
-        android:id="@android:id/text1"
+        android:id="@+id/text_checked"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:text="test"
+        android:textColor="@color/disabled_text"
+        android:textSize="12sp"
+        />
+
+    <TextView
+        android:id="@+id/text_unchecked"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
@@ -34,5 +46,6 @@
         android:paddingRight="15dp"
         android:text="test"
         android:textColor="@color/primary_dark"
-        android:textSize="12sp"/>
+        android:textSize="12sp"
+        android:visibility="gone"/>
 </LinearLayout>
