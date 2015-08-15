@@ -50,4 +50,5 @@
     <string name="bought">Bougth</string>
     <string name="not_bought">Not bought</string>
     <string name="shopping_list_empty">Your shopping list is empty</string>
+    <string name="shoppinglist_ingredient_on_days">on</string>
 </resources>
