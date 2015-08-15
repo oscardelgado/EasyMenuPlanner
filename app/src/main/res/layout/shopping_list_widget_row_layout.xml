@@ -33,7 +33,7 @@
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:text="test"
-        android:textColor="@color/disabled_text"
+        android:textColor="@color/light_text"
         android:textSize="12sp"
         />
 

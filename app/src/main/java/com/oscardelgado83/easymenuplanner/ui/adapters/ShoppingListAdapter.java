@@ -2,6 +2,7 @@ package com.oscardelgado83.easymenuplanner.ui.adapters;
 
 import android.content.Context;
 import android.graphics.Paint;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +11,18 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.activeandroid.query.Select;
 import com.oscardelgado83.easymenuplanner.R;
+import com.oscardelgado83.easymenuplanner.model.Course;
+import com.oscardelgado83.easymenuplanner.model.CourseIngredient;
+import com.oscardelgado83.easymenuplanner.model.Day;
 import com.oscardelgado83.easymenuplanner.model.Ingredient;
 import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -30,10 +39,15 @@ public class ShoppingListAdapter extends ArrayAdapter<Ingredient> {
     private static final String LOG_TAG = ShoppingListAdapter.class.getSimpleName();
 
     MainActivity context;
+    private final int weekdayIndexWithCurrentOrder;
 
     public ShoppingListAdapter(Context context, List<Ingredient> ingredientList) {
         super(context, 0, ingredientList);
         this.context = (MainActivity) context;
+
+        int currentDayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK); //Sunday is 1, Saturday is 7.
+        int firstDay = Calendar.getInstance().getFirstDayOfWeek();
+        weekdayIndexWithCurrentOrder = (currentDayOfWeek - firstDay + 7) % 7;
     }
 
     @Override
@@ -64,11 +78,38 @@ public class ShoppingListAdapter extends ArrayAdapter<Ingredient> {
             holder.ingredientName.setPaintFlags(holder.ingredientName.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
         }
 
+        List<Course> courses = new Select().from(Course.class)
+                .innerJoin(CourseIngredient.class).on("CourseIngredients.course = Courses.Id")
+                .and("CourseIngredients.ingredient = ?", ingredient.getId())
+                .innerJoin(Day.class).on("Days.firstCourse = Courses.Id OR Days.secondCourse = Courses.Id")
+                .where("Days.Id > ?", weekdayIndexWithCurrentOrder)
+                .execute();
+
+//        if (todayIngredients.contains(ingredient)) {
+//            holder.day.setTextColor(Color.RED);
+//            holder.day.setText("today"); //TODO: i18n
+//        }
+
+        List<String> coursesStrings = new LinkedList<>();
+        for (Course course : courses) {
+            List<Day> days = new Select().from(Day.class)
+                    .where("(Days.firstCourse = ? OR Days.secondCourse = ?)", course.getId(), course.getId())
+                    .and("Days.Id > ?", weekdayIndexWithCurrentOrder)
+                    .execute();
+
+            if (DEBUGGING) Log.d(LOG_TAG, "Alldays: " + context.getWeek());
+            if (DEBUGGING) Log.d(LOG_TAG, "Days: " + days);
+
+            coursesStrings.add(course.name + ", <b>on " + StringUtils.join(days, ", </b>"));  //TODO: i18n
+        }
+
+        holder.course.setText(Html.fromHtml(StringUtils.join(coursesStrings, "\n")));
+
         convertView.setOnClickListener(new View.OnClickListener() {
             @DebugLog
             @Override
             public void onClick(View v) {
-                ingredient.checked = ! ingredient.checked;
+                ingredient.checked = !ingredient.checked;
                 ingredient.save();
                 if (DEBUGGING) Log.d(LOG_TAG, "Ingredient saved: " + ingredient);
                 holder.ingredientChecked.setChecked(ingredient.checked);
@@ -95,6 +136,9 @@ public class ShoppingListAdapter extends ArrayAdapter<Ingredient> {
 
         @Bind(R.id.ingredient_chk)
         CheckBox ingredientChecked;
+
+        @Bind(R.id.course)
+        TextView course;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);

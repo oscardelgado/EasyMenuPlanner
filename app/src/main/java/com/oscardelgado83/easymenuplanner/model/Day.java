@@ -5,6 +5,8 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 
+import java.text.DateFormatSymbols;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -13,6 +15,9 @@ import java.util.List;
  */
 @Table(name = "Days")
 public class Day extends Model {
+
+    private final String[] dayNames = new DateFormatSymbols().getShortWeekdays();
+    private final int firstDay = Calendar.getInstance().getFirstDayOfWeek();
 
     @Column (index = true)
     public Date date;
@@ -29,10 +34,7 @@ public class Day extends Model {
 
     @Override
     public String toString() {
-        return "Day{" +
-                "date=" + date +
-                ", firstCourse=" + firstCourse +
-                ", secondCourse=" + secondCourse +
-                '}';
+        int indexWithCurrentOrder = (int) (((getId() - 1) + firstDay - 1) % (dayNames.length - 1) + 1);
+        return dayNames[indexWithCurrentOrder];
     }
 }

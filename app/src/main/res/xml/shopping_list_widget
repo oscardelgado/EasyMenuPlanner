@@ -1,8 +1,0 @@
-<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:initialLayout="@layout/shopping_list_widget_layout"
-                    android:minHeight="80dip"
-                    android:minWidth="110dip"
-                    android:previewImage="@drawable/widget_shopping_list"
-                    android:resizeMode="horizontal|vertical"
-                    android:updatePeriodMillis="3600000"
-    />

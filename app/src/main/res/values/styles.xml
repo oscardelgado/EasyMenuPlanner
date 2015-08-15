@@ -20,5 +20,6 @@
     <color name="primary_dark">#3B5A01</color>
     <color name="accent">#0072AF</color>
     <color name="background">#ff2a394e</color>
-    <color name="disabled_text">#696969</color>
+    <color name="light_text">#696969</color>
+    <color name="more_light_text">#bbbbbb</color>
 </resources>

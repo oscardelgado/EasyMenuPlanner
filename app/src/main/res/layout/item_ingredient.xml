@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="60dp"
     android:gravity="center_vertical">
@@ -11,7 +11,10 @@
         android:focusableInTouchMode="false"
         android:clickable="false"
         android:focusable="false"
-        />
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="0dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="0dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -21,5 +24,21 @@
         android:id="@+id/ingredient_name"
         android:focusableInTouchMode="false"
         android:clickable="false"
-        android:focusable="false"/>
-</LinearLayout>
+        android:focusable="false"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/ingredient_chk"
+        android:layout_toEndOf="@+id/ingredient_chk"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text\netc"
+        android:id="@+id/course"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="right"
+        android:layout_marginRight="8dp"
+        android:textColor="@color/more_light_text"/>
+</RelativeLayout>
