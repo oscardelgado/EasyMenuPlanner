@@ -74,9 +74,6 @@ public class ShoppingListFragment extends ListFragment {
 
         // Day -> Course <- CI -> Ingredient
         return new Select().from(Ingredient.class)
-//                .where("Id IN (SELECT CI.ingredient FROM CourseIngredients CI, Days D " +
-//                        "WHERE (CI.course = D.firstCourse OR CI.course = D.secondCourse) " +
-//                        "AND D.Id > ?)", weekdayIndexWithCurrentOrder) //0-6 sunday==0 /D.Id 1-7
                 .innerJoin(CourseIngredient.class).on("CourseIngredients.ingredient = Ingredients.Id")
                 .innerJoin(Day.class).on("(CourseIngredients.course = Days.firstCourse OR CourseIngredients.course = Days.secondCourse)")
                 .where("Days.Id > ?", weekdayIndexWithCurrentOrder) //0-6 sunday==0 /D.Id 1-7
@@ -89,10 +86,6 @@ public class ShoppingListFragment extends ListFragment {
 
         // Day -> Course <- CI -> Ingredient
         return new Select().from(Ingredient.class)
-//                .where("Id IN (SELECT CI.ingredient FROM CourseIngredients CI, Days D " +
-//                        "WHERE (CI.course = D.firstCourse OR CI.course = D.secondCourse) " +
-//                        "AND checked = 0 " +
-//                        "AND D.Id > ?)", weekdayIndexWithCurrentOrder) //0-6 sunday==0 /D.Id 1-7
                 .innerJoin(CourseIngredient.class).on("CourseIngredients.ingredient = Ingredients.Id")
                 .innerJoin(Day.class).on("(CourseIngredients.course = Days.firstCourse OR CourseIngredients.course = Days.secondCourse)")
                 .where("Ingredients.checked = 0")

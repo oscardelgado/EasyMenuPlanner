@@ -90,17 +90,17 @@ public class ShoppingListAdapter extends ArrayAdapter<Ingredient> {
 
             boolean inCurrentDay = new Select().from(Day.class)
                     .where("(Days.firstCourse = ? OR Days.secondCourse = ?)", course.getId(), course.getId())
-                    .and("Days.Id = ?", weekdayIndexWithCurrentOrder + 1)
+                    .and("Days.Id = ? + 1", weekdayIndexWithCurrentOrder)
                     .exists();
 
             boolean tomorrow = new Select().from(Day.class)
                     .where("(Days.firstCourse = ? OR Days.secondCourse = ?)", course.getId(), course.getId())
-                    .and("Days.Id = ?", weekdayIndexWithCurrentOrder + 2)
+                    .and("Days.Id = ? + 2", weekdayIndexWithCurrentOrder)
                     .exists();
 
             List<Day> futureDays = new Select().from(Day.class)
                     .where("(Days.firstCourse = ? OR Days.secondCourse = ?)", course.getId(), course.getId())
-                    .and("Days.Id > ?", weekdayIndexWithCurrentOrder + 2)
+                    .and("Days.Id > ? + 2", weekdayIndexWithCurrentOrder)
                     .execute();
 
             if (inCurrentDay) {

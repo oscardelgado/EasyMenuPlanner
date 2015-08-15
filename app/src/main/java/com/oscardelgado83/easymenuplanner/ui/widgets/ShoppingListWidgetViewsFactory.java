@@ -13,6 +13,8 @@ import android.widget.RemoteViewsService;
 
 import com.activeandroid.query.Select;
 import com.oscardelgado83.easymenuplanner.R;
+import com.oscardelgado83.easymenuplanner.model.CourseIngredient;
+import com.oscardelgado83.easymenuplanner.model.Day;
 import com.oscardelgado83.easymenuplanner.model.Ingredient;
 
 import java.util.ArrayList;
@@ -44,10 +46,10 @@ public class ShoppingListWidgetViewsFactory implements RemoteViewsService.Remote
         int weekdayIndexWithCurrentOrder = (currentDayOfWeek - firstDay + 7) % 7;
 
         return new Select().from(Ingredient.class)
-                .where("Id IN (SELECT CI.ingredient FROM CourseIngredients CI, Days D " +
-                        "WHERE (CI.course = D.firstCourse OR CI.course = D.secondCourse) " +
-                        "AND D.Id > ?)", weekdayIndexWithCurrentOrder) //0-6 sunday==0 /D.Id 1-7)
-                .orderBy("checked ASC, UPPER (name) ASC")
+                .innerJoin(CourseIngredient.class).on("CourseIngredients.ingredient = Ingredients.Id")
+                .innerJoin(Day.class).on("(CourseIngredients.course = Days.firstCourse OR CourseIngredients.course = Days.secondCourse)")
+                .where("Days.Id > ?", weekdayIndexWithCurrentOrder) //0-6 sunday==0 /D.Id 1-7
+                .orderBy("checked ASC, Days.Id, UPPER (name) ASC")
                 .execute();
     }
 
