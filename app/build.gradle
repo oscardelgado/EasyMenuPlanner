@@ -41,16 +41,25 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile files('libs/tokenautocomplete-1.2.1.jar')
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3.1'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.3.1'
     compile 'com.android.support:support-v4:22.2.1'
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.android.support:cardview-v7:22.2.1'
     compile 'com.google.android.gms:play-services-ads:7.8.0'
     compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
     compile 'com.jakewharton:butterknife:7.0.1'
+    compile 'org.apache.commons:commons-lang3:3.4'
 }
 
 repositories {
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" } // For ActiveAndroid
+}
+
+allprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        }
+    }
 }
