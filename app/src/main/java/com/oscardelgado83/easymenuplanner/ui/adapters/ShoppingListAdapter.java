@@ -78,7 +78,7 @@ public class ShoppingListAdapter extends ArrayAdapter<Ingredient> {
             holder.ingredientName.setPaintFlags(holder.ingredientName.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
         }
 
-        List<Course> courses = new Select().from(Course.class)
+        List<Course> courses = new Select(new String[]{"Courses.Id,Courses.name"}).distinct().from(Course.class)
                 .innerJoin(CourseIngredient.class).on("CourseIngredients.course = Courses.Id")
                 .and("CourseIngredients.ingredient = ?", ingredient.getId())
                 .innerJoin(Day.class).on("Days.firstCourse = Courses.Id OR Days.secondCourse = Courses.Id")
@@ -87,27 +87,34 @@ public class ShoppingListAdapter extends ArrayAdapter<Ingredient> {
 
         List<String> coursesStrings = new LinkedList<>();
         for (Course course : courses) {
-            List<Day> futureDays = new Select().from(Day.class)
-                    .where("(Days.firstCourse = ? OR Days.secondCourse = ?)", course.getId(), course.getId())
-                    .and("Days.Id > ?", weekdayIndexWithCurrentOrder + 1)
-                    .execute();
 
             boolean inCurrentDay = new Select().from(Day.class)
                     .where("(Days.firstCourse = ? OR Days.secondCourse = ?)", course.getId(), course.getId())
                     .and("Days.Id = ?", weekdayIndexWithCurrentOrder + 1)
                     .exists();
 
-            List<String> daysStrings = new LinkedList<>();
-            if ( ! futureDays.isEmpty()) {
-                daysStrings.add(context.getString(R.string.shoppinglist_ingredient_on_days) + " "
-                        + StringUtils.join(StringUtils.join(futureDays, ", ")));
-            }
-            if (inCurrentDay) daysStrings.add("<b>Today</b>");
+            boolean tomorrow = new Select().from(Day.class)
+                    .where("(Days.firstCourse = ? OR Days.secondCourse = ?)", course.getId(), course.getId())
+                    .and("Days.Id = ?", weekdayIndexWithCurrentOrder + 2)
+                    .exists();
 
-            coursesStrings.add(course.name + ", " + StringUtils.join(daysStrings, ", "));
+            List<Day> futureDays = new Select().from(Day.class)
+                    .where("(Days.firstCourse = ? OR Days.secondCourse = ?)", course.getId(), course.getId())
+                    .and("Days.Id > ?", weekdayIndexWithCurrentOrder + 2)
+                    .execute();
+
+            if (inCurrentDay) {
+                coursesStrings.add(course.name + ", <b>" + context.getString(R.string.today) + "</b>");
+            } else if (tomorrow) {
+                coursesStrings.add(course.name + ", " + context.getString(R.string.tomorrow));
+            } else if ( ! futureDays.isEmpty()) {
+                String daysString = context.getString(R.string.shoppinglist_ingredient_on_days) + " "
+                        + StringUtils.join(StringUtils.join(futureDays, ", "));
+                coursesStrings.add(course.name + ", " + daysString);
+            }
         }
 
-        holder.course.setText(Html.fromHtml(StringUtils.join(coursesStrings, "\n")));
+        holder.course.setText(Html.fromHtml(StringUtils.join(coursesStrings, "<br />")));
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @DebugLog

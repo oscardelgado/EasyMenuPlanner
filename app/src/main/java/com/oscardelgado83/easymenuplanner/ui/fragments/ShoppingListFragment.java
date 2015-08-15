@@ -11,6 +11,8 @@ import android.view.ViewGroup;
 import com.activeandroid.query.Select;
 import com.oscardelgado83.easymenuplanner.EMPApplication;
 import com.oscardelgado83.easymenuplanner.R;
+import com.oscardelgado83.easymenuplanner.model.CourseIngredient;
+import com.oscardelgado83.easymenuplanner.model.Day;
 import com.oscardelgado83.easymenuplanner.model.Ingredient;
 import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 import com.oscardelgado83.easymenuplanner.ui.adapters.ShoppingListAdapter;
@@ -71,27 +73,32 @@ public class ShoppingListFragment extends ListFragment {
     private List<Ingredient> getIngredients() {
 
         // Day -> Course <- CI -> Ingredient
-        List<Ingredient> ingrList = new Select().from(Ingredient.class)
-                .where("Id IN (SELECT CI.ingredient FROM CourseIngredients CI, Days D " +
-                        "WHERE (CI.course = D.firstCourse OR CI.course = D.secondCourse) " +
-                        "AND D.Id > ?)", weekdayIndexWithCurrentOrder) //0-6 sunday==0 /D.Id 1-7
-                .orderBy("UPPER (name) ASC")
+        return new Select().from(Ingredient.class)
+//                .where("Id IN (SELECT CI.ingredient FROM CourseIngredients CI, Days D " +
+//                        "WHERE (CI.course = D.firstCourse OR CI.course = D.secondCourse) " +
+//                        "AND D.Id > ?)", weekdayIndexWithCurrentOrder) //0-6 sunday==0 /D.Id 1-7
+                .innerJoin(CourseIngredient.class).on("CourseIngredients.ingredient = Ingredients.Id")
+                .innerJoin(Day.class).on("(CourseIngredients.course = Days.firstCourse OR CourseIngredients.course = Days.secondCourse)")
+                .where("Days.Id > ?", weekdayIndexWithCurrentOrder) //0-6 sunday==0 /D.Id 1-7
+                .orderBy("Days.Id, UPPER (name) ASC")
                 .execute();
-        return ingrList;
     }
 
     @DebugLog
     private List<Ingredient> getNotMarkedIngredients() {
 
         // Day -> Course <- CI -> Ingredient
-        List<Ingredient> ingrList = new Select().from(Ingredient.class)
-                .where("Id IN (SELECT CI.ingredient FROM CourseIngredients CI, Days D " +
-                        "WHERE (CI.course = D.firstCourse OR CI.course = D.secondCourse) " +
-                        "AND checked = 0 " +
-                        "AND D.Id > ?)", weekdayIndexWithCurrentOrder) //0-6 sunday==0 /D.Id 1-7
-                .orderBy("checked ASC, UPPER (name) ASC")
+        return new Select().from(Ingredient.class)
+//                .where("Id IN (SELECT CI.ingredient FROM CourseIngredients CI, Days D " +
+//                        "WHERE (CI.course = D.firstCourse OR CI.course = D.secondCourse) " +
+//                        "AND checked = 0 " +
+//                        "AND D.Id > ?)", weekdayIndexWithCurrentOrder) //0-6 sunday==0 /D.Id 1-7
+                .innerJoin(CourseIngredient.class).on("CourseIngredients.ingredient = Ingredients.Id")
+                .innerJoin(Day.class).on("(CourseIngredients.course = Days.firstCourse OR CourseIngredients.course = Days.secondCourse)")
+                .where("Ingredients.checked = 0")
+                .and("Days.Id > ?", weekdayIndexWithCurrentOrder) //0-6 sunday==0 /D.Id 1-7
+                .orderBy("Days.Id, UPPER (name) ASC")
                 .execute();
-        return ingrList;
     }
 
     @Override

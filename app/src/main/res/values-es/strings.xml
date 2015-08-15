@@ -47,5 +47,7 @@
     <string name="bought">Comprado</string>
     <string name="not_bought">No comprado</string>
     <string name="shopping_list_empty">Tu lista de la compra está vacía</string>
-    <string name="shopping_list_ingredient_on_days">el</string>
+    <string name="shoppinglist_ingredient_on_days">el</string>
+    <string name="today">hoy</string>
+    <string name="tomorrow">mañana</string>
 </resources>
