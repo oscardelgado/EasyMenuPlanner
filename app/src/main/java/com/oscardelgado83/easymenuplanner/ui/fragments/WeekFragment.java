@@ -81,14 +81,13 @@ public class WeekFragment extends Fragment {
     private boolean dirty;
 
     private Random rand;
+    private String[] dayNames;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_week, container, false);
         ButterKnife.bind(this, view);
-
-        List<Day> week = ((MainActivity) getActivity()).getWeek();
 
         allFirstCourses = new Select()
                 .from(Course.class)
@@ -116,45 +115,70 @@ public class WeekFragment extends Fragment {
                     .create().show();
         }
 
-        int currentDayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK); //Sunday is 1, Saturday is 7.
-
         allTableRows = new TableRow[]{tableRow1, tableRow2, tableRow3, tableRow4, tableRow5, tableRow6, tableRow7};
-        String[] dayNames = new DateFormatSymbols().getShortWeekdays();
-        int firstDay = Calendar.getInstance().getFirstDayOfWeek();
+        dayNames = new DateFormatSymbols().getShortWeekdays();
 
+        repaintWeekRows();
+        return view;
+    }
+
+    private void repaintWeekRows() {
+        List<Day> week = ((MainActivity) getActivity()).getWeek();
+
+        int currentDayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK); //Sunday is 1, Saturday is 7.
+        boolean dayIsPast = true;
         for (int i = 0; i < allTableRows.length; i++) {
             TableRow tr = allTableRows[i];
             tr.setTag(i);
 
             TextView tvA = findById(tr, R.id.textViewA);
+            TextView ingrA = findById(tr, R.id.ingredientsA);
             TextView tvB = findById(tr, R.id.textViewB);
+            TextView ingrB = findById(tr, R.id.ingredientsB);
             TextView weekDayName = findById(tr, R.id.week_day_name);
 
-            int indexWithCurrentOrder = (i + firstDay - 1) % (dayNames.length - 1) + 1;
+            int indexWithCurrentOrder = (i + Calendar.getInstance().getFirstDayOfWeek() - 1) % (dayNames.length - 1) + 1;
             weekDayName.setText(dayNames[indexWithCurrentOrder]);
+
             if (indexWithCurrentOrder == currentDayOfWeek) {
                 tr.setBackgroundColor(getResources().getColor(R.color.background));
                 weekDayName.setTextColor(getResources().getColor(android.R.color.white));
+                dayIsPast = false;
             }
 
             if (week == null || week.isEmpty()) {
                 if (DEBUGGING) Log.w(LOG_TAG, "The week has not been initialized.");
             } else {
+                if (dayIsPast) weekDayName.setTextColor(getResources().getColor(R.color.light_text));
                 if (week.get(i).firstCourse != null) {
                     tvA.setText(week.get(i).firstCourse.name);
+                    if (! dayIsPast) {
+                        ingrA.setText(getNotCheckedIngredientsCount(week.get(i).firstCourse));
+                    }
                 }
                 if (week.get(i).secondCourse != null) {
                     tvB.setText(week.get(i).secondCourse.name);
+                    if (! dayIsPast) {
+                        ingrB.setText(getNotCheckedIngredientsCount(week.get(i).secondCourse));
+                    }
                 }
             }
-            findById(tr, R.id.buttonLeftA).setOnClickListener(courseBtnClickListener(tvA, i, 0));
-            findById(tr, R.id.buttonRightA).setOnClickListener(courseBtnClickListener(tvA, i, 0));
-            findById(tr, R.id.card_view_left).setOnClickListener(courseBtnClickListener(tvA, i, 0));
-            findById(tr, R.id.buttonLeftB).setOnClickListener(courseBtnClickListener(tvB, i, 1));
-            findById(tr, R.id.buttonRightB).setOnClickListener(courseBtnClickListener(tvB, i, 1));
-            findById(tr, R.id.card_view_right).setOnClickListener(courseBtnClickListener(tvB, i, 1));
+            findById(tr, R.id.buttonLeftA).setOnClickListener(courseBtnClickListener(tvA, ingrA, i, 0));
+            findById(tr, R.id.buttonRightA).setOnClickListener(courseBtnClickListener(tvA, ingrA, i, 0));
+            findById(tr, R.id.card_view_A).setOnClickListener(courseBtnClickListener(tvA, ingrA, i, 0));
+            findById(tr, R.id.buttonLeftB).setOnClickListener(courseBtnClickListener(tvB, ingrB, i, 1));
+            findById(tr, R.id.buttonRightB).setOnClickListener(courseBtnClickListener(tvB, ingrB, i, 1));
+            findById(tr, R.id.card_view_B).setOnClickListener(courseBtnClickListener(tvB, ingrB, i, 1));
         }
-        return view;
+    }
+
+    private String getNotCheckedIngredientsCount(Course course) {
+        int notCheckedCount = course.getNotCheckedIngredientsCount();
+        if (notCheckedCount == 0) {
+            return "";
+        } else {
+            return getResources().getQuantityString(R.plurals.intredients_missing, notCheckedCount, notCheckedCount);
+        }
     }
 
     @Override
@@ -166,7 +190,7 @@ public class WeekFragment extends Fragment {
                 FRAGMENT_NAME);
     }
 
-    private View.OnClickListener courseBtnClickListener(final TextView tv, final int row, final int col) {
+    private View.OnClickListener courseBtnClickListener(final TextView tv, final TextView ingrTv, final int row, final int col) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -209,12 +233,12 @@ public class WeekFragment extends Fragment {
                             }
                         } while (newCourse == currentCourse);
                         break;
-                    case R.id.card_view_left:
-                    case R.id.card_view_right:
+                    case R.id.card_view_A:
+                    case R.id.card_view_B:
                         if (tv.getText().equals("")) {
-                            showCoursesDialog(tv, row, col);
+                            showCoursesDialog(tv, ingrTv, row, col);
                         } else {
-                            showDeleteOrSearchDialog(tv, row, col);
+                            showDeleteOrChangeDialog(tv, ingrTv, row, col);
                         }
                         return;
                     default:
@@ -226,18 +250,19 @@ public class WeekFragment extends Fragment {
                     selectedDay.secondCourse = newCourse;
                 }
                 tv.setText(newCourse != null ? newCourse.name : "");
+                ingrTv.setText(newCourse != null ? getNotCheckedIngredientsCount(newCourse) : "");
                 dirty = true;
             }
         };
     }
 
-    private void showDeleteOrSearchDialog(final TextView tv, final int row, final int col) {
+    private void showDeleteOrChangeDialog(final TextView tv, final TextView ingrTv, final int row, final int col) {
         String[] items = {getString(R.string.day_course_change), getString(R.string.day_course_remove), };
         new AlertDialog.Builder(getActivity()).setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case 0:
-                        showCoursesDialog(tv, row, col);
+                        showCoursesDialog(tv, ingrTv, row, col);
                         break;
                     case 1:
                         List<Day> week = ((MainActivity) getActivity()).getWeek();
@@ -248,6 +273,7 @@ public class WeekFragment extends Fragment {
                                 selectedDay.secondCourse = null;
                             }
                         tv.setText("");
+                        ingrTv.setText("");
                         dirty = true;
                         break;
                     default:
@@ -257,7 +283,7 @@ public class WeekFragment extends Fragment {
         }).create().show();
     }
 
-    private void showCoursesDialog(final TextView tv, final int row, final int col) {
+    private void showCoursesDialog(final TextView tv, final TextView ingrTv, final int row, final int col) {
         List<Course> allCourses = null;
         if (col == 0) {
             allCourses = allFirstCourses;
@@ -280,6 +306,7 @@ public class WeekFragment extends Fragment {
                     selectedDay.secondCourse = selectedCourse;
                 }
                 tv.setText(selectedCourse.name);
+                ingrTv.setText(getNotCheckedIngredientsCount(selectedCourse));
                 dirty = true;
             }
         });
@@ -306,10 +333,10 @@ public class WeekFragment extends Fragment {
             TableRow tr = allTableRows[i];
             findById(tr, R.id.buttonLeftA).setOnClickListener(null);
             findById(tr, R.id.buttonRightA).setOnClickListener(null);
-            findById(tr, R.id.card_view_left).setOnClickListener(null);
+            findById(tr, R.id.card_view_A).setOnClickListener(null);
             findById(tr, R.id.buttonLeftB).setOnClickListener(null);
             findById(tr, R.id.buttonRightB).setOnClickListener(null);
-            findById(tr, R.id.card_view_right).setOnClickListener(null);
+            findById(tr, R.id.card_view_B).setOnClickListener(null);
         }
         unbind(this);
     }
@@ -344,10 +371,15 @@ public class WeekFragment extends Fragment {
         for (int i = 0; i < allTableRows.length; i++) {
             TableRow tr = allTableRows[i];
             TextView tvA = findById(tr, R.id.textViewA);
+            TextView ingrA = findById(tr, R.id.ingredientsA);
             tvA.setText("");
+            ingrA.setText("");
 
             TextView tvB = findById(tr, R.id.textViewB);
+            TextView ingrB = findById(tr, R.id.ingredientsB);
+
             tvB.setText("");
+            ingrB.setText("");
 
             week.get(i).firstCourse = null;
             week.get(i).secondCourse = null;
@@ -388,6 +420,9 @@ public class WeekFragment extends Fragment {
         for (int i = 0; i < allTableRows.length; i++) {
             TableRow tr = allTableRows[i];
             TextView tvA = (TextView) tr.findViewById(R.id.textViewA);
+
+            int currentDayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK); //Sunday is 1, Saturday is 7.
+
             if (tvA.getText().equals("")) {
 
                 //Avoid repeating if possible
@@ -399,7 +434,6 @@ public class WeekFragment extends Fragment {
                     course = allFirstCourses.get(randomInt);
                 }
                 week.get(i).firstCourse = course;
-                tvA.setText(course.name);
             }
 
             // Remove from both lists (If type is "both", it might be in both lists).
@@ -418,7 +452,6 @@ public class WeekFragment extends Fragment {
                     course = allSecondCourses.get(randomInt);
                 }
                 week.get(i).secondCourse = course;
-                tvB.setText(course.name);
             }
 
             // Remove from both lists (If type is "both", it might be in both lists).
@@ -432,6 +465,8 @@ public class WeekFragment extends Fragment {
                 FRAGMENT_NAME,
                 "action tapped",
                 "random fill");
+
+        repaintWeekRows();
     }
 
     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {

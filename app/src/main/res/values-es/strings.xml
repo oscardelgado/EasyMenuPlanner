@@ -50,4 +50,8 @@
     <string name="shoppinglist_ingredient_on_days">el</string>
     <string name="today">hoy</string>
     <string name="tomorrow">mañana</string>
+    <plurals name="intredients_missing">
+        <item quantity="one">Te falta %d ingrediente</item>
+        <item quantity="other">Te faltan %d ingredientes</item>
+    </plurals>
 </resources>

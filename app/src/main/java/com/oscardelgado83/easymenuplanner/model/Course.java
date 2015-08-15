@@ -36,6 +36,14 @@ public class Course extends Model {
                 .execute();
     }
 
+    public int getNotCheckedIngredientsCount() {
+        return new Select().from(CourseIngredient.class)
+                .join(Ingredient.class).on("CourseIngredients.ingredient = Ingredients.Id")
+                .where("CourseIngredients.course = ?", this.getId())
+                .and("Ingredients.checked = 0")
+                .count();
+    }
+
     @Override
     public String toString() {
         return "Course{" +
