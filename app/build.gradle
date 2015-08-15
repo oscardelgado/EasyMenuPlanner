@@ -56,10 +56,10 @@ repositories {
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" } // For ActiveAndroid
 }
 
-allprojects {
-    gradle.projectsEvaluated {
-        tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
-        }
-    }
-}
+//allprojects {
+//    gradle.projectsEvaluated {
+//        tasks.withType(JavaCompile) {
+//            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+//        }
+//    }
+//}
