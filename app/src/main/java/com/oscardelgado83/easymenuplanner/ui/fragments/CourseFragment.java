@@ -226,6 +226,10 @@ public class CourseFragment extends ListFragment {
         final View newCourseView = LayoutInflater.from(getActivity()).inflate(R.layout.course_view, null);
         ButterKnife.bind(this, newCourseView);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            capitalizeLabels(newCourseView);
+        }
+
         // Auto-complete for Ingredients
         setIngredientsAutocompleteAdapter(newCourseView);
 
@@ -257,10 +261,6 @@ public class CourseFragment extends ListFragment {
                     String courseName = nameET.getText().toString().trim();
                     courseName = courseName.substring(0, 1).toUpperCase() + courseName.substring(1);
                     createCourse(courseName, completionView.getObjects(), getCourseType(d));
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                        capitalizeLabels(newCourseView);
-                    }
 
                     d.dismiss();
                 }
@@ -514,10 +514,6 @@ public class CourseFragment extends ListFragment {
                     addUnconfirmedIngredient(completionView);
 
                     updateCourse(c, nameET.getText().toString(), completionView.getObjects(), getCourseType(d));
-
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-                        capitalizeLabels(editCourseView);
-                    }
 
                     d.dismiss();
                 }
