@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
@@ -222,7 +223,7 @@ public class CourseFragment extends ListFragment {
     public void addCourseClicked() {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        View newCourseView = LayoutInflater.from(getActivity()).inflate(R.layout.course_view, null);
+        final View newCourseView = LayoutInflater.from(getActivity()).inflate(R.layout.course_view, null);
         ButterKnife.bind(this, newCourseView);
 
         // Auto-complete for Ingredients
@@ -254,8 +255,12 @@ public class CourseFragment extends ListFragment {
                     addUnconfirmedIngredient(completionView);
 
                     String courseName = nameET.getText().toString().trim();
-                    courseName = courseName.substring(0,1).toUpperCase() + courseName.substring(1);
+                    courseName = courseName.substring(0, 1).toUpperCase() + courseName.substring(1);
                     createCourse(courseName, completionView.getObjects(), getCourseType(d));
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                        capitalizeLabels(newCourseView);
+                    }
 
                     d.dismiss();
                 }
@@ -266,6 +271,12 @@ public class CourseFragment extends ListFragment {
                 FRAGMENT_NAME,
                 "open dialog",
                 "add course");
+    }
+
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    private void capitalizeLabels(View v) {
+        ((TextView) ButterKnife.findById(v, R.id.name_label)).setAllCaps(true);
+        ((TextView) ButterKnife.findById(v, R.id.ingredient_label)).setAllCaps(true);
     }
 
     private Course.CourseType getCourseType(AlertDialog d) {
@@ -452,7 +463,7 @@ public class CourseFragment extends ListFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
 
-        View editCourseView = LayoutInflater.from(getActivity()).inflate(R.layout.course_view, null);
+        final View editCourseView = LayoutInflater.from(getActivity()).inflate(R.layout.course_view, null);
         ButterKnife.bind(this, editCourseView);
 
         IngredientsCompletionView completionView = setIngredientsAutocompleteAdapter(editCourseView);
@@ -474,6 +485,11 @@ public class CourseFragment extends ListFragment {
                             }
                         }).setInverseBackgroundForced(true)
                         .create();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            capitalizeLabels(editCourseView);
+        }
+
         d.show();
 
         RadioGroup courseTypeRG = ButterKnife.findById(d, R.id.course_type_radio);
@@ -498,6 +514,10 @@ public class CourseFragment extends ListFragment {
                     addUnconfirmedIngredient(completionView);
 
                     updateCourse(c, nameET.getText().toString(), completionView.getObjects(), getCourseType(d));
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+                        capitalizeLabels(editCourseView);
+                    }
 
                     d.dismiss();
                 }

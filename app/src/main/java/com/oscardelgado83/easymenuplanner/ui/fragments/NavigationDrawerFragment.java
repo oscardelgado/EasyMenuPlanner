@@ -65,7 +65,8 @@ public class NavigationDrawerFragment extends Fragment {
     public enum Section {
         WEEK_MENU(R.string.title_section_week),
         WEEK_SHOPPINGLIST(R.string.title_section_shopping_list),
-        COURSES(R.string.title_section_course);
+        COURSES(R.string.title_section_course),
+        HELP(R.string.help);
 
         private final int titleKey;
 
@@ -125,7 +126,18 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(Section.values()[0].getTitleKey()),
                         getString(Section.values()[1].getTitleKey()),
                         getString(Section.values()[2].getTitleKey()),
-                }));
+                        getString(Section.values()[3].getTitleKey()),
+                }) {
+            @Override
+            public int getViewTypeCount() {
+                return 2;
+            }
+
+            @Override
+            public int getItemViewType(int position) {
+                return super.getItemViewType(position);
+            }
+        });
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 
         if (DEBUGGING) {

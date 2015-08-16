@@ -34,6 +34,7 @@ import com.oscardelgado83.easymenuplanner.model.CourseIngredient;
 import com.oscardelgado83.easymenuplanner.model.Day;
 import com.oscardelgado83.easymenuplanner.model.Ingredient;
 import com.oscardelgado83.easymenuplanner.ui.fragments.CourseFragment;
+import com.oscardelgado83.easymenuplanner.ui.fragments.HelpFragment;
 import com.oscardelgado83.easymenuplanner.ui.fragments.NavigationDrawerFragment;
 import com.oscardelgado83.easymenuplanner.ui.fragments.NavigationDrawerFragment.Section;
 import com.oscardelgado83.easymenuplanner.ui.fragments.ShoppingListFragment;
@@ -74,10 +75,11 @@ public class MainActivity extends AppCompatActivity
 
     @Bind(R.id.adView)
     AdView adView;
-
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
+
     public static final int WEEKDAYS = 7;
     public static final String PREFERENCE_DB_STARTED = "dbStarted";
+    private static final String FIRST_TIME_HELP_VIEWED = "firstTimeHelpViewed";
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -95,6 +97,7 @@ public class MainActivity extends AppCompatActivity
 
     private FragmentManager fragmentManager;
     private boolean dbStarted;
+    private boolean firstTimeHelpViewed;
     private int weekdayIndexWithCurrentOrder;
 
     @Override
@@ -105,6 +108,7 @@ public class MainActivity extends AppCompatActivity
         // Restore preferences
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
         dbStarted = settings.getBoolean(PREFERENCE_DB_STARTED, false);
+        firstTimeHelpViewed = settings.getBoolean(FIRST_TIME_HELP_VIEWED, false);
 
         if (isTabletDevice()) {
             setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -248,13 +252,16 @@ public class MainActivity extends AppCompatActivity
 
         switch (Section.values()[position]) {
             case WEEK_MENU:
-                currentFrg = new WeekFragment();
-                break;
+            currentFrg = new WeekFragment();
+            break;
             case WEEK_SHOPPINGLIST:
-                currentFrg = new ShoppingListFragment();
-                break;
+            currentFrg = new ShoppingListFragment();
+            break;
             case COURSES:
-                currentFrg = new CourseFragment();
+            currentFrg = new CourseFragment();
+            break;
+            case HELP:
+                currentFrg = new HelpFragment();
                 break;
             default:
                 break;
@@ -283,7 +290,9 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onSectionAttached(Fragment frg) {
-        if (frg instanceof WeekFragment) {
+        if (frg instanceof HelpFragment) {
+            mTitle = getString(Section.HELP.getTitleKey());
+        } else if (frg instanceof WeekFragment) {
             mTitle = getString(Section.WEEK_MENU.getTitleKey());
         } else if (frg instanceof ShoppingListFragment) {
             mTitle = getString(Section.WEEK_SHOPPINGLIST.getTitleKey());
@@ -380,7 +389,9 @@ public class MainActivity extends AppCompatActivity
 
         Intent intent = getIntent();
 
-        if (intent != null) {
+        if ( ! firstTimeHelpViewed) {
+            mNavigationDrawerFragment.selectItem(Section.HELP.ordinal());
+        } else if (intent != null) {
             Bundle extras = intent.getExtras();
             if (extras != null && extras.containsKey(ShoppingListAppWidget.EXTRA_ITEM)) {
                 Log.d(LOG_TAG, "Changing to ShoppingListFragment");
@@ -499,5 +510,15 @@ public class MainActivity extends AppCompatActivity
 
     public int getWeekdayIndexWithCurrentOrder() {
         return weekdayIndexWithCurrentOrder;
+    }
+
+    public void firstTimeHelpFinished() {
+        // We need an Editor object to make preference changes.
+        // All objects are from android.context.Context
+        SharedPreferences settings = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean(FIRST_TIME_HELP_VIEWED, true);
+        firstTimeHelpViewed = true;
+        editor.apply();
     }
 }

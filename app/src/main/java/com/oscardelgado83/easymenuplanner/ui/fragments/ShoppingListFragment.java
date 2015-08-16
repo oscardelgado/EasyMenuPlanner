@@ -46,8 +46,6 @@ public class ShoppingListFragment extends ListFragment {
 
         setHasOptionsMenu(true);
 
-        int weekdayIndexWithCurrentOrder = ((MainActivity) getActivity()).getWeekdayIndexWithCurrentOrder();
-
         allIngredientsList = getIngredients();
         currentIngredientsList = new ArrayList<>(allIngredientsList);
 

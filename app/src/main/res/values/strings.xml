@@ -54,6 +54,9 @@
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
     <string name="assigned_to">"Assigned to: "</string>
+    <string name="help">Help</string>
+    <string name="name_label">Name:</string>
+    <string name="ingredients_label">Ingredients:</string>
     <plurals name="intredients_missing">
         <item quantity="one">%d ingredient missing</item>
         <item quantity="other">%d ingredients missing</item>

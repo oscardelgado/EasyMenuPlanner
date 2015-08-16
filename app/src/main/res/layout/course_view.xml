@@ -4,11 +4,26 @@
     android:layout_height="match_parent"
               android:padding="8dp">
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/name_label"
+        android:id="@+id/name_label"
+        android:elegantTextHeight="false"/>
+
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/name_edit_text"
         android:hint="@string/dialog_new_course_message"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/ingredients_label"
+        android:id="@+id/ingredient_label"/>
 
     <com.oscardelgado83.easymenuplanner.ui.IngredientsCompletionView
         android:layout_width="match_parent"
