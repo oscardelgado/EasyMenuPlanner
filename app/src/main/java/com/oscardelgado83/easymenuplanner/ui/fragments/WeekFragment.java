@@ -421,8 +421,6 @@ public class WeekFragment extends Fragment {
             TableRow tr = allTableRows[i];
             TextView tvA = (TextView) tr.findViewById(R.id.textViewA);
 
-            int currentDayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK); //Sunday is 1, Saturday is 7.
-
             if (tvA.getText().equals("")) {
 
                 //Avoid repeating if possible

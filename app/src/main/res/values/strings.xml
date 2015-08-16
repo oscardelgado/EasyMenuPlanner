@@ -53,6 +53,7 @@
     <string name="shoppinglist_ingredient_on_days">on</string>
     <string name="today">Today</string>
     <string name="tomorrow">Tomorrow</string>
+    <string name="assigned_to">"Assigned to: "</string>
     <plurals name="intredients_missing">
         <item quantity="one">%d ingredient missing</item>
         <item quantity="other">%d ingredients missing</item>

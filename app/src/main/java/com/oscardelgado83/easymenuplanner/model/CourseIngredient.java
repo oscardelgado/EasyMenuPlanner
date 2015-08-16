@@ -25,4 +25,9 @@ public class CourseIngredient extends Model {
         this.course = course;
         this.ingredient = ingredient;
     }
+
+    @Override
+    public String toString() {
+        return ingredient.name;
+    }
 }

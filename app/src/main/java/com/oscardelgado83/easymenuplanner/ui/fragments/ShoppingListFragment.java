@@ -19,7 +19,6 @@ import com.oscardelgado83.easymenuplanner.ui.adapters.ShoppingListAdapter;
 import com.oscardelgado83.easymenuplanner.util.GA;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import hugo.weaving.DebugLog;
@@ -40,7 +39,6 @@ public class ShoppingListFragment extends ListFragment {
 
     private MenuItem hideCompleted;
     private MenuItem showAll;
-    private int weekdayIndexWithCurrentOrder;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,10 +46,7 @@ public class ShoppingListFragment extends ListFragment {
 
         setHasOptionsMenu(true);
 
-        int currentDayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK); //Sunday is 1, Saturday is 7.
-        int firstDay = Calendar.getInstance().getFirstDayOfWeek();
-        weekdayIndexWithCurrentOrder = (currentDayOfWeek - firstDay + 7) % 7;
-        Log.d(LOG_TAG, "weekdayIndexWithCurrentOrder: " + weekdayIndexWithCurrentOrder);
+        int weekdayIndexWithCurrentOrder = ((MainActivity) getActivity()).getWeekdayIndexWithCurrentOrder();
 
         allIngredientsList = getIngredients();
         currentIngredientsList = new ArrayList<>(allIngredientsList);
@@ -71,6 +66,7 @@ public class ShoppingListFragment extends ListFragment {
 
     @DebugLog
     private List<Ingredient> getIngredients() {
+        int weekdayIndexWithCurrentOrder = ((MainActivity) getActivity()).getWeekdayIndexWithCurrentOrder();
 
         // Day -> Course <- CI -> Ingredient
         return new Select(new String[]{"Ingredients.Id"}).distinct().from(Ingredient.class)
@@ -83,6 +79,8 @@ public class ShoppingListFragment extends ListFragment {
 
     @DebugLog
     private List<Ingredient> getNotMarkedIngredients() {
+        int weekdayIndexWithCurrentOrder = ((MainActivity) getActivity()).getWeekdayIndexWithCurrentOrder();
+
 
         // Day -> Course <- CI -> Ingredient
         return new Select(new String[]{"Ingredients.Id"}).distinct().from(Ingredient.class)
@@ -136,6 +134,8 @@ public class ShoppingListFragment extends ListFragment {
 
     @DebugLog
     private int countVisibleChecked() {
+        int weekdayIndexWithCurrentOrder = ((MainActivity) getActivity()).getWeekdayIndexWithCurrentOrder();
+
         List<Ingredient> allUncheckedItems = new Select().from(Ingredient.class)
                 .where("Id IN (SELECT CI.ingredient FROM CourseIngredients CI, Days D " +
                         "WHERE (CI.course = D.firstCourse OR CI.course = D.secondCourse) " +

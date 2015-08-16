@@ -8,8 +8,13 @@ import android.widget.ArrayAdapter;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
+import com.activeandroid.query.Select;
 import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Course;
+import com.oscardelgado83.easymenuplanner.model.Day;
+import com.oscardelgado83.easymenuplanner.ui.MainActivity;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,7 +35,7 @@ public class CourseAdapter extends ArrayAdapter<Course> implements SectionIndexe
 
     public CourseAdapter(Context context, List<Course> courses) {
         super(context, 0, courses);
-        alphaIndexer = new HashMap<String, Integer>();
+        alphaIndexer = new HashMap<>();
         for (int i = 0; i < courses.size(); i++)
         {
             String s = courses.get(i).name.substring(0, 1).toUpperCase();
@@ -62,7 +67,16 @@ public class CourseAdapter extends ArrayAdapter<Course> implements SectionIndexe
         Course course = getItem(position);
 
         // Populate the data into the template view using the data object
-        holder.courseName.setText(course.name);
+        holder.courseNameTV.setText(course.name);
+        holder.ingredientsTV.setText(StringUtils.join(course.getIngredients(), ", "));
+
+        int weekdayIndexWithCurrentOrder = ((MainActivity) getContext()).getWeekdayIndexWithCurrentOrder();
+
+        List<Day> days = new Select().from(Day.class)
+                .where("(Days.firstCourse = ? OR Days.secondCourse = ?)", course.getId(), course.getId())
+                .and("Days.Id = ? + 1", weekdayIndexWithCurrentOrder)
+                .execute();
+        holder.daysTV.setText(getContext().getString(R.string.assigned_to) + StringUtils.join(days, ", "));
 
         // Return the completed view to render on screen
         return convertView;
@@ -129,7 +143,13 @@ public class CourseAdapter extends ArrayAdapter<Course> implements SectionIndexe
 
     static class ViewHolder {
         @Bind(R.id.course_name)
-        TextView courseName;
+        TextView courseNameTV;
+
+        @Bind(R.id.ingredients)
+        TextView ingredientsTV;
+
+        @Bind(R.id.days)
+        TextView daysTV;
 
         public ViewHolder(View view) {
             ButterKnife.bind(this, view);

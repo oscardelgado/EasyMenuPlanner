@@ -50,6 +50,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.nio.channels.FileChannel;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -77,7 +78,6 @@ public class MainActivity extends AppCompatActivity
     private static final String LOG_TAG = MainActivity.class.getSimpleName();
     public static final int WEEKDAYS = 7;
     public static final String PREFERENCE_DB_STARTED = "dbStarted";
-    public static final String PREFERENCE_LAUCH_COUNT = "launchCount";
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity
 
     private FragmentManager fragmentManager;
     private boolean dbStarted;
+    private int weekdayIndexWithCurrentOrder;
 
     @Override
     @DebugLog
@@ -130,9 +131,6 @@ public class MainActivity extends AppCompatActivity
 
         week = Day.findAll();
         if (DEBUGGING) Log.d(LOG_TAG, "week: " + week);
-
-        int launchCount = settings.getInt(PREFERENCE_LAUCH_COUNT, 0);
-        settings.edit().putInt(PREFERENCE_LAUCH_COUNT, ++launchCount).apply();
     }
 
     @DebugLog
@@ -392,6 +390,10 @@ public class MainActivity extends AppCompatActivity
                 mNavigationDrawerFragment.selectItem(Section.WEEK_MENU.ordinal());
             }
         }
+
+        int currentDayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK); //Sunday is 1, Saturday is 7.
+        int firstDay = Calendar.getInstance().getFirstDayOfWeek();
+        weekdayIndexWithCurrentOrder = (currentDayOfWeek - firstDay + 7) % 7;
     }
 
     @DebugLog
@@ -493,5 +495,9 @@ public class MainActivity extends AppCompatActivity
         } catch(IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public int getWeekdayIndexWithCurrentOrder() {
+        return weekdayIndexWithCurrentOrder;
     }
 }

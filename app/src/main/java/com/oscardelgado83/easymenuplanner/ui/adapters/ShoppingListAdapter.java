@@ -21,7 +21,6 @@ import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -39,15 +38,10 @@ public class ShoppingListAdapter extends ArrayAdapter<Ingredient> {
     private static final String LOG_TAG = ShoppingListAdapter.class.getSimpleName();
 
     MainActivity context;
-    private final int weekdayIndexWithCurrentOrder;
 
     public ShoppingListAdapter(Context context, List<Ingredient> ingredientList) {
         super(context, 0, ingredientList);
         this.context = (MainActivity) context;
-
-        int currentDayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK); //Sunday is 1, Saturday is 7.
-        int firstDay = Calendar.getInstance().getFirstDayOfWeek();
-        weekdayIndexWithCurrentOrder = (currentDayOfWeek - firstDay + 7) % 7;
     }
 
     @Override
@@ -77,6 +71,8 @@ public class ShoppingListAdapter extends ArrayAdapter<Ingredient> {
             holder.ingredientName.setEnabled(true);
             holder.ingredientName.setPaintFlags(holder.ingredientName.getPaintFlags() & ~Paint.STRIKE_THRU_TEXT_FLAG);
         }
+
+        int weekdayIndexWithCurrentOrder = context.getWeekdayIndexWithCurrentOrder();
 
         List<Course> courses = new Select(new String[]{"Courses.Id,Courses.name"}).distinct().from(Course.class)
                 .innerJoin(CourseIngredient.class).on("CourseIngredients.course = Courses.Id")
