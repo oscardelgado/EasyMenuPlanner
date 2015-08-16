@@ -319,17 +319,17 @@ public class CourseFragment extends ListFragment {
     }
 
     private void createCourse(String name, List<Object> ingredients, Course.CourseType courseType) {
-        Course c = new Course();
-        c.name = name;
-        c.courseType = courseType;
+        Course course = new Course();
+        course.name = name;
+        course.courseType = courseType;
 
         ActiveAndroid.beginTransaction();
         try {
-            c.save();
+            course.save();
             for (Object ingrObj : ingredients) {
                 Ingredient ingr = (Ingredient) ingrObj;
                 if (ingr.getId() == null) ingr.save();
-                CourseIngredient ci = new CourseIngredient(c, ingr);
+                CourseIngredient ci = new CourseIngredient(course, ingr);
                 ci.save();
             }
             ActiveAndroid.setTransactionSuccessful();
@@ -337,6 +337,10 @@ public class CourseFragment extends ListFragment {
             ActiveAndroid.endTransaction();
         }
 
+        refreshListAndScroll(course);
+    }
+
+    private void refreshListAndScroll(Course c) {
         courseList.clear();
         courseList.addAll(getAllCourses());
         ((CourseAdapter) getListAdapter()).notifyDataSetChanged();
@@ -516,6 +520,8 @@ public class CourseFragment extends ListFragment {
                     updateCourse(c, nameET.getText().toString(), completionView.getObjects(), getCourseType(d));
 
                     d.dismiss();
+
+                    refreshListAndScroll(c);
                 }
             }
         });

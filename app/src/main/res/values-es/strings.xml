@@ -50,7 +50,7 @@
     <string name="shoppinglist_ingredient_on_days">el</string>
     <string name="today">hoy</string>
     <string name="tomorrow">mañana</string>
-    <string name="assigned_to">"Assigned to: "</string>
+    <string name="assigned_to">"Asignado a: "</string>
     <string name="help">Ayuda</string>
     <string name="name_label">Nombre:</string>
     <string name="ingredients_label">Ingredientes:</string>
