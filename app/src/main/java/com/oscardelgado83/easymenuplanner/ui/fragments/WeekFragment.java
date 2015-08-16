@@ -129,7 +129,6 @@ public class WeekFragment extends Fragment {
         boolean dayIsPast = true;
         for (int i = 0; i < allTableRows.length; i++) {
             TableRow tr = allTableRows[i];
-            tr.setTag(i);
 
             TextView tvA = findById(tr, R.id.textViewA);
             TextView ingrA = findById(tr, R.id.ingredientsA);
@@ -169,6 +168,9 @@ public class WeekFragment extends Fragment {
             findById(tr, R.id.buttonLeftB).setOnClickListener(courseBtnClickListener(tvB, ingrB, i, 1));
             findById(tr, R.id.buttonRightB).setOnClickListener(courseBtnClickListener(tvB, ingrB, i, 1));
             findById(tr, R.id.card_view_B).setOnClickListener(courseBtnClickListener(tvB, ingrB, i, 1));
+
+            ingrA.setTag(dayIsPast);
+            ingrB.setTag(dayIsPast);
         }
     }
 
@@ -250,7 +252,7 @@ public class WeekFragment extends Fragment {
                     selectedDay.secondCourse = newCourse;
                 }
                 tv.setText(newCourse != null ? newCourse.name : "");
-                ingrTv.setText(newCourse != null ? getNotCheckedIngredientsCount(newCourse) : "");
+                if ( ! (boolean) ingrTv.getTag()) ingrTv.setText(newCourse != null ? getNotCheckedIngredientsCount(newCourse) : "");
                 dirty = true;
             }
         };
@@ -306,7 +308,7 @@ public class WeekFragment extends Fragment {
                     selectedDay.secondCourse = selectedCourse;
                 }
                 tv.setText(selectedCourse.name);
-                ingrTv.setText(getNotCheckedIngredientsCount(selectedCourse));
+                if ( ! (boolean) ingrTv.getTag()) ingrTv.setText(getNotCheckedIngredientsCount(selectedCourse));
                 dirty = true;
             }
         });

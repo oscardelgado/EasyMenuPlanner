@@ -78,7 +78,7 @@
                 android:layout_toRightOf="@+id/buttonLeftA"
                 android:layout_toLeftOf="@+id/buttonRightA"
                 android:layout_toStartOf="@+id/buttonRightA"
-                android:textSize="6sp"
+                android:textSize="12sp"
                 android:layout_marginTop="3dp"
                 android:textColor="@color/more_light_text"
                 />
@@ -146,7 +146,7 @@
                 android:layout_toRightOf="@+id/buttonLeftB"
                 android:layout_toLeftOf="@+id/buttonRightB"
                 android:layout_toStartOf="@+id/buttonRightB"
-                android:textSize="6sp"
+                android:textSize="12sp"
                 android:layout_marginTop="3dp"
                 android:textColor="@color/more_light_text"
                 />

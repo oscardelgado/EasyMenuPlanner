@@ -10,8 +10,8 @@ android {
         applicationId "com.oscardelgado83.easymenuplanner"
         minSdkVersion 10
         targetSdkVersion 22
-        versionCode 25
-        versionName "1.3.3"
+        versionCode 27
+        versionName "1.3.4-RC2"
         resValue "string", "admob_unit_id", admob_unit_id
         resValue "string", "ga_property_id", ga_property_id
         resValue "string", "nexus_7_device_id", nexus_7_device_id
@@ -28,13 +28,19 @@ android {
             resValue "bool", "debug_mode", "false"
         }
         debug {
-//            minifyEnabled true
 //            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            minifyEnabled true
             resValue "bool", "debug_mode", "true"
         }
     }
     lintOptions {
         disable 'InvalidPackage' //For Butterknife
+    }
+    // http://stackoverflow.com/a/30609641/1464013
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude '.readme'
     }
 }
 

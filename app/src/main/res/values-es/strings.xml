@@ -55,7 +55,7 @@
     <string name="name_label">Nombre:</string>
     <string name="ingredients_label">Ingredientes:</string>
     <plurals name="intredients_missing">
-        <item quantity="one">Te falta %d ingrediente</item>
-        <item quantity="other">Te faltan %d ingredientes</item>
+        <item quantity="one">Te falta %d ingr.</item>
+        <item quantity="other">Te faltan %d ingr.</item>
     </plurals>
 </resources>

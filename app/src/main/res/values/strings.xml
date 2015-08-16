@@ -58,7 +58,7 @@
     <string name="name_label">Name:</string>
     <string name="ingredients_label">Ingredients:</string>
     <plurals name="intredients_missing">
-        <item quantity="one">%d ingredient missing</item>
-        <item quantity="other">%d ingredients missing</item>
+        <item quantity="one">%d ingr. missing</item>
+        <item quantity="other">%d ingr. missing</item>
     </plurals>
 </resources>
