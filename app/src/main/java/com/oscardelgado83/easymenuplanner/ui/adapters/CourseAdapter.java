@@ -76,7 +76,12 @@ public class CourseAdapter extends ArrayAdapter<Course> implements SectionIndexe
                 .where("(Days.firstCourse = ? OR Days.secondCourse = ?)", course.getId(), course.getId())
                 .and("Days.Id = ? + 1", weekdayIndexWithCurrentOrder)
                 .execute();
-        holder.daysTV.setText(getContext().getString(R.string.assigned_to) + StringUtils.join(days, ", "));
+        if (days.isEmpty()) {
+            holder.daysTV.setText("");
+        } else {
+            holder.daysTV.setText(getContext().getString(R.string.assigned_to)
+                    + StringUtils.join(days, ", "));
+        }
 
         // Return the completed view to render on screen
         return convertView;
