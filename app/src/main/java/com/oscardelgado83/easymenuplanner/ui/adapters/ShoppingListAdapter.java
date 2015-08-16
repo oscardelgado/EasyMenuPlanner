@@ -59,6 +59,8 @@ public class ShoppingListAdapter extends ArrayAdapter<Ingredient> {
             convertView.setTag(holder);
         }
 
+        if (DEBUGGING) Log.d(LOG_TAG, "ingredient: " + ingredient);
+
         // Populate the data into the template view using the data object
         holder.ingredientName.setText(ingredient.name);
 
@@ -100,7 +102,7 @@ public class ShoppingListAdapter extends ArrayAdapter<Ingredient> {
                     .execute();
 
             if (inCurrentDay) {
-                coursesStrings.add(course.name + ", <b>" + context.getString(R.string.today) + "</b>");
+                coursesStrings.add(course.name + ", <b><font color='#3B5A01'>" + context.getString(R.string.today) + "</font></b>");
             } else if (tomorrow) {
                 coursesStrings.add(course.name + ", " + context.getString(R.string.tomorrow));
             } else if ( ! futureDays.isEmpty()) {

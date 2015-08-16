@@ -67,7 +67,7 @@ public class ShoppingListFragment extends ListFragment {
         int weekdayIndexWithCurrentOrder = ((MainActivity) getActivity()).getWeekdayIndexWithCurrentOrder();
 
         // Day -> Course <- CI -> Ingredient
-        return new Select(new String[]{"Ingredients.Id"}).distinct().from(Ingredient.class)
+        return new Select(new String[]{"Ingredients.Id, Ingredients.name"}).distinct().from(Ingredient.class)
                 .innerJoin(CourseIngredient.class).on("CourseIngredients.ingredient = Ingredients.Id")
                 .innerJoin(Day.class).on("(CourseIngredients.course = Days.firstCourse OR CourseIngredients.course = Days.secondCourse)")
                 .where("Days.Id > ?", weekdayIndexWithCurrentOrder) //0-6 sunday==0 /D.Id 1-7

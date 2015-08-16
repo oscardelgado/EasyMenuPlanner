@@ -3,7 +3,9 @@
               android:layout_width="match_parent"
               android:layout_height="60dp"
               android:gravity="center_vertical"
-              android:orientation="horizontal">
+              android:orientation="horizontal"
+                android:paddingRight="16dp"
+                android:paddingEnd="16dp">
 
     <TextView
         android:id="@+id/course_name"
@@ -31,7 +33,8 @@
         android:layout_toEndOf="@+id/course_name"
         android:gravity="right"
         android:textColor="@color/primary_dark"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        />
 
     <TextView
         android:layout_width="wrap_content"
@@ -48,5 +51,6 @@
         android:gravity="right"
         android:ellipsize="end"
         android:textColor="@color/more_light_text"
-        android:maxLines="1"/>
+        android:maxLines="1"
+        />
 </RelativeLayout>
