@@ -3,7 +3,6 @@
 buildscript {
     repositories {
         jcenter()
-        maven { url "http://dl.bintray.com/populov/maven" } //For ViewPagerIndicator
         mavenCentral()
     }
     dependencies {

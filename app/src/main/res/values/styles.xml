@@ -11,9 +11,19 @@
         <item name="colorPrimaryDark">@color/primary_dark</item>
         <!--   theme UI controls like checkboxes and text fields -->
         <item name="colorAccent">@color/accent</item>
+
+        <item name="vpiCirclePageIndicatorStyle">@style/CustomCirclePageIndicator</item>
     </style>
 
     <style name="AppDialogTheme" parent="Theme.AppCompat.Light.Dialog">
+    </style>
+
+    <style name="CustomCirclePageIndicator">
+        <item name="fillColor">@color/accent</item>
+        <item name="strokeColor">@color/primary</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="radius">8dp</item>
+        <item name="centered">true</item>
     </style>
 
     <color name="primary">#669801</color>
@@ -21,5 +31,5 @@
     <color name="accent">#0072AF</color>
     <color name="background">#ff2a394e</color>
     <color name="light_text">#696969</color>
-    <color name="more_light_text">#bbbbbb</color>
+    <color name="lighter_text">#bbbbbb</color>
 </resources>

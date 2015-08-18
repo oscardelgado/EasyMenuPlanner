@@ -16,6 +16,7 @@ import com.oscardelgado83.easymenuplanner.ui.fragments.HelpFragment;
 import com.oscardelgado83.easymenuplanner.ui.transformers.DepthPageTransformer;
 import com.oscardelgado83.easymenuplanner.util.Cons;
 import com.oscardelgado83.easymenuplanner.util.GA;
+import com.viewpagerindicator.CirclePageIndicator;
 
 public class HelpActivity extends AppCompatActivity {
 
@@ -42,6 +43,10 @@ public class HelpActivity extends AppCompatActivity {
         mPager.setAdapter(mPagerAdapter);
         mPager.setPageTransformer(false, new DepthPageTransformer());
 //        mPager.setPageTransformer(false, new ZoomOutPageTransformer());
+
+        //Bind the title indicator to the adapter
+        CirclePageIndicator indicator = (CirclePageIndicator)findViewById(R.id.indicator);
+        indicator.setViewPager(mPager);
 
         //TODO: make the user confirm with a button or something
         firstTimeHelpFinished();

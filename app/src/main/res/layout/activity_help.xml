@@ -13,51 +13,14 @@
             android:id="@+id/pager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
-
+        <com.viewpagerindicator.CirclePageIndicator
+            android:id="@+id/indicator"
+            android:layout_height="20dp"
+            android:layout_width="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentStart="false"
+            android:layout_marginBottom="30dp"/>
     </RelativeLayout>
 
-    <!--<RelativeLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_weight="1">-->
-
-        <!--<android.support.v4.view.ViewPager-->
-            <!--android:id="@+id/viewpager_custom"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"/>-->
-
-        <!--<me.relex.circleindicator.CircleIndicator-->
-            <!--android:id="@+id/indicator_custom"-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="40dp"-->
-            <!--android:layout_centerInParent="true"-->
-            <!--app:ci_animator="@animator/indicator_animator"-->
-            <!--app:ci_animator_reverse="@animator/indicator_animator_reverse"-->
-            <!--app:ci_drawable="@drawable/black_radius_square"-->
-            <!--app:ci_height="4dp"-->
-            <!--app:ci_margin="6dp"-->
-            <!--app:ci_width="10dp"/>-->
-    <!--</RelativeLayout>-->
-
-    <!--<RelativeLayout-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="0dp"-->
-        <!--android:layout_weight="1">-->
-
-        <!--<android.support.v4.view.ViewPager-->
-            <!--android:id="@+id/viewpager_unselected_background"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"/>-->
-
-        <!--<me.relex.circleindicator.CircleIndicator-->
-            <!--android:id="@+id/indicator_unselected_background"-->
-            <!--android:layout_width="fill_parent"-->
-            <!--android:layout_height="40dp"-->
-            <!--android:layout_centerInParent="true"-->
-            <!--app:ci_animator="@animator/indicator_no_animator"-->
-            <!--app:ci_drawable="@drawable/white_radius"-->
-            <!--app:ci_drawable_unselected="@drawable/black_radius"-->
-            <!--app:ci_height="6dp"-->
-            <!--app:ci_width="6dp"/>-->
-    <!--</RelativeLayout>-->
 </LinearLayout>

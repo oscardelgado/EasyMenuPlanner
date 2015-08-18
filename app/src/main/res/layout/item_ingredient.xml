@@ -40,5 +40,5 @@
         android:layout_alignParentEnd="true"
         android:gravity="right"
         android:layout_marginRight="8dp"
-        android:textColor="@color/more_light_text"/>
+        android:textColor="@color/lighter_text"/>
 </RelativeLayout>

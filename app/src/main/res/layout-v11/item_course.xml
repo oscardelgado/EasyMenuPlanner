@@ -55,7 +55,7 @@
         android:layout_toEndOf="@+id/course_name"
         android:gravity="right"
         android:ellipsize="end"
-        android:textColor="@color/more_light_text"
+        android:textColor="@color/lighter_text"
         android:maxLines="1"
         />
 </RelativeLayout>

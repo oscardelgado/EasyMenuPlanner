@@ -115,7 +115,7 @@
         <activity
             android:name=".ui.HelpActivity"
             android:label="@string/title_activity_help"
-            android:parentActivityName=".ui.MainActivity" >
+            android:parentActivityName=".ui.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.oscardelgado83.easymenuplanner.ui.MainActivity" />
