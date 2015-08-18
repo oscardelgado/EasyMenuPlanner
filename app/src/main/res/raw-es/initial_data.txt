@@ -13,7 +13,6 @@ Calamares, 2, Calamares
 Pizza, 3, Pizza
 Bacalao, 2, Bacalao
 Gazpacho (natural), 1, Tomates, Pepino, Pimiento, Cebolla, Ajo
-Gazpacho (precocinado), 1, Gazpacho (precocinado)
 Patatas, 1, Patatas
 Lentejas, 1, Lentejas
 Pimientos rellenos, 3, Pimientos rellenos

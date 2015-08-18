@@ -61,4 +61,6 @@
         <item quantity="one">%d ingr. missing</item>
         <item quantity="other">%d ingr. missing</item>
     </plurals>
+    <string name="title_activity_help">HelpActivity</string>
+    <string name="hello_world">Hello world!</string>
 </resources>

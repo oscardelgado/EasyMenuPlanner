@@ -12,6 +12,7 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
@@ -34,7 +35,6 @@ import com.oscardelgado83.easymenuplanner.model.CourseIngredient;
 import com.oscardelgado83.easymenuplanner.model.Day;
 import com.oscardelgado83.easymenuplanner.model.Ingredient;
 import com.oscardelgado83.easymenuplanner.ui.fragments.CourseFragment;
-import com.oscardelgado83.easymenuplanner.ui.fragments.HelpFragment;
 import com.oscardelgado83.easymenuplanner.ui.fragments.NavigationDrawerFragment;
 import com.oscardelgado83.easymenuplanner.ui.fragments.NavigationDrawerFragment.Section;
 import com.oscardelgado83.easymenuplanner.ui.fragments.ShoppingListFragment;
@@ -42,6 +42,7 @@ import com.oscardelgado83.easymenuplanner.ui.fragments.WeekFragment;
 import com.oscardelgado83.easymenuplanner.ui.widgets.MenuWeekAppWidgetMedium;
 import com.oscardelgado83.easymenuplanner.ui.widgets.MenuWeekAppWidgetSmall;
 import com.oscardelgado83.easymenuplanner.ui.widgets.ShoppingListAppWidget;
+import com.oscardelgado83.easymenuplanner.util.Cons;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -79,7 +80,6 @@ public class MainActivity extends AppCompatActivity
 
     public static final int WEEKDAYS = 7;
     public static final String PREFERENCE_DB_STARTED = "dbStarted";
-    private static final String FIRST_TIME_HELP_VIEWED = "firstTimeHelpViewed";
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -95,9 +95,7 @@ public class MainActivity extends AppCompatActivity
     private List<Day> week;
     private int exportDBMenuId;
 
-    private FragmentManager fragmentManager;
     private boolean dbStarted;
-    private boolean firstTimeHelpViewed;
     private int weekdayIndexWithCurrentOrder;
 
     @Override
@@ -108,7 +106,6 @@ public class MainActivity extends AppCompatActivity
         // Restore preferences
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
         dbStarted = settings.getBoolean(PREFERENCE_DB_STARTED, false);
-        firstTimeHelpViewed = settings.getBoolean(FIRST_TIME_HELP_VIEWED, false);
 
         if (isTabletDevice()) {
             setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -237,7 +234,7 @@ public class MainActivity extends AppCompatActivity
             return oS.toString();
         } catch (IOException e) {
             Log.e(LOG_TAG, "Problem loading initial configuration", e);
-            Toast.makeText(this, getString(R.string.error_loadingInitialConfig), Toast.LENGTH_LONG);
+            Toast.makeText(this, getString(R.string.error_loadingInitialConfig), Toast.LENGTH_LONG).show();
         }
         return null;
     }
@@ -246,7 +243,7 @@ public class MainActivity extends AppCompatActivity
     public void onNavigationDrawerItemSelected(int position) {
 
         // update the main content by replacing fragments
-        fragmentManager = getSupportFragmentManager();
+        FragmentManager fragmentManager = getSupportFragmentManager();
 
         currentFrg = null;
 
@@ -261,8 +258,8 @@ public class MainActivity extends AppCompatActivity
             currentFrg = new CourseFragment();
             break;
             case HELP:
-                currentFrg = new HelpFragment();
-                break;
+                startActivity(new Intent(this, HelpActivity.class));
+                return;
             default:
                 break;
         }
@@ -290,9 +287,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void onSectionAttached(Fragment frg) {
-        if (frg instanceof HelpFragment) {
-            mTitle = getString(Section.HELP.getTitleKey());
-        } else if (frg instanceof WeekFragment) {
+        if (frg instanceof WeekFragment) {
             mTitle = getString(Section.WEEK_MENU.getTitleKey());
         } else if (frg instanceof ShoppingListFragment) {
             mTitle = getString(Section.WEEK_SHOPPINGLIST.getTitleKey());
@@ -383,15 +378,19 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onResume() {
         super.onResume();
-        if (ensureGooglePlayServices()) {
-            adView.resume();
-        }
 
-        Intent intent = getIntent();
+        Intent intent = null;
 
-        if ( ! firstTimeHelpViewed) {
+        //Tutorial
+        if ( ! PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                .getBoolean(Cons.FIRST_TIME_HELP_VIEWED, false)) {
             mNavigationDrawerFragment.selectItem(Section.HELP.ordinal());
-        } else if (intent != null) {
+
+        } else if ((intent = getIntent()) != null) {
+            if (ensureGooglePlayServices()) {
+                adView.resume();
+            }
+
             Bundle extras = intent.getExtras();
             if (extras != null && extras.containsKey(ShoppingListAppWidget.EXTRA_ITEM)) {
                 Log.d(LOG_TAG, "Changing to ShoppingListFragment");
@@ -400,11 +399,11 @@ public class MainActivity extends AppCompatActivity
                 Log.d(LOG_TAG, "Changing to WeekFragment");
                 mNavigationDrawerFragment.selectItem(Section.WEEK_MENU.ordinal());
             }
-        }
 
-        int currentDayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK); //Sunday is 1, Saturday is 7.
-        int firstDay = Calendar.getInstance().getFirstDayOfWeek();
-        weekdayIndexWithCurrentOrder = (currentDayOfWeek - firstDay + 7) % 7;
+            int currentDayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK); //Sunday is 1, Saturday is 7.
+            int firstDay = Calendar.getInstance().getFirstDayOfWeek();
+            weekdayIndexWithCurrentOrder = (currentDayOfWeek - firstDay + 7) % 7;
+        }
     }
 
     @DebugLog
@@ -510,15 +509,5 @@ public class MainActivity extends AppCompatActivity
 
     public int getWeekdayIndexWithCurrentOrder() {
         return weekdayIndexWithCurrentOrder;
-    }
-
-    public void firstTimeHelpFinished() {
-        // We need an Editor object to make preference changes.
-        // All objects are from android.context.Context
-        SharedPreferences settings = getPreferences(MODE_PRIVATE);
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putBoolean(FIRST_TIME_HELP_VIEWED, true);
-        firstTimeHelpViewed = true;
-        editor.apply();
     }
 }

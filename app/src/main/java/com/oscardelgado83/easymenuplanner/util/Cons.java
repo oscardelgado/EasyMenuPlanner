@@ -7,4 +7,6 @@ public final class Cons {
 
     // Set in Application from value read from Gradle conf.
     public static Boolean DEBUGGING = null;
+
+    public static final String FIRST_TIME_HELP_VIEWED = "firstTimeHelpViewed";
 }
