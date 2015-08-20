@@ -103,35 +103,42 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Restore preferences
-        SharedPreferences settings = getPreferences(MODE_PRIVATE);
-        dbStarted = settings.getBoolean(PREFERENCE_DB_STARTED, false);
-
-        if (isTabletDevice()) {
-            setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        //Tutorial
+        if ( ! PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
+                .getBoolean(Cons.FIRST_TIME_HELP_VIEWED, false)) {
+            mNavigationDrawerFragment.selectItem(Section.HELP.ordinal());
         } else {
-            setRequestedOrientation (ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+            // Restore preferences
+            SharedPreferences settings = getPreferences(MODE_PRIVATE);
+            dbStarted = settings.getBoolean(PREFERENCE_DB_STARTED, false);
+
+            if (isTabletDevice()) {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            } else {
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+            }
+
+            setContentView(R.layout.activity_main);
+            ButterKnife.bind(this);
+            loadAdMob();
+
+            mNavigationDrawerFragment = (NavigationDrawerFragment)
+                    getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+            mTitle = getTitle();
+
+            // Set up the drawer.
+            mNavigationDrawerFragment.setUp(
+                    R.id.navigation_drawer,
+                    (DrawerLayout) findViewById(R.id.drawer_layout));
+
+            if (!dbStarted) {
+                prePopulateDB();
+            }
+
+            week = Day.findAll();
+            if (DEBUGGING) Log.d(LOG_TAG, "week: " + week);
         }
-
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
-        loadAdMob();
-
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-        mTitle = getTitle();
-
-        // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
-
-        if (!dbStarted) {
-            prePopulateDB();
-        }
-
-        week = Day.findAll();
-        if (DEBUGGING) Log.d(LOG_TAG, "week: " + week);
     }
 
     @DebugLog
@@ -381,12 +388,7 @@ public class MainActivity extends AppCompatActivity
 
         Intent intent = null;
 
-        //Tutorial
-        if ( ! PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                .getBoolean(Cons.FIRST_TIME_HELP_VIEWED, false)) {
-            mNavigationDrawerFragment.selectItem(Section.HELP.ordinal());
-
-        } else if ((intent = getIntent()) != null) {
+        if ((intent = getIntent()) != null) {
             if (ensureGooglePlayServices()) {
                 adView.resume();
             }

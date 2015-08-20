@@ -58,9 +58,13 @@ public class HelpActivity extends AppCompatActivity {
      */
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         private int[] tutorialDrawables = new int[]{
-                R.drawable.tutorial_example_1,
-                R.drawable.tutorial_example_2,
-                R.drawable.tutorial_example_3
+                R.drawable.tutorial_01,
+                R.drawable.tutorial_02,
+                R.drawable.tutorial_03,
+                R.drawable.tutorial_04,
+                R.drawable.tutorial_05,
+                R.drawable.tutorial_06,
+                R.drawable.tutorial_07,
         };
 
         public ScreenSlidePagerAdapter(FragmentManager fm) {
