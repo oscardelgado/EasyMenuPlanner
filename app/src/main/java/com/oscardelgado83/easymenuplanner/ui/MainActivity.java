@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity
 
     private boolean dbStarted;
     private int weekdayIndexWithCurrentOrder;
+    private int lastSelectedPosition;
 
     @Override
     @DebugLog
@@ -117,8 +118,17 @@ public class MainActivity extends AppCompatActivity
         //Tutorial
         if ( ! PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                 .getBoolean(Cons.FIRST_TIME_HELP_VIEWED, false)) {
+            lastSelectedPosition = mNavigationDrawerFragment.getCurrentSelectedPosition();
             mNavigationDrawerFragment.selectItem(Section.HELP.ordinal());
+        } else {
+            lastSelectedPosition = -1;
         }
+
+        if (lastSelectedPosition != -1) {
+            mNavigationDrawerFragment.selectItem(lastSelectedPosition);
+        }
+
+        // TODO: On first open, after returning from Tutorial, the drawer should be opened.
 
         // Restore preferences
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
@@ -386,8 +396,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onResume() {
         super.onResume();
-
-        mNavigationDrawerFragment.selectItem(mNavigationDrawerFragment.getCurrentSelectedPosition());
 
         Intent intent = null;
 
