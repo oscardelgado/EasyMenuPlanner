@@ -65,6 +65,7 @@ public class HelpActivity extends AppCompatActivity {
                 R.drawable.tutorial_05,
                 R.drawable.tutorial_06,
                 R.drawable.tutorial_07,
+                R.drawable.tutorial_08,
         };
 
         public ScreenSlidePagerAdapter(FragmentManager fm) {

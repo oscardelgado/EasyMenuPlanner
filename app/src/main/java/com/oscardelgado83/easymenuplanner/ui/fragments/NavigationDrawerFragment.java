@@ -24,6 +24,8 @@ import android.widget.Toast;
 
 import com.oscardelgado83.easymenuplanner.R;
 
+import hugo.weaving.DebugLog;
+
 import static com.oscardelgado83.easymenuplanner.util.Cons.DEBUGGING;
 
 /**
@@ -322,5 +324,10 @@ public class NavigationDrawerFragment extends Fragment {
          * Called when an item in the navigation drawer is selected.
          */
         void onNavigationDrawerItemSelected(int position);
+    }
+
+    @DebugLog
+    public int getCurrentSelectedPosition() {
+        return mCurrentSelectedPosition;
     }
 }

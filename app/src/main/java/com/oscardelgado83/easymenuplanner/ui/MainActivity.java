@@ -103,42 +103,43 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
+
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+
+        // Set up the drawer.
+        mNavigationDrawerFragment.setUp(
+                R.id.navigation_drawer,
+                (DrawerLayout) findViewById(R.id.drawer_layout));
+
         //Tutorial
         if ( ! PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
                 .getBoolean(Cons.FIRST_TIME_HELP_VIEWED, false)) {
             mNavigationDrawerFragment.selectItem(Section.HELP.ordinal());
-        } else {
-
-            // Restore preferences
-            SharedPreferences settings = getPreferences(MODE_PRIVATE);
-            dbStarted = settings.getBoolean(PREFERENCE_DB_STARTED, false);
-
-            if (isTabletDevice()) {
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            } else {
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-            }
-
-            setContentView(R.layout.activity_main);
-            ButterKnife.bind(this);
-            loadAdMob();
-
-            mNavigationDrawerFragment = (NavigationDrawerFragment)
-                    getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-            mTitle = getTitle();
-
-            // Set up the drawer.
-            mNavigationDrawerFragment.setUp(
-                    R.id.navigation_drawer,
-                    (DrawerLayout) findViewById(R.id.drawer_layout));
-
-            if (!dbStarted) {
-                prePopulateDB();
-            }
-
-            week = Day.findAll();
-            if (DEBUGGING) Log.d(LOG_TAG, "week: " + week);
         }
+
+        // Restore preferences
+        SharedPreferences settings = getPreferences(MODE_PRIVATE);
+        dbStarted = settings.getBoolean(PREFERENCE_DB_STARTED, false);
+
+        if (isTabletDevice()) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        } else {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
+
+        loadAdMob();
+
+        mTitle = getTitle();
+
+        if (!dbStarted) {
+            prePopulateDB();
+        }
+
+        week = Day.findAll();
+        if (DEBUGGING) Log.d(LOG_TAG, "week: " + week);
     }
 
     @DebugLog
@@ -385,6 +386,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onResume() {
         super.onResume();
+
+        mNavigationDrawerFragment.selectItem(mNavigationDrawerFragment.getCurrentSelectedPosition());
 
         Intent intent = null;
 
