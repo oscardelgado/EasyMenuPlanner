@@ -73,10 +73,6 @@ public class CourseFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        courseList = getAllCourses();
-
-        setListAdapter(new CourseAdapter(getActivity(), courseList));
     }
 
     private List<Course> getAllCourses() {
@@ -214,6 +210,10 @@ public class CourseFragment extends ListFragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        courseList = getAllCourses();
+
+        setListAdapter(new CourseAdapter(getActivity(), courseList));
 
         GA.sendScreenHit(
                 ((EMPApplication) getActivity().getApplication()).getTracker(),

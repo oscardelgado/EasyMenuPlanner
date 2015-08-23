@@ -89,6 +89,14 @@ public class WeekFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_week, container, false);
         ButterKnife.bind(this, view);
 
+        refreshWeekData();
+
+        repaintWeekRows();
+
+        return view;
+    }
+
+    private void refreshWeekData() {
         allFirstCourses = new Select()
                 .from(Course.class)
                 .where("courseType in (?, ?)", FIRST, NONE)
@@ -117,9 +125,6 @@ public class WeekFragment extends Fragment {
 
         allTableRows = new TableRow[]{tableRow1, tableRow2, tableRow3, tableRow4, tableRow5, tableRow6, tableRow7};
         dayNames = new DateFormatSymbols().getShortWeekdays();
-
-        repaintWeekRows();
-        return view;
     }
 
     private void repaintWeekRows() {
@@ -143,6 +148,9 @@ public class WeekFragment extends Fragment {
                 tr.setBackgroundColor(getResources().getColor(R.color.background));
                 weekDayName.setTextColor(getResources().getColor(android.R.color.white));
                 dayIsPast = false;
+            } else {
+                tr.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                weekDayName.setTextColor(getResources().getColor(R.color.accent));
             }
 
             if (week == null || week.isEmpty()) {
@@ -186,6 +194,10 @@ public class WeekFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        refreshWeekData();
+
+        repaintWeekRows();
 
         GA.sendScreenHit(
                 ((EMPApplication) getActivity().getApplication()).getTracker(),

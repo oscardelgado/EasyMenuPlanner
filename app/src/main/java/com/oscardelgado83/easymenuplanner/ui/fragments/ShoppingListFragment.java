@@ -45,11 +45,6 @@ public class ShoppingListFragment extends ListFragment {
         super.onCreate(savedInstanceState);
 
         setHasOptionsMenu(true);
-
-        allIngredientsList = getIngredients();
-        currentIngredientsList = new ArrayList<>(allIngredientsList);
-
-        setListAdapter(new ShoppingListAdapter(getActivity(), currentIngredientsList));
     }
 
     @Override
@@ -99,6 +94,11 @@ public class ShoppingListFragment extends ListFragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        allIngredientsList = getIngredients();
+        currentIngredientsList = new ArrayList<>(allIngredientsList);
+
+        setListAdapter(new ShoppingListAdapter(getActivity(), currentIngredientsList));
 
         GA.sendScreenHit(
                 ((EMPApplication) getActivity().getApplication()).getTracker(),
