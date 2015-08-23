@@ -103,7 +103,7 @@ public class ShoppingListAdapter extends ArrayAdapter<Ingredient> {
 
             if (inCurrentDay) {
                 coursesStrings.add(course.name + ", <b><font color='#3B5A01'>" + context.getString(R.string.today) + "</font></b>");
-            } else if (tomorrow) {
+            } if (tomorrow) {
                 coursesStrings.add(course.name + ", " + context.getString(R.string.tomorrow));
             } else if ( ! futureDays.isEmpty()) {
                 String daysString = context.getString(R.string.shoppinglist_ingredient_on_days) + " "

@@ -1,6 +1,7 @@
 package com.oscardelgado83.easymenuplanner.ui.adapters;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -32,9 +34,11 @@ public class CourseAdapter extends ArrayAdapter<Course> implements SectionIndexe
 
     private HashMap<String, Integer> alphaIndexer;
     private String[] sections;
+    private Context context;
 
     public CourseAdapter(Context context, List<Course> courses) {
         super(context, 0, courses);
+        this.context = context;
         alphaIndexer = new HashMap<>();
         for (int i = 0; i < courses.size(); i++)
         {
@@ -72,16 +76,46 @@ public class CourseAdapter extends ArrayAdapter<Course> implements SectionIndexe
 
         int weekdayIndexWithCurrentOrder = ((MainActivity) getContext()).getWeekdayIndexWithCurrentOrder();
 
-        List<Day> days = new Select().from(Day.class)
+//        List<Day> days = new Select().from(Day.class)
+//                .where("(Days.firstCourse = ? OR Days.secondCourse = ?)", course.getId(), course.getId())
+//                .and("Days.Id = ? + 1", weekdayIndexWithCurrentOrder)
+//                .execute();
+//        if (days.isEmpty()) {
+//            holder.daysTV.setText("");
+//        } else {
+//            holder.daysTV.setText(getContext().getString(R.string.assigned_to)
+//                    + StringUtils.join(days, ", "));
+//        }
+
+        List<String> coursesStrings = new LinkedList<>();
+
+        boolean inCurrentDay = new Select().from(Day.class)
                 .where("(Days.firstCourse = ? OR Days.secondCourse = ?)", course.getId(), course.getId())
                 .and("Days.Id = ? + 1", weekdayIndexWithCurrentOrder)
+                .exists();
+
+        boolean tomorrow = new Select().from(Day.class)
+                .where("(Days.firstCourse = ? OR Days.secondCourse = ?)", course.getId(), course.getId())
+                .and("Days.Id = ? + 2", weekdayIndexWithCurrentOrder)
+                .exists();
+
+        List<Day> futureDays = new Select().from(Day.class)
+                .where("(Days.firstCourse = ? OR Days.secondCourse = ?)", course.getId(), course.getId())
+                .and("Days.Id > ? + 2", weekdayIndexWithCurrentOrder)
                 .execute();
-        if (days.isEmpty()) {
-            holder.daysTV.setText("");
-        } else {
-            holder.daysTV.setText(getContext().getString(R.string.assigned_to)
-                    + StringUtils.join(days, ", "));
+
+
+        if (inCurrentDay) {
+            coursesStrings.add("<b><font color='#3B5A01'>" + context.getString(R.string.today) + "</font></b>");
+        } if (tomorrow) {
+            coursesStrings.add(context.getString(R.string.tomorrow));
+        } else if ( ! futureDays.isEmpty()) {
+            String daysString = context.getString(R.string.shoppinglist_ingredient_on_days) + " "
+                    + StringUtils.join(StringUtils.join(futureDays, ", "));
+            coursesStrings.add(daysString);
         }
+
+        holder.daysTV.setText(Html.fromHtml(StringUtils.join(coursesStrings, ", ")));
 
         // Return the completed view to render on screen
         return convertView;

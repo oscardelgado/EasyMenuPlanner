@@ -40,5 +40,7 @@
         android:layout_alignParentEnd="true"
         android:gravity="right"
         android:layout_marginRight="8dp"
-        android:textColor="@color/lighter_text"/>
+        android:textColor="@color/lighter_text"
+        android:layout_toRightOf="@+id/ingredient_name"
+        android:layout_toEndOf="@+id/ingredient_name"/>
 </RelativeLayout>
