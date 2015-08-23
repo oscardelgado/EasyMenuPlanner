@@ -20,7 +20,6 @@ import butterknife.ButterKnife;
  * Created by oscar on 16/08/15.
  */
 public class HelpFragment extends Fragment {
-
     @Bind(R.id.tutorial_image)
     ImageView tutorialIV;
 
@@ -48,6 +47,6 @@ public class HelpFragment extends Fragment {
 
         GA.sendScreenHit(
                 ((EMPApplication) getActivity().getApplication()).getTracker(),
-                FRAGMENT_NAME);
+                FRAGMENT_NAME + ", slide: " + getArguments().getInt(HelpActivity.HELP_TUTORIAL_PAGE));
     }
 }

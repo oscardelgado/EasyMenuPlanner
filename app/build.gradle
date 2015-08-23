@@ -11,7 +11,7 @@ android {
         minSdkVersion 10
         targetSdkVersion 22
         versionCode 28
-        versionName "1.3.4-RC3"
+        versionName "1.3.5"
         resValue "string", "admob_unit_id", admob_unit_id
         resValue "string", "ga_property_id", ga_property_id
         resValue "string", "nexus_7_device_id", nexus_7_device_id

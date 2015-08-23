@@ -9,6 +9,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
 
 import com.oscardelgado83.easymenuplanner.EMPApplication;
 import com.oscardelgado83.easymenuplanner.R;
@@ -22,10 +24,11 @@ public class HelpActivity extends AppCompatActivity {
 
     private static final String SCREEN_NAME = "HelpActivity";
     public static final String HELP_DRAWABLE_KEY = "help_drawable_key";
-
+    public static final String HELP_TUTORIAL_PAGE = "help_tutorial_page";
 
     private ViewPager mPager;
     private ScreenSlidePagerAdapter mPagerAdapter;
+    private Button exitBTN;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +51,18 @@ public class HelpActivity extends AppCompatActivity {
         CirclePageIndicator indicator = (CirclePageIndicator)findViewById(R.id.indicator);
         indicator.setViewPager(mPager);
 
-        //TODO: make the user confirm with a button or something
-        firstTimeHelpFinished();
+        exitBTN = (Button) findViewById(R.id.exit_tutorial);
+        exitBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GA.sendEvent(
+                        ((EMPApplication) getApplication()).getTracker(),
+                        "tutorial",
+                        "button clicked",
+                        "exit tutorial");
+                finish();
+            }
+        });
     }
 
     /**
@@ -77,7 +90,13 @@ public class HelpActivity extends AppCompatActivity {
             HelpFragment helpFragment = new HelpFragment();
             Bundle bundle = new Bundle();
             bundle.putInt(HELP_DRAWABLE_KEY, tutorialDrawables[position]);
+            bundle.putInt(HELP_TUTORIAL_PAGE, position);
             helpFragment.setArguments(bundle);
+
+            if (position == getCount() - 1) {
+                tutorialCompleted();
+            }
+
             return helpFragment;
         }
 
@@ -87,21 +106,20 @@ public class HelpActivity extends AppCompatActivity {
         }
     }
 
-    public void firstTimeHelpFinished() {
+    private void tutorialCompleted() {
         // We need an Editor object to make preference changes.
         // All objects are from android.context.Context
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean(Cons.FIRST_TIME_HELP_VIEWED, true);
         editor.apply();
-    }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+        exitBTN.setText(R.string.go_to_the_app);
 
-        GA.sendScreenHit(
+        GA.sendEvent(
                 ((EMPApplication) getApplication()).getTracker(),
-                SCREEN_NAME);
+                "tutorial",
+                "last slide viewed",
+                "tutorial completed");
     }
 }
