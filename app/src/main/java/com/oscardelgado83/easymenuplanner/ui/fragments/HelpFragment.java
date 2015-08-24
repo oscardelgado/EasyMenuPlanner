@@ -40,13 +40,15 @@ public class HelpFragment extends Fragment {
     private ViewPager mPager;
     private ScreenSlidePagerAdapter mPagerAdapter;
     private Button exitBTN;
-    private ActionBar supportActionBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_help, container, false);
         ButterKnife.bind(this, view);
+
+        ActionBar supportActionBar = ((MainActivity) getActivity()).getSupportActionBar();
+        if (supportActionBar != null) supportActionBar.hide();
 
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = ButterKnife.findById(view, R.id.pager);
@@ -73,14 +75,6 @@ public class HelpFragment extends Fragment {
                         getActivity().getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
                 navigationDrawerFragment.selectItem(NavigationDrawerFragment.Section.WEEK_MENU.ordinal());
 
-//                ((MainActivity) getActivity()).onNavigationDrawerItemSelected(WEEK_MENU.ordinal());
-//                getActivity().supportInvalidateOptionsMenu();
-
-                ActionBar supportActionBar = ((MainActivity) getActivity()).getSupportActionBar();
-                if (supportActionBar != null) supportActionBar.show();
-                ((MainActivity) getActivity()).restoreActionBar();
-                getActivity().supportInvalidateOptionsMenu();
-
                 //TODO: keep drawer opened. Try with back button handling.
             }
         });
@@ -103,9 +97,8 @@ public class HelpFragment extends Fragment {
     public void onPause() {
         ((MainActivity) getActivity()).showAds();
 
-        if (supportActionBar != null) {
-            supportActionBar.show();
-        }
+        ActionBar supportActionBar = ((MainActivity) getActivity()).getSupportActionBar();
+        if (supportActionBar != null) supportActionBar.show();
 
         super.onPause();
     }

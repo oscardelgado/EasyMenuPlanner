@@ -225,7 +225,7 @@ public class WeekFragment extends Fragment {
         if (notCheckedCount == 0) {
             return "";
         } else {
-            String ingredientString = StringUtils.join(course.getIngredients(), ", ");
+            String ingredientString = StringUtils.join(course.getNotCheckedIngredients(), ", ");
             return getResources().getQuantityString(R.plurals.intredients_missing, notCheckedCount, notCheckedCount, ingredientString);
         }
     }

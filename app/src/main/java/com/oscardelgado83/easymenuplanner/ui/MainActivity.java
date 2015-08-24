@@ -140,9 +140,9 @@ public class MainActivity extends AppCompatActivity
         //Tutorial
         if ( ! PreferenceManager.getDefaultSharedPreferences(this)
                 .getBoolean(Cons.FIRST_TIME_HELP_VIEWED, false)) {
-            if (getSupportActionBar() != null) {
-                getSupportActionBar().hide();
-            }
+//            if (getSupportActionBar() != null) {
+//                getSupportActionBar().hide();
+//            }
 
             mNavigationDrawerFragment.selectItem(Section.HELP.ordinal());
 
