@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="DAY_IS_PAST_KEY" type="id"/>
+    <item name="BADGE_KEY" type="id"/>
+</resources>

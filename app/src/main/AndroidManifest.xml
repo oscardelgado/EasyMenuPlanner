@@ -112,14 +112,6 @@
             android:name=".ui.widgets.ShoppingListWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
 
-        <activity
-            android:name=".ui.HelpActivity"
-            android:label="@string/title_activity_help"
-            android:parentActivityName=".ui.MainActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.oscardelgado83.easymenuplanner.ui.MainActivity" />
-        </activity>
     </application>
 
 </manifest>

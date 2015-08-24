@@ -22,6 +22,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
@@ -35,6 +36,7 @@ import com.oscardelgado83.easymenuplanner.model.CourseIngredient;
 import com.oscardelgado83.easymenuplanner.model.Day;
 import com.oscardelgado83.easymenuplanner.model.Ingredient;
 import com.oscardelgado83.easymenuplanner.ui.fragments.CourseFragment;
+import com.oscardelgado83.easymenuplanner.ui.fragments.HelpFragment;
 import com.oscardelgado83.easymenuplanner.ui.fragments.NavigationDrawerFragment;
 import com.oscardelgado83.easymenuplanner.ui.fragments.NavigationDrawerFragment.Section;
 import com.oscardelgado83.easymenuplanner.ui.fragments.ShoppingListFragment;
@@ -97,7 +99,6 @@ public class MainActivity extends AppCompatActivity
 
     private boolean dbStarted;
     private int weekdayIndexWithCurrentOrder;
-    private int lastSelectedPosition;
 
     @Override
     @DebugLog
@@ -106,29 +107,6 @@ public class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
-        mNavigationDrawerFragment = (NavigationDrawerFragment)
-                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
-
-        // Set up the drawer.
-        mNavigationDrawerFragment.setUp(
-                R.id.navigation_drawer,
-                (DrawerLayout) findViewById(R.id.drawer_layout));
-
-        //Tutorial
-        if ( ! PreferenceManager.getDefaultSharedPreferences(getApplicationContext())
-                .getBoolean(Cons.FIRST_TIME_HELP_VIEWED, false)) {
-            lastSelectedPosition = mNavigationDrawerFragment.getCurrentSelectedPosition();
-            mNavigationDrawerFragment.selectItem(Section.HELP.ordinal());
-        } else {
-            lastSelectedPosition = -1;
-        }
-
-        if (lastSelectedPosition != -1) {
-            mNavigationDrawerFragment.selectItem(lastSelectedPosition);
-        }
-
-        // TODO: On first open, after returning from Tutorial, the drawer should be opened.
 
         // Restore preferences
         SharedPreferences settings = getPreferences(MODE_PRIVATE);
@@ -150,6 +128,27 @@ public class MainActivity extends AppCompatActivity
 
         week = Day.findAll();
         if (DEBUGGING) Log.d(LOG_TAG, "week: " + week);
+
+        mNavigationDrawerFragment = (NavigationDrawerFragment)
+                getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+
+        // Set up the drawer.
+        mNavigationDrawerFragment.setUp(
+                R.id.navigation_drawer,
+                (DrawerLayout) findViewById(R.id.drawer_layout));
+
+        //Tutorial
+        if ( ! PreferenceManager.getDefaultSharedPreferences(this)
+                .getBoolean(Cons.FIRST_TIME_HELP_VIEWED, false)) {
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().hide();
+            }
+
+            mNavigationDrawerFragment.selectItem(Section.HELP.ordinal());
+
+        }
+
+        // TODO: On first open, after returning from Tutorial, the drawer should be opened.
     }
 
     @DebugLog
@@ -267,17 +266,17 @@ public class MainActivity extends AppCompatActivity
 
         switch (Section.values()[position]) {
             case WEEK_MENU:
-            currentFrg = new WeekFragment();
-            break;
+                currentFrg = new WeekFragment();
+                break;
             case WEEK_SHOPPINGLIST:
-            currentFrg = new ShoppingListFragment();
-            break;
+                currentFrg = new ShoppingListFragment();
+                break;
             case COURSES:
-            currentFrg = new CourseFragment();
-            break;
+                currentFrg = new CourseFragment();
+                break;
             case HELP:
-                startActivity(new Intent(this, HelpActivity.class));
-                return;
+                currentFrg = new HelpFragment();
+                break;
             default:
                 break;
         }
@@ -522,5 +521,13 @@ public class MainActivity extends AppCompatActivity
 
     public int getWeekdayIndexWithCurrentOrder() {
         return weekdayIndexWithCurrentOrder;
+    }
+
+    public void hideAds() {
+        adView.setVisibility(View.GONE);
+    }
+
+    public void showAds() {
+        adView.setVisibility(View.VISIBLE);
     }
 }

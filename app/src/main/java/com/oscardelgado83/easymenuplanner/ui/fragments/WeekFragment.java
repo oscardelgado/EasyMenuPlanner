@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
 import com.activeandroid.query.Select;
@@ -23,6 +25,9 @@ import com.oscardelgado83.easymenuplanner.model.Day;
 import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 import com.oscardelgado83.easymenuplanner.ui.adapters.CourseAdapter;
 import com.oscardelgado83.easymenuplanner.util.GA;
+import com.readystatesoftware.viewbadger.BadgeView;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.text.DateFormatSymbols;
 import java.util.ArrayList;
@@ -128,7 +133,7 @@ public class WeekFragment extends Fragment {
     }
 
     private void repaintWeekRows() {
-        List<Day> week = ((MainActivity) getActivity()).getWeek();
+        final List<Day> week = ((MainActivity) getActivity()).getWeek();
 
         int currentDayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK); //Sunday is 1, Saturday is 7.
         boolean dayIsPast = true;
@@ -136,10 +141,10 @@ public class WeekFragment extends Fragment {
             TableRow tr = allTableRows[i];
 
             TextView tvA = findById(tr, R.id.textViewA);
-            TextView ingrA = findById(tr, R.id.ingredientsA);
             TextView tvB = findById(tr, R.id.textViewB);
-            TextView ingrB = findById(tr, R.id.ingredientsB);
             TextView weekDayName = findById(tr, R.id.week_day_name);
+            View placeholderA = findById(tr, R.id.badge_placeholder_A);
+            View placeholderB = findById(tr, R.id.badge_placeholder_B);
 
             int indexWithCurrentOrder = (i + Calendar.getInstance().getFirstDayOfWeek() - 1) % (dayNames.length - 1) + 1;
             weekDayName.setText(dayNames[indexWithCurrentOrder]);
@@ -158,36 +163,70 @@ public class WeekFragment extends Fragment {
             } else {
                 if (dayIsPast) weekDayName.setTextColor(getResources().getColor(R.color.light_text));
                 if (week.get(i).firstCourse != null) {
-                    tvA.setText(week.get(i).firstCourse.name);
+                    final Course course = week.get(i).firstCourse;
+                    tvA.setText(course.name);
+
                     if (! dayIsPast) {
-                        ingrA.setText(getNotCheckedIngredientsCount(week.get(i).firstCourse));
+                        prepareBadge(placeholderA, course);
                     }
                 }
                 if (week.get(i).secondCourse != null) {
-                    tvB.setText(week.get(i).secondCourse.name);
+                    final Course course = week.get(i).secondCourse;
+                    tvB.setText(course.name);
                     if (! dayIsPast) {
-                        ingrB.setText(getNotCheckedIngredientsCount(week.get(i).secondCourse));
+                        prepareBadge(placeholderB, course);
                     }
                 }
             }
-            findById(tr, R.id.buttonLeftA).setOnClickListener(courseBtnClickListener(tvA, ingrA, i, 0));
-            findById(tr, R.id.buttonRightA).setOnClickListener(courseBtnClickListener(tvA, ingrA, i, 0));
-            findById(tr, R.id.card_view_A).setOnClickListener(courseBtnClickListener(tvA, ingrA, i, 0));
-            findById(tr, R.id.buttonLeftB).setOnClickListener(courseBtnClickListener(tvB, ingrB, i, 1));
-            findById(tr, R.id.buttonRightB).setOnClickListener(courseBtnClickListener(tvB, ingrB, i, 1));
-            findById(tr, R.id.card_view_B).setOnClickListener(courseBtnClickListener(tvB, ingrB, i, 1));
+            findById(tr, R.id.buttonLeftA).setOnClickListener(courseBtnClickListener(tvA, placeholderA, i, 0));
+            findById(tr, R.id.buttonRightA).setOnClickListener(courseBtnClickListener(tvA, placeholderA, i, 0));
+            findById(tr, R.id.card_view_A).setOnClickListener(courseBtnClickListener(tvA, placeholderA, i, 0));
+            findById(tr, R.id.buttonLeftB).setOnClickListener(courseBtnClickListener(tvB, placeholderB, i, 1));
+            findById(tr, R.id.buttonRightB).setOnClickListener(courseBtnClickListener(tvB, placeholderB, i, 1));
+            findById(tr, R.id.card_view_B).setOnClickListener(courseBtnClickListener(tvB, placeholderB, i, 1));
 
-            ingrA.setTag(dayIsPast);
-            ingrB.setTag(dayIsPast);
+            placeholderA.setTag(R.id.DAY_IS_PAST_KEY, dayIsPast);
+            placeholderB.setTag(R.id.DAY_IS_PAST_KEY, dayIsPast);
         }
     }
 
-    private String getNotCheckedIngredientsCount(Course course) {
+    private void prepareBadge(View placeholder, final Course course) {
+        int count = course.getNotCheckedIngredientsCount();
+        BadgeView badge = (BadgeView) placeholder.getTag(R.id.BADGE_KEY);
+        if (badge == null) {
+            badge = new BadgeView(getActivity(), placeholder);
+            placeholder.setTag(R.id.BADGE_KEY, badge);
+        }
+        if (count > 0) {
+            badge.setText("" + count);
+            badge.show();
+
+            View.OnClickListener badgeClickListener = getBadgeOnClickListener(course);
+            badge.setOnClickListener(badgeClickListener);
+        } else {
+            badge.hide();
+        }
+    }
+
+    @NonNull
+    private View.OnClickListener getBadgeOnClickListener(final Course course) {
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(v.getContext(),
+                        getNotCheckedIngredientsString(course),
+                        Toast.LENGTH_SHORT).show();
+            }
+        };
+    }
+
+    private String getNotCheckedIngredientsString(Course course) {
         int notCheckedCount = course.getNotCheckedIngredientsCount();
         if (notCheckedCount == 0) {
             return "";
         } else {
-            return getResources().getQuantityString(R.plurals.intredients_missing, notCheckedCount, notCheckedCount);
+            String ingredientString = StringUtils.join(course.getIngredients(), ", ");
+            return getResources().getQuantityString(R.plurals.intredients_missing, notCheckedCount, notCheckedCount, ingredientString);
         }
     }
 
@@ -204,7 +243,7 @@ public class WeekFragment extends Fragment {
                 FRAGMENT_NAME);
     }
 
-    private View.OnClickListener courseBtnClickListener(final TextView tv, final TextView ingrTv, final int row, final int col) {
+    private View.OnClickListener courseBtnClickListener(final TextView tv, final View placeholder, final int row, final int col) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -250,9 +289,9 @@ public class WeekFragment extends Fragment {
                     case R.id.card_view_A:
                     case R.id.card_view_B:
                         if (tv.getText().equals("")) {
-                            showCoursesDialog(tv, ingrTv, row, col);
+                            showCoursesDialog(tv, placeholder, row, col);
                         } else {
-                            showDeleteOrChangeDialog(tv, ingrTv, row, col);
+                            showDeleteOrChangeDialog(tv, placeholder, row, col);
                         }
                         return;
                     default:
@@ -264,19 +303,21 @@ public class WeekFragment extends Fragment {
                     selectedDay.secondCourse = newCourse;
                 }
                 tv.setText(newCourse != null ? newCourse.name : "");
-                if ( ! (boolean) ingrTv.getTag()) ingrTv.setText(newCourse != null ? getNotCheckedIngredientsCount(newCourse) : "");
+                if ( ! (boolean) placeholder.getTag(R.id.DAY_IS_PAST_KEY)) { // If day is not past.
+                    prepareBadge(placeholder, newCourse);
+                }
                 dirty = true;
             }
         };
     }
 
-    private void showDeleteOrChangeDialog(final TextView tv, final TextView ingrTv, final int row, final int col) {
+    private void showDeleteOrChangeDialog(final TextView tv, final View placeholder, final int row, final int col) {
         String[] items = {getString(R.string.day_course_change), getString(R.string.day_course_remove), };
         new AlertDialog.Builder(getActivity()).setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
                     case 0:
-                        showCoursesDialog(tv, ingrTv, row, col);
+                        showCoursesDialog(tv, placeholder, row, col);
                         break;
                     case 1:
                         List<Day> week = ((MainActivity) getActivity()).getWeek();
@@ -287,7 +328,7 @@ public class WeekFragment extends Fragment {
                                 selectedDay.secondCourse = null;
                             }
                         tv.setText("");
-                        ingrTv.setText("");
+                        clearBadge(placeholder);
                         dirty = true;
                         break;
                     default:
@@ -297,7 +338,14 @@ public class WeekFragment extends Fragment {
         }).create().show();
     }
 
-    private void showCoursesDialog(final TextView tv, final TextView ingrTv, final int row, final int col) {
+    private void clearBadge(View placeholder) {
+        BadgeView badge = (BadgeView) placeholder.getTag(R.id.BADGE_KEY);
+        if (badge != null) {
+            badge.hide();
+        }
+    }
+
+    private void showCoursesDialog(final TextView tv, final View placeholder, final int row, final int col) {
         List<Course> allCourses = null;
         if (col == 0) {
             allCourses = allFirstCourses;
@@ -320,7 +368,9 @@ public class WeekFragment extends Fragment {
                     selectedDay.secondCourse = selectedCourse;
                 }
                 tv.setText(selectedCourse.name);
-                if ( ! (boolean) ingrTv.getTag()) ingrTv.setText(getNotCheckedIngredientsCount(selectedCourse));
+                if (!(boolean) placeholder.getTag(R.id.DAY_IS_PAST_KEY)) {
+                    prepareBadge(placeholder, selectedCourse);
+                }
                 dirty = true;
             }
         });
@@ -347,10 +397,16 @@ public class WeekFragment extends Fragment {
             TableRow tr = allTableRows[i];
             findById(tr, R.id.buttonLeftA).setOnClickListener(null);
             findById(tr, R.id.buttonRightA).setOnClickListener(null);
-            findById(tr, R.id.card_view_A).setOnClickListener(null);
+            View placeholder = findById(tr, R.id.badge_placeholder_A);
+            placeholder.setOnClickListener(null);
+            BadgeView badgeView = (BadgeView) placeholder.getTag(R.id.BADGE_KEY);
+            if (badgeView != null) badgeView.setOnClickListener(null);
             findById(tr, R.id.buttonLeftB).setOnClickListener(null);
             findById(tr, R.id.buttonRightB).setOnClickListener(null);
-            findById(tr, R.id.card_view_B).setOnClickListener(null);
+            placeholder = findById(tr, R.id.badge_placeholder_B);
+            placeholder.setOnClickListener(null);
+            badgeView = (BadgeView) placeholder.getTag(R.id.BADGE_KEY);
+            if (badgeView != null) badgeView.setOnClickListener(null);
         }
         unbind(this);
     }
@@ -385,15 +441,15 @@ public class WeekFragment extends Fragment {
         for (int i = 0; i < allTableRows.length; i++) {
             TableRow tr = allTableRows[i];
             TextView tvA = findById(tr, R.id.textViewA);
-            TextView ingrA = findById(tr, R.id.ingredientsA);
+            View placeholderA = findById(tr, R.id.badge_placeholder_A);
             tvA.setText("");
-            ingrA.setText("");
+            clearBadge(placeholderA);
 
             TextView tvB = findById(tr, R.id.textViewB);
-            TextView ingrB = findById(tr, R.id.ingredientsB);
+            View placeholderB = findById(tr, R.id.badge_placeholder_B);
 
             tvB.setText("");
-            ingrB.setText("");
+            clearBadge(placeholderB);
 
             week.get(i).firstCourse = null;
             week.get(i).secondCourse = null;
@@ -486,6 +542,7 @@ public class WeekFragment extends Fragment {
         public void onClick(DialogInterface dialog, int which) {
             ((MainActivity) getActivity()).onNavigationDrawerItemSelected(COURSES.ordinal());
             getActivity().supportInvalidateOptionsMenu();
+            //TODO: check this vs  mNavigationDrawerFragment.selectItem()
         }
     };
 }

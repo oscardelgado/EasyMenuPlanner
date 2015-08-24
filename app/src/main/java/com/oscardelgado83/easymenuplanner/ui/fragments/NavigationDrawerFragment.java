@@ -240,6 +240,13 @@ public class NavigationDrawerFragment extends Fragment {
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }
+
+//        ActionBar supportActionBar = ((AppCompatActivity) getActivity()).getSupportActionBar();
+//        if (supportActionBar != null) {
+//            supportActionBar.setTitle(Section.values()[position].getTitleKey());
+//        }
+//        getActivity().supportInvalidateOptionsMenu();
+
         if (mCallbacks != null) {
             mCallbacks.onNavigationDrawerItemSelected(position);
         }

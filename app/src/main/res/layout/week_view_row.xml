@@ -71,19 +71,13 @@
                 android:text="&lt;"
                 android:textColor="@color/accent"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:id="@+id/ingredientsA"
-                android:layout_below="@+id/textViewA"
-                android:layout_toRightOf="@+id/buttonLeftA"
-                android:layout_toLeftOf="@+id/buttonRightA"
-                android:layout_toStartOf="@+id/buttonRightA"
-                android:textSize="12sp"
-                android:layout_marginTop="3dp"
-                android:textColor="@color/lighter_text"
-                />
+            <FrameLayout
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/badge_placeholder_A"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
@@ -142,19 +136,13 @@
                 android:text="&lt;"
                 android:textColor="@color/accent"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:id="@+id/ingredientsB"
-                android:layout_below="@+id/textViewB"
-                android:layout_toRightOf="@+id/buttonLeftB"
-                android:layout_toLeftOf="@+id/buttonRightB"
-                android:layout_toStartOf="@+id/buttonRightB"
-                android:textSize="12sp"
-                android:layout_marginTop="3dp"
-                android:textColor="@color/lighter_text"
-                />
+            <FrameLayout
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/badge_placeholder_B"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
         </RelativeLayout>
 
     </android.support.v7.widget.CardView>
