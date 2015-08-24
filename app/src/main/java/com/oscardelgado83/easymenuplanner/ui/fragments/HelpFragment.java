@@ -47,7 +47,7 @@ public class HelpFragment extends Fragment {
         View view = inflater.inflate(R.layout.activity_help, container, false);
         ButterKnife.bind(this, view);
 
-        ActionBar supportActionBar = ((MainActivity) getActivity()).getSupportActionBar();
+        final ActionBar supportActionBar = ((MainActivity) getActivity()).getSupportActionBar();
         if (supportActionBar != null) supportActionBar.hide();
 
         // Instantiate a ViewPager and a PagerAdapter.
@@ -73,7 +73,9 @@ public class HelpFragment extends Fragment {
 
                 NavigationDrawerFragment navigationDrawerFragment = (NavigationDrawerFragment)
                         getActivity().getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
+
                 navigationDrawerFragment.selectItem(NavigationDrawerFragment.Section.WEEK_MENU.ordinal());
+                // TODO: the last section (for example, courses), remains in the title.
 
                 //TODO: keep drawer opened. Try with back button handling.
             }
