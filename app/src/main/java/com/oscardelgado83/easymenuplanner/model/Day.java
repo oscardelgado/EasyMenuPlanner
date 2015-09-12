@@ -28,6 +28,9 @@ public class Day extends Model {
     @Column(onDelete = Column.ForeignKeyAction.SET_NULL)
     public Course secondCourse;
 
+    @Column(onDelete = Column.ForeignKeyAction.SET_NULL)
+    public Course dinner;
+
     public static List<Day> findAll() {
         return new Select().from(Day.class).orderBy("date ASC").execute();
     }

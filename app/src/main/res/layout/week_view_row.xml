@@ -20,24 +20,41 @@
         android:layout_marginRight="5dp"/>
 
     <include layout="@layout/week_view_card"
-             android:id="@+id/card_view_A"
+             android:id="@+id/card_view_breakfast"
+             android:layout_weight="1"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_margin="1dp"
+             android:visibility="gone"/>
+
+    <include layout="@layout/week_view_card"
+             android:id="@+id/card_view_lunch"
+             android:layout_weight="1"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_margin="1dp"
+             android:visibility="gone"/>
+
+    <include layout="@layout/week_view_card"
+             android:id="@+id/card_view_first_course"
              android:layout_weight="1"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:layout_margin="1dp"/>
 
     <include layout="@layout/week_view_card"
-             android:id="@+id/card_view_B"
+             android:id="@+id/card_view_second_course"
              android:layout_weight="1"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:layout_margin="1dp"/>
 
     <include layout="@layout/week_view_card"
-             android:id="@+id/card_view_C"
+             android:id="@+id/card_view_dinner"
              android:layout_weight="1"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:layout_margin="1dp"/>
+             android:layout_margin="1dp"
+             android:visibility="visible"/>
 
 </TableRow>

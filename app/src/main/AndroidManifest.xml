@@ -58,7 +58,7 @@
             android:value="EasyMenuPlanner.db" />
         <meta-data
             android:name="AA_DB_VERSION"
-            android:value="2" />
+            android:value="3" />
 
         <!--
         ActiveAndroid will look through all your files to find your Model classes.

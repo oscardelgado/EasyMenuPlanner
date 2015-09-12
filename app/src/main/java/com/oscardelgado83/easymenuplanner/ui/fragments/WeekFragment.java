@@ -33,7 +33,6 @@ import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Random;
 
 import butterknife.Bind;
@@ -80,7 +79,6 @@ public class WeekFragment extends Fragment {
 
     private TableRow[] allTableRows;
     private List<Course> allFirstCourses;
-
     private List<Course> allSecondCourses;
 
     private boolean dirty;
@@ -140,11 +138,14 @@ public class WeekFragment extends Fragment {
         for (int i = 0; i < allTableRows.length; i++) {
             TableRow tr = allTableRows[i];
 
-            TextView tvA = (TextView) findById(tr, R.id.card_view_A).findViewById(R.id.textView);
-            TextView tvB = (TextView) findById(tr, R.id.card_view_B).findViewById(R.id.textView);
+            TextView tvFirstCourse = (TextView) findById(tr, R.id.card_view_first_course).findViewById(R.id.textView);
+            TextView tvSecondCourse = (TextView) findById(tr, R.id.card_view_second_course).findViewById(R.id.textView);
+            TextView tvDinner = (TextView) findById(tr, R.id.card_view_dinner).findViewById(R.id.textView);
+
             TextView weekDayName = findById(tr, R.id.week_day_name);
-            View placeholderA = findById(tr, R.id.card_view_A).findViewById(R.id.badge_placeholder);
-            View placeholderB = findById(tr, R.id.card_view_B).findViewById(R.id.badge_placeholder);
+            View placeholderFirstCourse = findById(tr, R.id.card_view_first_course).findViewById(R.id.badge_placeholder);
+            View placeholderSecondCourse = findById(tr, R.id.card_view_second_course).findViewById(R.id.badge_placeholder);
+            View placeholderDinner = findById(tr, R.id.card_view_dinner).findViewById(R.id.badge_placeholder);
 
             int indexWithCurrentOrder = (i + Calendar.getInstance().getFirstDayOfWeek() - 1) % (dayNames.length - 1) + 1;
             weekDayName.setText(dayNames[indexWithCurrentOrder]);
@@ -164,31 +165,41 @@ public class WeekFragment extends Fragment {
                 if (dayIsPast) weekDayName.setTextColor(getResources().getColor(R.color.light_text));
                 if (week.get(i).firstCourse != null) {
                     final Course course = week.get(i).firstCourse;
-                    tvA.setText(course.name);
+                    tvFirstCourse.setText(course.name);
 
                     if (! dayIsPast) {
-                        prepareBadge(placeholderA, course);
+                        prepareBadge(placeholderFirstCourse, course);
                     }
                 }
                 if (week.get(i).secondCourse != null) {
                     final Course course = week.get(i).secondCourse;
-                    tvB.setText(course.name);
+                    tvSecondCourse.setText(course.name);
                     if (! dayIsPast) {
-                        prepareBadge(placeholderB, course);
+                        prepareBadge(placeholderSecondCourse, course);
+                    }
+                }
+                if (week.get(i).dinner != null) {
+                    final Course course = week.get(i).dinner;
+                    tvDinner.setText(course.name);
+                    if (! dayIsPast) {
+                        prepareBadge(placeholderDinner, course);
                     }
                 }
             }
             //TODO: swipe
 //            findById(tr, R.id.buttonLeftA).setOnClickListener(courseBtnClickListener(tvA, placeholderA, i, 0));
 //            findById(tr, R.id.buttonRightA).setOnClickListener(courseBtnClickListener(tvA, placeholderA, i, 0));
-            findById(tr, R.id.card_view_A).setOnClickListener(courseBtnClickListener(tvA, placeholderA, i, 0));
+            findById(tr, R.id.card_view_first_course).setOnClickListener(courseBtnClickListener(tvFirstCourse, placeholderFirstCourse, i, 0));
             //TODO: swipe
 //            findById(tr, R.id.buttonLeftB).setOnClickListener(courseBtnClickListener(tvB, placeholderB, i, 1));
 //            findById(tr, R.id.buttonRightB).setOnClickListener(courseBtnClickListener(tvB, placeholderB, i, 1));
-            findById(tr, R.id.card_view_B).setOnClickListener(courseBtnClickListener(tvB, placeholderB, i, 1));
+            findById(tr, R.id.card_view_second_course).setOnClickListener(courseBtnClickListener(tvSecondCourse, placeholderSecondCourse, i, 1));
 
-            placeholderA.setTag(R.id.DAY_IS_PAST_KEY, dayIsPast);
-            placeholderB.setTag(R.id.DAY_IS_PAST_KEY, dayIsPast);
+            findById(tr, R.id.card_view_dinner).setOnClickListener(courseBtnClickListener(tvDinner, placeholderDinner, i, 2));
+
+            placeholderFirstCourse.setTag(R.id.DAY_IS_PAST_KEY, dayIsPast);
+            placeholderSecondCourse.setTag(R.id.DAY_IS_PAST_KEY, dayIsPast);
+            placeholderDinner.setTag(R.id.DAY_IS_PAST_KEY, dayIsPast);
         }
     }
 
@@ -251,23 +262,23 @@ public class WeekFragment extends Fragment {
             public void onClick(View v) {
                 List<Day> week = ((MainActivity) getActivity()).getWeek();
                 Day selectedDay = week.get(row);
-                Course currentCourse = (col == 0) ? selectedDay.firstCourse : selectedDay.secondCourse;
+//                Course currentCourse = (col == 0) ? selectedDay.firstCourse : selectedDay.secondCourse;
                 Course newCourse = null;
-                ListIterator<Course> it = null;
-                List<Course> currentCoursesList = null;
+//                ListIterator<Course> it = null;
+//                List<Course> currentCoursesList = null;
                 //TODO: swipe
 //                if (v.getId() == R.id.buttonLeftA || v.getId() == R.id.buttonRightA) {
 //                    currentCoursesList = allFirstCourses;
 //                } else if (v.getId() == R.id.buttonLeftB || v.getId() == R.id.buttonRightB) {
 //                    currentCoursesList = allSecondCourses;
 //                }
-                if (currentCoursesList != null) {
-                    if (currentCourse != null && currentCoursesList.contains(currentCourse)) {
-                        it = currentCoursesList.listIterator(currentCoursesList.indexOf(currentCourse));
-                    } else {
-                        it = currentCoursesList.listIterator(0);
-                    }
-                }
+//                if (currentCoursesList != null) {
+//                    if (currentCourse != null && currentCoursesList.contains(currentCourse)) {
+//                        it = currentCoursesList.listIterator(currentCoursesList.indexOf(currentCourse));
+//                    } else {
+//                        it = currentCoursesList.listIterator(0);
+//                    }
+//                }
                 switch (v.getId()) {
                     //TODO: swipe
 //                    case R.id.buttonLeftA:
@@ -290,8 +301,9 @@ public class WeekFragment extends Fragment {
 //                            }
 //                        } while (newCourse == currentCourse);
 //                        break;
-                    case R.id.card_view_A:
-                    case R.id.card_view_B:
+                    case R.id.card_view_first_course:
+                    case R.id.card_view_second_course:
+                    case R.id.card_view_dinner:
                         if (tv.getText().equals("")) {
                             showCoursesDialog(tv, placeholder, row, col);
                         } else {
@@ -305,6 +317,8 @@ public class WeekFragment extends Fragment {
                     selectedDay.firstCourse = newCourse;
                 } else if (col == 1) {
                     selectedDay.secondCourse = newCourse;
+                } else if (col == 2) { //TODO: constants
+                    selectedDay.dinner = newCourse;
                 }
                 tv.setText(newCourse != null ? newCourse.name : "");
                 if ( ! (boolean) placeholder.getTag(R.id.DAY_IS_PAST_KEY)) { // If day is not past.
@@ -330,6 +344,8 @@ public class WeekFragment extends Fragment {
                                 selectedDay.firstCourse = null;
                             } else if (col == 1) {
                                 selectedDay.secondCourse = null;
+                            } else if (col == 2) { //TODO: constants
+                                selectedDay.dinner = null;
                             }
                         tv.setText("");
                         clearBadge(placeholder);
@@ -355,6 +371,9 @@ public class WeekFragment extends Fragment {
             allCourses = allFirstCourses;
         } else if (col == 1) {
             allCourses = allSecondCourses;
+        } else if (col == 2) { //TODO: constants
+            allCourses = allFirstCourses;
+            allCourses.addAll(allSecondCourses); //TODO: possible problems?
         }
         final List<Course> finalAllCourses = allCourses;
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -370,6 +389,8 @@ public class WeekFragment extends Fragment {
                     selectedDay.firstCourse = selectedCourse;
                 } else if (col == 1) {
                     selectedDay.secondCourse = selectedCourse;
+                } else if (col == 2) { //TODO: constants
+                    selectedDay.dinner = selectedCourse;
                 }
                 tv.setText(selectedCourse.name);
                 if (!(boolean) placeholder.getTag(R.id.DAY_IS_PAST_KEY)) {
@@ -402,14 +423,20 @@ public class WeekFragment extends Fragment {
             //TODO: swipe
 //            findById(tr, R.id.buttonLeftA).setOnClickListener(null);
 //            findById(tr, R.id.buttonRightA).setOnClickListener(null);
-            View placeholder = findById(tr, R.id.card_view_A).findViewById(R.id.badge_placeholder);
+            View placeholder = findById(tr, R.id.card_view_first_course).findViewById(R.id.badge_placeholder);
             placeholder.setOnClickListener(null);
             BadgeView badgeView = (BadgeView) placeholder.getTag(R.id.BADGE_KEY);
             if (badgeView != null) badgeView.setOnClickListener(null);
+
             //TODO: swipe
 //            findById(tr, R.id.buttonLeftB).setOnClickListener(null);
 //            findById(tr, R.id.buttonRightB).setOnClickListener(null);
-            placeholder = findById(tr, R.id.card_view_B).findViewById(R.id.badge_placeholder);
+            placeholder = findById(tr, R.id.card_view_second_course).findViewById(R.id.badge_placeholder);
+            placeholder.setOnClickListener(null);
+            badgeView = (BadgeView) placeholder.getTag(R.id.BADGE_KEY);
+            if (badgeView != null) badgeView.setOnClickListener(null);
+
+            placeholder = findById(tr, R.id.card_view_dinner).findViewById(R.id.badge_placeholder);
             placeholder.setOnClickListener(null);
             badgeView = (BadgeView) placeholder.getTag(R.id.BADGE_KEY);
             if (badgeView != null) badgeView.setOnClickListener(null);
@@ -446,19 +473,28 @@ public class WeekFragment extends Fragment {
         List<Day> week = ((MainActivity) getActivity()).getWeek();
         for (int i = 0; i < allTableRows.length; i++) {
             TableRow tr = allTableRows[i];
-            TextView tvA = (TextView) findById(tr, R.id.card_view_A).findViewById(R.id.textView);
-            View placeholderA = findById(tr, R.id.card_view_A).findViewById(R.id.badge_placeholder);
-            tvA.setText("");
-            clearBadge(placeholderA);
 
-            TextView tvB = (TextView) findById(tr, R.id.card_view_B).findViewById(R.id.textView);
-            View placeholderB = findById(tr, R.id.card_view_B).findViewById(R.id.badge_placeholder);
+            TextView tvFirstCourse = (TextView) findById(tr, R.id.card_view_first_course).findViewById(R.id.textView);
+            View placeholderFirstCourse = findById(tr, R.id.card_view_first_course).findViewById(R.id.badge_placeholder);
 
-            tvB.setText("");
-            clearBadge(placeholderB);
+            tvFirstCourse.setText("");
+            clearBadge(placeholderFirstCourse);
+
+            TextView tvSecondCourse = (TextView) findById(tr, R.id.card_view_second_course).findViewById(R.id.textView);
+            View placeholderSecondCourse = findById(tr, R.id.card_view_second_course).findViewById(R.id.badge_placeholder);
+
+            tvSecondCourse.setText("");
+            clearBadge(placeholderSecondCourse);
+
+            TextView tvDinner = (TextView) findById(tr, R.id.card_view_dinner).findViewById(R.id.textView);
+            View placeholderDinner = findById(tr, R.id.card_view_dinner).findViewById(R.id.badge_placeholder);
+
+            tvDinner.setText("");
+            clearBadge(placeholderDinner);
 
             week.get(i).firstCourse = null;
             week.get(i).secondCourse = null;
+            week.get(i).dinner = null;
         }
         dirty = true;
 
@@ -495,9 +531,9 @@ public class WeekFragment extends Fragment {
 
         for (int i = 0; i < allTableRows.length; i++) {
             TableRow tr = allTableRows[i];
-            TextView tvA = (TextView) tr.findViewById(R.id.card_view_A).findViewById(R.id.textView);
+            TextView tvFirstCourse = (TextView) tr.findViewById(R.id.card_view_first_course).findViewById(R.id.textView);
 
-            if (tvA.getText().equals("")) {
+            if (tvFirstCourse.getText().equals("")) {
 
                 //Avoid repeating if possible
                 if (!notUsedFirstCourses.isEmpty()) {
@@ -514,8 +550,22 @@ public class WeekFragment extends Fragment {
             notUsedFirstCourses.remove(course);
             notUsedSecondCourses.remove(course);
 
-            TextView tvB = (TextView) tr.findViewById(R.id.card_view_B).findViewById(R.id.textView);
-            if (tvB.getText().equals("")) {
+            TextView tvSecondCourse = (TextView) tr.findViewById(R.id.card_view_second_course).findViewById(R.id.textView);
+            if (tvSecondCourse.getText().equals("")) {
+
+                //Avoid repeating if possible
+                if (!notUsedSecondCourses.isEmpty()) {
+                    int randomInt = rand.nextInt(notUsedSecondCourses.size());
+                    course = notUsedSecondCourses.get(randomInt);
+                } else {
+                    int randomInt = rand.nextInt(allSecondCourses.size());
+                    course = allSecondCourses.get(randomInt);
+                }
+                week.get(i).secondCourse = course;
+            }
+
+            TextView tvDinner = (TextView) tr.findViewById(R.id.card_view_dinner).findViewById(R.id.textView);
+            if (tvDinner.getText().equals("")) {
 
                 //Avoid repeating if possible
                 if (!notUsedSecondCourses.isEmpty()) {

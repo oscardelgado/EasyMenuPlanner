@@ -6,7 +6,7 @@
     android:hint="@string/day_course_add"
     android:textColor="@color/primary_dark"
     android:textColorHint="#888888"
-    android:paddingLeft="30dp"
-    android:paddingRight="30dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
     android:textSize="@dimen/abc_text_size_medium_material"
     />

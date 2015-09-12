@@ -2,10 +2,10 @@
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
           android:layout_width="match_parent"
-          android:layout_height="wrap_content"
+          android:layout_height="match_parent"
           android:paddingLeft="8dp"
           android:paddingStart="8dp"
-          tools:showIn="@layout/fragment_main"
+          tools:showIn="@layout/fragment_week"
           android:paddingEnd="6dp"
           android:paddingRight="6dp">
 
@@ -21,24 +21,41 @@
         android:layout_marginRight="6dp"/>
 
     <include layout="@layout/week_view_card"
-             android:id="@+id/card_view_A"
+             android:id="@+id/card_view_breakfast"
              android:layout_weight="1"
              android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
+             android:layout_height="match_parent"
+             android:layout_margin="6dp"
+             android:visibility="gone"/>
+
+    <include layout="@layout/week_view_card"
+             android:id="@+id/card_view_lunch"
+             android:layout_weight="1"
+             android:layout_width="wrap_content"
+             android:layout_height="match_parent"
+             android:layout_margin="6dp"
+             android:visibility="gone"/>
+
+    <include layout="@layout/week_view_card"
+             android:id="@+id/card_view_first_course"
+             android:layout_weight="1"
+             android:layout_width="wrap_content"
+             android:layout_height="match_parent"
              android:layout_margin="6dp"/>
 
     <include layout="@layout/week_view_card"
-             android:id="@+id/card_view_B"
+             android:id="@+id/card_view_second_course"
              android:layout_weight="1"
              android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
+             android:layout_height="match_parent"
              android:layout_margin="6dp"/>
 
     <include layout="@layout/week_view_card"
-             android:id="@+id/card_view_C"
+             android:id="@+id/card_view_dinner"
              android:layout_weight="1"
              android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_margin="6dp"/>
+             android:layout_height="match_parent"
+             android:layout_margin="6dp"
+             android:visibility="visible"/>
 
 </TableRow>

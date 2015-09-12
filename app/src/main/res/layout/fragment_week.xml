@@ -13,20 +13,22 @@
         android:layout_alignParentTop="true">
 
         <include layout="@layout/week_view_header_row"
-                 android:layout_marginTop="4dp"/>
+                 android:layout_marginTop="4dp"
+                 android:layout_width="match_parent"
+                 android:layout_height="match_parent"/>
 
         <include
             android:id="@+id/day1"
             layout="@layout/week_view_row"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1" />
 
         <include
             android:id="@+id/day2"
             layout="@layout/week_view_row"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1" />
 
         <include
