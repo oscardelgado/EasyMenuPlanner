@@ -178,11 +178,13 @@ public class WeekFragment extends Fragment {
                     }
                 }
             }
-            findById(tr, R.id.buttonLeftA).setOnClickListener(courseBtnClickListener(tvA, placeholderA, i, 0));
-            findById(tr, R.id.buttonRightA).setOnClickListener(courseBtnClickListener(tvA, placeholderA, i, 0));
+            //TODO: swipe
+//            findById(tr, R.id.buttonLeftA).setOnClickListener(courseBtnClickListener(tvA, placeholderA, i, 0));
+//            findById(tr, R.id.buttonRightA).setOnClickListener(courseBtnClickListener(tvA, placeholderA, i, 0));
             findById(tr, R.id.card_view_A).setOnClickListener(courseBtnClickListener(tvA, placeholderA, i, 0));
-            findById(tr, R.id.buttonLeftB).setOnClickListener(courseBtnClickListener(tvB, placeholderB, i, 1));
-            findById(tr, R.id.buttonRightB).setOnClickListener(courseBtnClickListener(tvB, placeholderB, i, 1));
+            //TODO: swipe
+//            findById(tr, R.id.buttonLeftB).setOnClickListener(courseBtnClickListener(tvB, placeholderB, i, 1));
+//            findById(tr, R.id.buttonRightB).setOnClickListener(courseBtnClickListener(tvB, placeholderB, i, 1));
             findById(tr, R.id.card_view_B).setOnClickListener(courseBtnClickListener(tvB, placeholderB, i, 1));
 
             placeholderA.setTag(R.id.DAY_IS_PAST_KEY, dayIsPast);
@@ -253,11 +255,12 @@ public class WeekFragment extends Fragment {
                 Course newCourse = null;
                 ListIterator<Course> it = null;
                 List<Course> currentCoursesList = null;
-                if (v.getId() == R.id.buttonLeftA || v.getId() == R.id.buttonRightA) {
-                    currentCoursesList = allFirstCourses;
-                } else if (v.getId() == R.id.buttonLeftB || v.getId() == R.id.buttonRightB) {
-                    currentCoursesList = allSecondCourses;
-                }
+                //TODO: swipe
+//                if (v.getId() == R.id.buttonLeftA || v.getId() == R.id.buttonRightA) {
+//                    currentCoursesList = allFirstCourses;
+//                } else if (v.getId() == R.id.buttonLeftB || v.getId() == R.id.buttonRightB) {
+//                    currentCoursesList = allSecondCourses;
+//                }
                 if (currentCoursesList != null) {
                     if (currentCourse != null && currentCoursesList.contains(currentCourse)) {
                         it = currentCoursesList.listIterator(currentCoursesList.indexOf(currentCourse));
@@ -266,26 +269,27 @@ public class WeekFragment extends Fragment {
                     }
                 }
                 switch (v.getId()) {
-                    case R.id.buttonLeftA:
-                    case R.id.buttonLeftB:
-                        do {
-                            if (it.hasPrevious()) {
-                                newCourse = it.previous();
-                            } else {
-                                newCourse = currentCoursesList.get(currentCoursesList.size() - 1);
-                            }
-                        } while (newCourse == currentCourse);
-                        break;
-                    case R.id.buttonRightA:
-                    case R.id.buttonRightB:
-                        do {
-                            if (it.hasNext()) {
-                                newCourse = it.next();
-                            } else {
-                                newCourse = currentCoursesList.get(0);
-                            }
-                        } while (newCourse == currentCourse);
-                        break;
+                    //TODO: swipe
+//                    case R.id.buttonLeftA:
+//                    case R.id.buttonLeftB:
+//                        do {
+//                            if (it.hasPrevious()) {
+//                                newCourse = it.previous();
+//                            } else {
+//                                newCourse = currentCoursesList.get(currentCoursesList.size() - 1);
+//                            }
+//                        } while (newCourse == currentCourse);
+//                        break;
+//                    case R.id.buttonRightA:
+//                    case R.id.buttonRightB:
+//                        do {
+//                            if (it.hasNext()) {
+//                                newCourse = it.next();
+//                            } else {
+//                                newCourse = currentCoursesList.get(0);
+//                            }
+//                        } while (newCourse == currentCourse);
+//                        break;
                     case R.id.card_view_A:
                     case R.id.card_view_B:
                         if (tv.getText().equals("")) {
@@ -395,14 +399,16 @@ public class WeekFragment extends Fragment {
         allTableRows = new TableRow[]{tableRow1, tableRow2, tableRow3, tableRow4, tableRow5, tableRow6, tableRow7};
         for (int i = 0; i < allTableRows.length; i++) {
             TableRow tr = allTableRows[i];
-            findById(tr, R.id.buttonLeftA).setOnClickListener(null);
-            findById(tr, R.id.buttonRightA).setOnClickListener(null);
+            //TODO: swipe
+//            findById(tr, R.id.buttonLeftA).setOnClickListener(null);
+//            findById(tr, R.id.buttonRightA).setOnClickListener(null);
             View placeholder = findById(tr, R.id.badge_placeholder_A);
             placeholder.setOnClickListener(null);
             BadgeView badgeView = (BadgeView) placeholder.getTag(R.id.BADGE_KEY);
             if (badgeView != null) badgeView.setOnClickListener(null);
-            findById(tr, R.id.buttonLeftB).setOnClickListener(null);
-            findById(tr, R.id.buttonRightB).setOnClickListener(null);
+            //TODO: swipe
+//            findById(tr, R.id.buttonLeftB).setOnClickListener(null);
+//            findById(tr, R.id.buttonRightB).setOnClickListener(null);
             placeholder = findById(tr, R.id.badge_placeholder_B);
             placeholder.setOnClickListener(null);
             badgeView = (BadgeView) placeholder.getTag(R.id.BADGE_KEY);
