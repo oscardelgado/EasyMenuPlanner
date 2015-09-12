@@ -140,11 +140,11 @@ public class WeekFragment extends Fragment {
         for (int i = 0; i < allTableRows.length; i++) {
             TableRow tr = allTableRows[i];
 
-            TextView tvA = findById(tr, R.id.textViewA);
-            TextView tvB = findById(tr, R.id.textViewB);
+            TextView tvA = (TextView) findById(tr, R.id.card_view_A).findViewById(R.id.textView);
+            TextView tvB = (TextView) findById(tr, R.id.card_view_B).findViewById(R.id.textView);
             TextView weekDayName = findById(tr, R.id.week_day_name);
-            View placeholderA = findById(tr, R.id.badge_placeholder_A);
-            View placeholderB = findById(tr, R.id.badge_placeholder_B);
+            View placeholderA = findById(tr, R.id.card_view_A).findViewById(R.id.badge_placeholder);
+            View placeholderB = findById(tr, R.id.card_view_B).findViewById(R.id.badge_placeholder);
 
             int indexWithCurrentOrder = (i + Calendar.getInstance().getFirstDayOfWeek() - 1) % (dayNames.length - 1) + 1;
             weekDayName.setText(dayNames[indexWithCurrentOrder]);
@@ -402,14 +402,14 @@ public class WeekFragment extends Fragment {
             //TODO: swipe
 //            findById(tr, R.id.buttonLeftA).setOnClickListener(null);
 //            findById(tr, R.id.buttonRightA).setOnClickListener(null);
-            View placeholder = findById(tr, R.id.badge_placeholder_A);
+            View placeholder = findById(tr, R.id.card_view_A).findViewById(R.id.badge_placeholder);
             placeholder.setOnClickListener(null);
             BadgeView badgeView = (BadgeView) placeholder.getTag(R.id.BADGE_KEY);
             if (badgeView != null) badgeView.setOnClickListener(null);
             //TODO: swipe
 //            findById(tr, R.id.buttonLeftB).setOnClickListener(null);
 //            findById(tr, R.id.buttonRightB).setOnClickListener(null);
-            placeholder = findById(tr, R.id.badge_placeholder_B);
+            placeholder = findById(tr, R.id.card_view_B).findViewById(R.id.badge_placeholder);
             placeholder.setOnClickListener(null);
             badgeView = (BadgeView) placeholder.getTag(R.id.BADGE_KEY);
             if (badgeView != null) badgeView.setOnClickListener(null);
@@ -446,13 +446,13 @@ public class WeekFragment extends Fragment {
         List<Day> week = ((MainActivity) getActivity()).getWeek();
         for (int i = 0; i < allTableRows.length; i++) {
             TableRow tr = allTableRows[i];
-            TextView tvA = findById(tr, R.id.textViewA);
-            View placeholderA = findById(tr, R.id.badge_placeholder_A);
+            TextView tvA = (TextView) findById(tr, R.id.card_view_A).findViewById(R.id.textView);
+            View placeholderA = findById(tr, R.id.card_view_A).findViewById(R.id.badge_placeholder);
             tvA.setText("");
             clearBadge(placeholderA);
 
-            TextView tvB = findById(tr, R.id.textViewB);
-            View placeholderB = findById(tr, R.id.badge_placeholder_B);
+            TextView tvB = (TextView) findById(tr, R.id.card_view_B).findViewById(R.id.textView);
+            View placeholderB = findById(tr, R.id.card_view_B).findViewById(R.id.badge_placeholder);
 
             tvB.setText("");
             clearBadge(placeholderB);
@@ -495,7 +495,7 @@ public class WeekFragment extends Fragment {
 
         for (int i = 0; i < allTableRows.length; i++) {
             TableRow tr = allTableRows[i];
-            TextView tvA = (TextView) tr.findViewById(R.id.textViewA);
+            TextView tvA = (TextView) tr.findViewById(R.id.card_view_A).findViewById(R.id.textView);
 
             if (tvA.getText().equals("")) {
 
@@ -514,7 +514,7 @@ public class WeekFragment extends Fragment {
             notUsedFirstCourses.remove(course);
             notUsedSecondCourses.remove(course);
 
-            TextView tvB = (TextView) tr.findViewById(R.id.textViewB);
+            TextView tvB = (TextView) tr.findViewById(R.id.card_view_B).findViewById(R.id.textView);
             if (tvB.getText().equals("")) {
 
                 //Avoid repeating if possible
