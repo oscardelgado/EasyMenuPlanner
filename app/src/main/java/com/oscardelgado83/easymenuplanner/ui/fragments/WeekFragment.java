@@ -173,26 +173,27 @@ public class WeekFragment extends Fragment {
             if (week == null || week.isEmpty()) {
                 if (DEBUGGING) Log.w(LOG_TAG, "The week has not been initialized.");
             } else {
-                if (dayIsPast) weekDayName.setTextColor(getResources().getColor(R.color.light_text));
+                if (dayIsPast)
+                    weekDayName.setTextColor(getResources().getColor(R.color.light_text));
                 if (week.get(i).firstCourse != null) {
                     final Course course = week.get(i).firstCourse;
                     tvFirstCourse.setText(course.name);
 
-                    if (! dayIsPast) {
+                    if (!dayIsPast) {
                         prepareBadge(placeholderFirstCourse, course);
                     }
                 }
                 if (week.get(i).secondCourse != null) {
                     final Course course = week.get(i).secondCourse;
                     tvSecondCourse.setText(course.name);
-                    if (! dayIsPast) {
+                    if (!dayIsPast) {
                         prepareBadge(placeholderSecondCourse, course);
                     }
                 }
                 if (week.get(i).dinner != null) {
                     final Course course = week.get(i).dinner;
                     tvDinner.setText(course.name);
-                    if (! dayIsPast) {
+                    if (!dayIsPast) {
                         prepareBadge(placeholderDinner, course);
                     }
                 }
@@ -332,7 +333,7 @@ public class WeekFragment extends Fragment {
                     selectedDay.dinner = newCourse;
                 }
                 tv.setText(newCourse != null ? newCourse.name : "");
-                if ( ! (boolean) placeholder.getTag(R.id.DAY_IS_PAST_KEY)) { // If day is not past.
+                if (!(boolean) placeholder.getTag(R.id.DAY_IS_PAST_KEY)) { // If day is not past.
                     prepareBadge(placeholder, newCourse);
                 }
                 dirty = true;
@@ -341,7 +342,7 @@ public class WeekFragment extends Fragment {
     }
 
     private void showDeleteOrChangeDialog(final TextView tv, final View placeholder, final int row, final int col) {
-        String[] items = {getString(R.string.day_course_change), getString(R.string.day_course_remove), };
+        String[] items = {getString(R.string.day_course_change), getString(R.string.day_course_remove),};
         new AlertDialog.Builder(getActivity()).setItems(items, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 switch (which) {
@@ -352,12 +353,12 @@ public class WeekFragment extends Fragment {
                         List<Day> week = ((MainActivity) getActivity()).getWeek();
                         Day selectedDay = week.get(row);
                         if (col == 0) {
-                                selectedDay.firstCourse = null;
-                            } else if (col == 1) {
-                                selectedDay.secondCourse = null;
-                            } else if (col == 2) { //TODO: constants
-                                selectedDay.dinner = null;
-                            }
+                            selectedDay.firstCourse = null;
+                        } else if (col == 1) {
+                            selectedDay.secondCourse = null;
+                        } else if (col == 2) { //TODO: constants
+                            selectedDay.dinner = null;
+                        }
                         tv.setText("");
                         clearBadge(placeholder);
                         dirty = true;
@@ -421,7 +422,7 @@ public class WeekFragment extends Fragment {
 
     @Override
     public void onAttach(Activity activity) {
-            super.onAttach(activity);
+        super.onAttach(activity);
         ((MainActivity) activity).onSectionAttached(this);
     }
 
@@ -458,7 +459,7 @@ public class WeekFragment extends Fragment {
     @DebugLog
     @Override
     public void onPause() {
-            super.onPause();
+        super.onPause();
 
         if (dirty) {
             persist();
@@ -614,11 +615,18 @@ public class WeekFragment extends Fragment {
     };
 
     public void setDinnerVisibility(boolean includeDinner) {
+        final List<Day> week = ((MainActivity) getActivity()).getWeek();
         if (! includeDinner) {
-            final List<Day> week = ((MainActivity) getActivity()).getWeek();
             for (int i = 0; i < allTableRows.length; i++) {
                 week.get(i).dinner = null;
+                TableRow tr = allTableRows[i];
+
+                TextView tv = (TextView) findById(tr, R.id.card_view_dinner).findViewById(R.id.textView);
+                tv.setText("");
+                View placeholder = findById(tr, R.id.card_view_dinner).findViewById(R.id.badge_placeholder);
+                clearBadge(placeholder);
             }
+            dirty = true;
         }
 
         repaintWeekRows();
