@@ -1,8 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity$PlaceholderFragment">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".MainActivity$PlaceholderFragment">
 
     <TableLayout
         android:id="@+id/table"
@@ -12,58 +12,60 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true">
 
-        <include layout="@layout/week_view_header_row"
-                 android:layout_marginTop="4dp"
-                 android:layout_width="match_parent"
-                 android:layout_height="match_parent"/>
+        <include
+            android:id="@+id/headers"
+            layout="@layout/week_view_header_row"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="4dp"/>
 
         <include
             android:id="@+id/day1"
             layout="@layout/week_view_row"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:layout_weight="1"/>
 
         <include
             android:id="@+id/day2"
             layout="@layout/week_view_row"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"/>
 
         <include
             android:id="@+id/day3"
             layout="@layout/week_view_row"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"/>
 
         <include
             android:id="@+id/day4"
             layout="@layout/week_view_row"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"/>
 
         <include
             android:id="@+id/day5"
             layout="@layout/week_view_row"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"/>
 
         <include
             android:id="@+id/day6"
             layout="@layout/week_view_row"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"/>
 
         <include
             android:id="@+id/day7"
             layout="@layout/week_view_row"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"/>
     </TableLayout>
 </RelativeLayout>

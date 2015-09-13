@@ -5,4 +5,8 @@
         app:showAsAction="withText|ifRoom" />
     <item android:id="@+id/action_clear_all" android:title="@string/action_clear_all"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/dinner_option"
+        android:checkable="true"
+        android:title="@string/include_dinner" />
 </menu>

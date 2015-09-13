@@ -329,6 +329,8 @@ public class MainActivity extends AppCompatActivity
             // decide what to show in the action bar.
             if (currentFrg instanceof WeekFragment) {
                 getMenuInflater().inflate(R.menu.week_fragment, menu);
+                boolean includeDinner = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Cons.INCLUDE_DINNER, false);
+                menu.findItem(R.id.dinner_option).setChecked(includeDinner);
             } else if (currentFrg instanceof CourseFragment) {
                 getMenuInflater().inflate(R.menu.courses_fragment, menu);
             } else if (currentFrg instanceof ShoppingListFragment) {
@@ -368,6 +370,19 @@ public class MainActivity extends AppCompatActivity
                 return true;
             } else if (item.getItemId() == R.id.action_automatic_fill) {
                 ((WeekFragment)currentFrg).randomFillAllCourses();
+                return true;
+            } else if (item.getItemId() == R.id.dinner_option) {
+                // We need an Editor object to make preference changes.
+                // All objects are from android.context.Context
+                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+                SharedPreferences.Editor editor = settings.edit();
+                editor.putBoolean(Cons.INCLUDE_DINNER, ! item.isChecked());
+                editor.apply();
+
+                item.setChecked(! item.isChecked());
+
+                ((WeekFragment) currentFrg).setDinnerVisibility(item.isChecked());
+
                 return true;
             }
         } else if (currentFrg instanceof CourseFragment) {

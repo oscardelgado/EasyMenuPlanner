@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -24,6 +25,7 @@ import com.oscardelgado83.easymenuplanner.model.Course;
 import com.oscardelgado83.easymenuplanner.model.Day;
 import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 import com.oscardelgado83.easymenuplanner.ui.adapters.CourseAdapter;
+import com.oscardelgado83.easymenuplanner.util.Cons;
 import com.oscardelgado83.easymenuplanner.util.GA;
 import com.readystatesoftware.viewbadger.BadgeView;
 
@@ -55,6 +57,9 @@ public class WeekFragment extends Fragment {
     // Instead of class.getSimpleName() to avoid proGuard changing it.
     private static final String FRAGMENT_NAME = "WeekFragment";
     private static final String LOG_TAG = FRAGMENT_NAME;
+
+    @Bind(R.id.headers)
+    TableRow headers;
 
     @Bind(R.id.day1)
     TableRow tableRow1;
@@ -133,10 +138,16 @@ public class WeekFragment extends Fragment {
     private void repaintWeekRows() {
         final List<Day> week = ((MainActivity) getActivity()).getWeek();
 
+        boolean includeDinner = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(Cons.INCLUDE_DINNER, false);
+        int visibility = includeDinner ? View.VISIBLE : View.GONE;
+        headers.findViewById(R.id.dinner_header).setVisibility(visibility);
+
         int currentDayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK); //Sunday is 1, Saturday is 7.
         boolean dayIsPast = true;
         for (int i = 0; i < allTableRows.length; i++) {
             TableRow tr = allTableRows[i];
+
+            findById(tr, R.id.card_view_dinner).setVisibility(visibility);
 
             TextView tvFirstCourse = (TextView) findById(tr, R.id.card_view_first_course).findViewById(R.id.textView);
             TextView tvSecondCourse = (TextView) findById(tr, R.id.card_view_second_course).findViewById(R.id.textView);
@@ -601,4 +612,15 @@ public class WeekFragment extends Fragment {
             //TODO: check this vs  mNavigationDrawerFragment.selectItem()
         }
     };
+
+    public void setDinnerVisibility(boolean includeDinner) {
+        if (! includeDinner) {
+            final List<Day> week = ((MainActivity) getActivity()).getWeek();
+            for (int i = 0; i < allTableRows.length; i++) {
+                week.get(i).dinner = null;
+            }
+        }
+
+        repaintWeekRows();
+    }
 }
