@@ -447,6 +447,8 @@ public class MainActivity extends AppCompatActivity
         editor.putBoolean(Cons.INCLUDE_BREAKFAST, visible);
         editor.apply();
 
+        breakfastEnabled = visible;
+
         ((WeekFragment) currentFrg).setBreakfastVisibility(visible);
     }
 
@@ -457,6 +459,8 @@ public class MainActivity extends AppCompatActivity
         SharedPreferences.Editor editor = settings.edit();
         editor.putBoolean(Cons.INCLUDE_DINNER, visible);
         editor.apply();
+
+        dinnerEnabled = visible;
 
         ((WeekFragment) currentFrg).setDinnerVisibility(visible);
     }
