@@ -22,6 +22,7 @@ import com.oscardelgado83.easymenuplanner.util.GA;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import butterknife.ButterKnife;
+import hugo.weaving.DebugLog;
 
 import static butterknife.ButterKnife.findById;
 import static butterknife.ButterKnife.unbind;
@@ -60,6 +61,15 @@ public class HelpFragment extends Fragment {
         //Bind the title indicator to the adapter
         CirclePageIndicator indicator = findById(view, R.id.indicator);
         indicator.setViewPager(mPager);
+
+        mPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+            @Override
+            public void onPageSelected(int position) {
+                if (position == mPagerAdapter.getCount() - 1) {
+                    tutorialCompleted();
+                }
+            }
+        });
 
         exitBTN = findById(view, R.id.exit_tutorial);
         exitBTN.setOnClickListener(new View.OnClickListener() {
@@ -132,6 +142,7 @@ public class HelpFragment extends Fragment {
             super(fm);
         }
 
+        @DebugLog
         @Override
         public Fragment getItem(int position) {
             HelpSlideFragment helpSlideFragment = new HelpSlideFragment();
@@ -139,10 +150,6 @@ public class HelpFragment extends Fragment {
             bundle.putInt(HELP_DRAWABLE_KEY, tutorialDrawables[position]);
             bundle.putInt(HELP_TUTORIAL_PAGE, position);
             helpSlideFragment.setArguments(bundle);
-
-            if (position == getCount() - 1) {
-                tutorialCompleted();
-            }
 
             return helpSlideFragment;
         }
@@ -153,6 +160,7 @@ public class HelpFragment extends Fragment {
         }
     }
 
+    @DebugLog
     private void tutorialCompleted() {
         // We need an Editor object to make preference changes.
         // All objects are from android.context.Context
