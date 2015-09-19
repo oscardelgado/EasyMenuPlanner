@@ -79,7 +79,7 @@ public class ShoppingListAdapter extends ArrayAdapter<Ingredient> {
         List<Course> courses = new Select(new String[]{"Courses.Id,Courses.name"}).distinct().from(Course.class)
                 .innerJoin(CourseIngredient.class).on("CourseIngredients.course = Courses.Id")
                 .and("CourseIngredients.ingredient = ?", ingredient.getId())
-                .innerJoin(Day.class).on("Days.firstCourse = Courses.Id OR Days.secondCourse = Courses.Id")
+                .innerJoin(Day.class).on("Days.firstCourse = Courses.Id OR Days.secondCourse = Courses.Id OR Days.dinner = Courses.Id")
                 .where("Days.Id > ?", weekdayIndexWithCurrentOrder)
                 .execute();
 
@@ -87,17 +87,17 @@ public class ShoppingListAdapter extends ArrayAdapter<Ingredient> {
         for (Course course : courses) {
 
             boolean inCurrentDay = new Select().from(Day.class)
-                    .where("(Days.firstCourse = ? OR Days.secondCourse = ?)", course.getId(), course.getId())
+                    .where("(Days.firstCourse = ? OR  Days.secondCourse = ? OR Days.dinner = ?)", course.getId(), course.getId(), course.getId())
                     .and("Days.Id = ? + 1", weekdayIndexWithCurrentOrder)
                     .exists();
 
             boolean tomorrow = new Select().from(Day.class)
-                    .where("(Days.firstCourse = ? OR Days.secondCourse = ?)", course.getId(), course.getId())
+                    .where("(Days.firstCourse = ? OR Days.secondCourse = ? OR Days.dinner = ?)", course.getId(), course.getId())
                     .and("Days.Id = ? + 2", weekdayIndexWithCurrentOrder)
                     .exists();
 
             List<Day> futureDays = new Select().from(Day.class)
-                    .where("(Days.firstCourse = ? OR Days.secondCourse = ?)", course.getId(), course.getId())
+                    .where("(Days.firstCourse = ? OR Days.secondCourse = ? OR Days.dinner = ?)", course.getId(), course.getId())
                     .and("Days.Id > ? + 2", weekdayIndexWithCurrentOrder)
                     .execute();
 

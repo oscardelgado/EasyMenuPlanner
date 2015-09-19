@@ -47,7 +47,7 @@ public class ShoppingListWidgetViewsFactory implements RemoteViewsService.Remote
 
         return new Select().from(Ingredient.class)
                 .innerJoin(CourseIngredient.class).on("CourseIngredients.ingredient = Ingredients.Id")
-                .innerJoin(Day.class).on("(CourseIngredients.course = Days.firstCourse OR CourseIngredients.course = Days.secondCourse)")
+                .innerJoin(Day.class).on("(CourseIngredients.course = Days.firstCourse OR CourseIngredients.course = Days.secondCourse OR Days.dinner = Courses.Id)")
                 .where("Days.Id > ?", weekdayIndexWithCurrentOrder) //0-6 sunday==0 /D.Id 1-7
                 .orderBy("checked ASC, Days.Id, UPPER (name) ASC")
                 .execute();

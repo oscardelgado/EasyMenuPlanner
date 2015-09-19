@@ -378,14 +378,21 @@ public class WeekFragment extends Fragment {
     }
 
     private void showCoursesDialog(final TextView tv, final View placeholder, final int row, final int col) {
+        if (dirty) {
+            persist();
+            dirty = false;
+        }
+
         List<Course> allCourses = null;
         if (col == 0) {
             allCourses = allFirstCourses;
         } else if (col == 1) {
             allCourses = allSecondCourses;
         } else if (col == 2) { //TODO: constants
-            allCourses = allFirstCourses;
-            allCourses.addAll(allSecondCourses); //TODO: possible problems?
+            allCourses = new Select()
+                    .from(Course.class)
+                    .orderBy("UPPER(name)")
+                    .execute(); // Query instead of union of list, to have the courses in order.
         }
         final List<Course> finalAllCourses = allCourses;
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -576,18 +583,24 @@ public class WeekFragment extends Fragment {
                 week.get(i).secondCourse = course;
             }
 
+            // Remove from both lists (If type is "both", it might be in both lists).
+            notUsedFirstCourses.remove(course);
+            notUsedSecondCourses.remove(course);
+
             TextView tvDinner = (TextView) tr.findViewById(R.id.card_view_dinner).findViewById(R.id.textView);
             if (tvDinner.getText().equals("")) {
 
                 //Avoid repeating if possible
-                if (!notUsedSecondCourses.isEmpty()) {
-                    int randomInt = rand.nextInt(notUsedSecondCourses.size());
-                    course = notUsedSecondCourses.get(randomInt);
+                List<Course> allNotUsedCourses = new ArrayList<>(notUsedFirstCourses);
+                allNotUsedCourses.addAll(notUsedSecondCourses);
+                if (!allNotUsedCourses.isEmpty()) {
+                    int randomInt = rand.nextInt(allNotUsedCourses.size());
+                    course = allNotUsedCourses.get(randomInt);
                 } else {
-                    int randomInt = rand.nextInt(allSecondCourses.size());
-                    course = allSecondCourses.get(randomInt);
+                    int randomInt = rand.nextInt(allNotUsedCourses.size());
+                    course = allNotUsedCourses.get(randomInt);
                 }
-                week.get(i).secondCourse = course;
+                week.get(i).dinner = course;
             }
 
             // Remove from both lists (If type is "both", it might be in both lists).
