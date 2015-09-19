@@ -61,7 +61,6 @@
         <item quantity="one">%1$d ingredient is missing: %2$s</item>
         <item quantity="other">%1$d ingredients are missing: %2$s</item>
     </plurals>
-    <string name="title_activity_help">HelpActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="finish_tutorial">Skip the tutorial</string>
     <string name="go_to_the_app">Go to the app</string>
