@@ -67,4 +67,5 @@
     <string name="go_to_the_app">Go to the app</string>
     <string name="dinner">Dinner</string>
     <string name="include_dinner">Include dinner</string>
+    <string name="dinner_dishes_will_be_lost">The courses you had set for dinner will be lost</string>
 </resources>

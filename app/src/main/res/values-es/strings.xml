@@ -58,6 +58,7 @@
     <string name="go_to_the_app">Ir a la app</string>
     <string name="dinner">Cena</string>
     <string name="include_dinner">Incluir cenas</string>
+    <string name="dinner_dishes_will_be_lost">Tu selección de platos para las cenas se perderá</string>
     <plurals name="intredients_missing">
         <item quantity="one">Te falta %1$d ingrediente: %2$s</item>
         <item quantity="other">Te faltan %1$d ingredientes: %2$s</item>

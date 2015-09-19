@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -17,6 +18,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -356,7 +358,7 @@ public class MainActivity extends AppCompatActivity
 
     @DebugLog
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
@@ -372,17 +374,23 @@ public class MainActivity extends AppCompatActivity
                 ((WeekFragment)currentFrg).randomFillAllCourses();
                 return true;
             } else if (item.getItemId() == R.id.dinner_option) {
-                // We need an Editor object to make preference changes.
-                // All objects are from android.context.Context
-                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
-                SharedPreferences.Editor editor = settings.edit();
-                editor.putBoolean(Cons.INCLUDE_DINNER, ! item.isChecked());
-                editor.apply();
-
-                item.setChecked(! item.isChecked());
-
-                ((WeekFragment) currentFrg).setDinnerVisibility(item.isChecked());
-
+                if (item.isChecked()) {
+                    new AlertDialog.Builder(this)
+                            .setMessage(getString(R.string.dinner_dishes_will_be_lost))
+                            .setPositiveButton(getString(android.R.string.ok),
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            setDinnerVisible(false);
+                                            item.setChecked(false);
+                                        }
+                                    })
+                            .setNegativeButton(getString(android.R.string.cancel), null)
+                            .show();
+                } else {
+                    setDinnerVisible(true);
+                    item.setChecked(true);
+                }
                 return true;
             }
         } else if (currentFrg instanceof CourseFragment) {
@@ -405,6 +413,17 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setDinnerVisible(boolean visible) {
+        // We need an Editor object to make preference changes.
+        // All objects are from android.context.Context
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean(Cons.INCLUDE_DINNER, visible);
+        editor.apply();
+
+        ((WeekFragment) currentFrg).setDinnerVisibility(visible);
     }
 
     @Override
