@@ -77,7 +77,7 @@ public class CourseAdapter extends ArrayAdapter<Course> implements SectionIndexe
         int weekdayIndexWithCurrentOrder = ((MainActivity) getContext()).getWeekdayIndexWithCurrentOrder();
 
 //        List<Day> days = new Select().from(Day.class)
-//                .where("(Days.firstCourse = ? OR Days.secondCourse = ? OR Days.dinner = ?)", course.getId(), course.getId(), course.getId())
+//                .where("(Days.firstCourse = ? OR Days.secondCourse = ? OR Days.dinner = ? OR Days.breakfast = ?)", course.getId(), course.getId(), course.getId(), course.getId())
 //                .and("Days.Id = ? + 1", weekdayIndexWithCurrentOrder)
 //                .execute();
 //        if (days.isEmpty()) {
@@ -90,17 +90,17 @@ public class CourseAdapter extends ArrayAdapter<Course> implements SectionIndexe
         List<String> coursesStrings = new LinkedList<>();
 
         boolean inCurrentDay = new Select().from(Day.class)
-                .where("(Days.firstCourse = ? OR Days.secondCourse = ? OR Days.dinner = ?)", course.getId(), course.getId(), course.getId())
+                .where("(Days.firstCourse = ? OR Days.secondCourse = ? OR Days.dinner = ? OR Days.breakfast = ?)", course.getId(), course.getId(), course.getId(), course.getId())
                 .and("Days.Id = ? + 1", weekdayIndexWithCurrentOrder)
                 .exists();
 
         boolean tomorrow = new Select().from(Day.class)
-                .where("(Days.firstCourse = ? OR  Days.secondCourse = ? OR Days.dinner = ?)", course.getId(), course.getId(), course.getId())
+                .where("(Days.firstCourse = ? OR  Days.secondCourse = ? OR Days.dinner = ? OR Days.breakfast = ?)", course.getId(), course.getId(), course.getId(), course.getId())
                 .and("Days.Id = ? + 2", weekdayIndexWithCurrentOrder)
                 .exists();
 
         List<Day> futureDays = new Select().from(Day.class)
-                .where("(Days.firstCourse = ? OR  Days.secondCourse = ? OR Days.dinner = ?)", course.getId(), course.getId(), course.getId())
+                .where("(Days.firstCourse = ? OR  Days.secondCourse = ? OR Days.dinner = ? OR Days.breakfast = ?)", course.getId(), course.getId(), course.getId(), course.getId())
                 .and("Days.Id > ? + 2", weekdayIndexWithCurrentOrder)
                 .execute();
 

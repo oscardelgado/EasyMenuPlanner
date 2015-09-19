@@ -64,7 +64,7 @@ public class ShoppingListFragment extends ListFragment {
         // Day -> Course <- CI -> Ingredient
         return new Select(new String[]{"Ingredients.Id, Ingredients.name, Ingredients.checked"}).distinct().from(Ingredient.class)
                 .innerJoin(CourseIngredient.class).on("CourseIngredients.ingredient = Ingredients.Id")
-                .innerJoin(Day.class).on("(CourseIngredients.course = Days.firstCourse OR CourseIngredients.course = Days.secondCourse OR CourseIngredients.course = Days.dinner)")
+                .innerJoin(Day.class).on("(CourseIngredients.course = Days.firstCourse OR CourseIngredients.course = Days.secondCourse OR CourseIngredients.course = Days.dinner OR Days.breakfast = Courses.Id)")
                 .where("Days.Id > ?", weekdayIndexWithCurrentOrder) //0-6 sunday==0 /D.Id 1-7
                 .orderBy("Days.Id, UPPER (name) ASC")
                 .execute();
@@ -78,7 +78,7 @@ public class ShoppingListFragment extends ListFragment {
         // Day -> Course <- CI -> Ingredient
         return new Select(new String[]{"Ingredients.Id"}).distinct().from(Ingredient.class)
                 .innerJoin(CourseIngredient.class).on("CourseIngredients.ingredient = Ingredients.Id")
-                .innerJoin(Day.class).on("(CourseIngredients.course = Days.firstCourse OR CourseIngredients.course = Days.secondCourse OR Days.dinner = Courses.Id)")
+                .innerJoin(Day.class).on("(CourseIngredients.course = Days.firstCourse OR CourseIngredients.course = Days.secondCourse OR Days.dinner = Courses.Id OR Days.breakfast = Courses.Id)")
                 .where("Ingredients.checked = 0")
                 .and("Days.Id > ?", weekdayIndexWithCurrentOrder) //0-6 sunday==0 /D.Id 1-7
                 .orderBy("Days.Id, UPPER (name) ASC")

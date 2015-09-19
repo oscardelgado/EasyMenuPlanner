@@ -392,6 +392,25 @@ public class MainActivity extends AppCompatActivity
                     item.setChecked(true);
                 }
                 return true;
+            } else if (item.getItemId() == R.id.breakfast_option) {
+                if (item.isChecked()) {
+                    new AlertDialog.Builder(this)
+                            .setMessage(getString(R.string.breakfast_dishes_will_be_lost))
+                            .setPositiveButton(getString(android.R.string.ok),
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            setBreakfastVisible(false);
+                                            item.setChecked(false);
+                                        }
+                                    })
+                            .setNegativeButton(getString(android.R.string.cancel), null)
+                            .show();
+                } else {
+                    setBreakfastVisible(true);
+                    item.setChecked(true);
+                }
+                return true;
             }
         } else if (currentFrg instanceof CourseFragment) {
             if (id == R.id.action_add) {
@@ -413,6 +432,17 @@ public class MainActivity extends AppCompatActivity
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setBreakfastVisible(boolean visible) {
+        // We need an Editor object to make preference changes.
+        // All objects are from android.context.Context
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean(Cons.INCLUDE_BREAKFAST, visible);
+        editor.apply();
+
+        ((WeekFragment) currentFrg).setBreakfastVisibility(visible);
     }
 
     private void setDinnerVisible(boolean visible) {

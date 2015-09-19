@@ -20,10 +20,11 @@
         />
 
     <TextView
+        android:id="@+id/breakfast_header"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center_vertical|center_horizontal"
-        android:text="@string/dinner"
+        android:text="@string/breakfast"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/accent"
         android:textSize="@dimen/abc_text_size_small_material"

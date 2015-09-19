@@ -9,4 +9,5 @@
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
     android:textSize="@dimen/abc_text_size_medium_material"
-    />
+    android:maxLines="2"
+    android:ellipsize="end"/>

@@ -59,6 +59,9 @@
     <string name="dinner">Cena</string>
     <string name="include_dinner">Incluir cenas</string>
     <string name="dinner_dishes_will_be_lost">Tu selección de platos para las cenas se perderá</string>
+    <string name="include_breakfast">Incluir desayunos</string>
+    <string name="breakfast">Desayuno</string>
+    <string name="breakfast_dishes_will_be_lostt">Tu selección de platos para los desayunos se perderá</string>
     <plurals name="intredients_missing">
         <item quantity="one">Te falta %1$d ingrediente: %2$s</item>
         <item quantity="other">Te faltan %1$d ingredientes: %2$s</item>
