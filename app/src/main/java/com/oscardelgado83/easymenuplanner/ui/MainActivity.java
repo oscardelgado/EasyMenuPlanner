@@ -102,6 +102,9 @@ public class MainActivity extends AppCompatActivity
     private boolean dbStarted;
     private int weekdayIndexWithCurrentOrder;
 
+    private boolean dinnerEnabled;
+    private boolean breakfastEnabled;
+
     @Override
     @DebugLog
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,7 +143,7 @@ public class MainActivity extends AppCompatActivity
                 (DrawerLayout) findViewById(R.id.drawer_layout));
 
         //Tutorial
-        if ( ! PreferenceManager.getDefaultSharedPreferences(this)
+        if (!PreferenceManager.getDefaultSharedPreferences(this)
                 .getBoolean(Cons.FIRST_TIME_HELP_VIEWED, false)) {
 //            if (getSupportActionBar() != null) {
 //                getSupportActionBar().hide();
@@ -331,8 +334,10 @@ public class MainActivity extends AppCompatActivity
             // decide what to show in the action bar.
             if (currentFrg instanceof WeekFragment) {
                 getMenuInflater().inflate(R.menu.week_fragment, menu);
-                boolean includeDinner = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Cons.INCLUDE_DINNER, false);
-                menu.findItem(R.id.dinner_option).setChecked(includeDinner);
+                dinnerEnabled = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Cons.INCLUDE_DINNER, false);
+                menu.findItem(R.id.dinner_option).setChecked(dinnerEnabled);
+                breakfastEnabled = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Cons.INCLUDE_BREAKFAST, false);
+                menu.findItem(R.id.breakfast_option).setChecked(breakfastEnabled);
             } else if (currentFrg instanceof CourseFragment) {
                 getMenuInflater().inflate(R.menu.courses_fragment, menu);
             } else if (currentFrg instanceof ShoppingListFragment) {
@@ -368,10 +373,10 @@ public class MainActivity extends AppCompatActivity
             exportDB();
         } else if (currentFrg instanceof WeekFragment) {
             if (id == R.id.action_clear_all) {
-                ((WeekFragment)currentFrg).clearAllCourses();
+                ((WeekFragment) currentFrg).clearAllCourses();
                 return true;
             } else if (item.getItemId() == R.id.action_automatic_fill) {
-                ((WeekFragment)currentFrg).randomFillAllCourses();
+                ((WeekFragment) currentFrg).randomFillAllCourses();
                 return true;
             } else if (item.getItemId() == R.id.dinner_option) {
                 if (item.isChecked()) {
@@ -562,7 +567,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @DebugLog
-    private void exportDB(){
+    private void exportDB() {
         String DB_NAME = "EasyMenuPlanner.db";
         String currentDBPath = "/data/com.oscardelgado83.easymenuplanner/databases/" + DB_NAME;
         File sd = Environment.getExternalStorageDirectory();
@@ -578,7 +583,7 @@ public class MainActivity extends AppCompatActivity
             destination.close();
             Toast.makeText(this, "DB Exported!", Toast.LENGTH_LONG).show();
             if (DEBUGGING) Log.i(LOG_TAG, "DB Exported to: " + backupDB.getAbsolutePath());
-        } catch(IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -593,5 +598,13 @@ public class MainActivity extends AppCompatActivity
 
     public void showAds() {
         adView.setVisibility(View.VISIBLE);
+    }
+
+    public boolean isBreakfastEnabled() {
+        return breakfastEnabled;
+    }
+
+    public boolean isDinnerEnabled() {
+        return dinnerEnabled;
     }
 }

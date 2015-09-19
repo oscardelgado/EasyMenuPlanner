@@ -622,44 +622,48 @@ public class WeekFragment extends Fragment {
             notUsedFirstCourses.remove(course);
             notUsedSecondCourses.remove(course);
 
-            TextView tvDinner = (TextView) tr.findViewById(R.id.card_view_dinner).findViewById(R.id.textView);
-            if (tvDinner.getText().equals("")) {
+            if (((MainActivity) getActivity()).isDinnerEnabled()) {
+                TextView tvDinner = (TextView) tr.findViewById(R.id.card_view_dinner).findViewById(R.id.textView);
+                if (tvDinner.getText().equals("")) {
 
-                //Avoid repeating if possible
-                List<Course> allNotUsedCourses = new ArrayList<>(notUsedFirstCourses);
-                allNotUsedCourses.addAll(notUsedSecondCourses);
-                List<Course> allCourses = new ArrayList<>(allFirstCourses);
-                allCourses.addAll(allSecondCourses);
-                if (!allNotUsedCourses.isEmpty()) {
-                    int randomInt = rand.nextInt(allNotUsedCourses.size());
-                    course = allNotUsedCourses.get(randomInt);
-                } else if (!allCourses.isEmpty()) {
-                    int randomInt = rand.nextInt(allCourses.size());
-                    course = allCourses.get(randomInt);
+                    //Avoid repeating if possible
+                    List<Course> allNotUsedCourses = new ArrayList<>(notUsedFirstCourses);
+                    allNotUsedCourses.addAll(notUsedSecondCourses);
+                    List<Course> allCourses = new ArrayList<>(allFirstCourses);
+                    allCourses.addAll(allSecondCourses);
+                    if (!allNotUsedCourses.isEmpty()) {
+                        int randomInt = rand.nextInt(allNotUsedCourses.size());
+                        course = allNotUsedCourses.get(randomInt);
+                    } else if (!allCourses.isEmpty()) {
+                        int randomInt = rand.nextInt(allCourses.size());
+                        course = allCourses.get(randomInt);
+                    }
+                    week.get(i).dinner = course;
                 }
-                week.get(i).dinner = course;
+
+                // Remove from both lists (If type is "both", it might be in both lists).
+                notUsedFirstCourses.remove(course);
+                notUsedSecondCourses.remove(course);
             }
 
-            // Remove from both lists (If type is "both", it might be in both lists).
-            notUsedFirstCourses.remove(course);
-            notUsedSecondCourses.remove(course);
+            if (((MainActivity) getActivity()).isBreakfastEnabled()) {
+                TextView tvBreakfast = (TextView) tr.findViewById(R.id.card_view_breakfast).findViewById(R.id.textView);
+                if (tvBreakfast.getText().equals("")) {
 
-            TextView tvBreakfast = (TextView) tr.findViewById(R.id.card_view_breakfast).findViewById(R.id.textView);
-            if (tvBreakfast.getText().equals("")) {
-
-                // Breakfast is repeatable
-                List<Course> allCourses = new ArrayList<>(allFirstCourses);
-                allCourses.addAll(allSecondCourses);
-                if (!allCourses.isEmpty()) {
-                    int randomInt = rand.nextInt(allCourses.size());
-                    course = allCourses.get(randomInt);
+                    // Breakfast is repeatable
+                    List<Course> allCourses = new ArrayList<>(allFirstCourses);
+                    allCourses.addAll(allSecondCourses);
+                    if (!allCourses.isEmpty()) {
+                        int randomInt = rand.nextInt(allCourses.size());
+                        course = allCourses.get(randomInt);
+                    }
+                    week.get(i).breakfast = course;
                 }
-                week.get(i).breakfast = course;
-            }
 
-            // Remove from both lists (If type is "both", it might be in both lists).
-            notUsedFirstCourses.remove(course);
-            notUsedSecondCourses.remove(course);
+                // Remove from both lists (If type is "both", it might be in both lists).
+                notUsedFirstCourses.remove(course);
+                notUsedSecondCourses.remove(course);
+            }
         }
         dirty = true;
 
