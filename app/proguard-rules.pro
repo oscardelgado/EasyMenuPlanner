@@ -28,6 +28,9 @@
     @com.google.android.gms.common.annotation.KeepName *;
 }
 
+-keep public class com.google.android.gms.**
+-dontwarn com.google.android.gms.**
+
 -keepnames class * implements android.os.Parcelable {
     public static final ** CREATOR;
 }
@@ -60,3 +63,5 @@
     public static int d(...);
     public static int e(...);
 }
+
+-dontwarn com.viewpagerindicator.**

@@ -1,10 +1,9 @@
 apply plugin: 'com.android.application'
 apply plugin: 'hugo'
 apply plugin: 'com.github.ben-manes.versions'
-
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.0"
+    buildToolsVersion "23.0.1"
 
     defaultConfig {
         applicationId "com.oscardelgado83.easymenuplanner"
@@ -23,8 +22,8 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled true
             resValue "bool", "debug_mode", "false"
         }
         debug {
@@ -47,7 +46,6 @@ android {
         incremental true
     }
 }
-
 dependencies {
     compile files('libs/tokenautocomplete-1.2.1.jar')
     compile files('libs/android-viewbadger.jar')
@@ -64,7 +62,9 @@ dependencies {
 }
 
 repositories {
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" } // For ActiveAndroid
+
+    // For ActiveAndroid
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 }
 
 //allprojects {
