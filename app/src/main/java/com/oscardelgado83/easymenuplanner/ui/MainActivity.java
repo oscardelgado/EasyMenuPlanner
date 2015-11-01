@@ -42,6 +42,7 @@ import com.oscardelgado83.easymenuplanner.ui.fragments.CourseFragment;
 import com.oscardelgado83.easymenuplanner.ui.fragments.HelpFragment;
 import com.oscardelgado83.easymenuplanner.ui.fragments.NavigationDrawerFragment;
 import com.oscardelgado83.easymenuplanner.ui.fragments.NavigationDrawerFragment.Section;
+import com.oscardelgado83.easymenuplanner.ui.fragments.SettingsFragment;
 import com.oscardelgado83.easymenuplanner.ui.fragments.ShoppingListFragment;
 import com.oscardelgado83.easymenuplanner.ui.fragments.WeekFragment;
 import com.oscardelgado83.easymenuplanner.ui.widgets.MenuWeekAppWidgetMedium;
@@ -283,6 +284,8 @@ public class MainActivity extends AppCompatActivity
             case HELP:
                 currentFrg = new HelpFragment();
                 break;
+            case SETTINGS:
+                currentFrg = new SettingsFragment();
             default:
                 break;
         }
@@ -316,6 +319,8 @@ public class MainActivity extends AppCompatActivity
             mTitle = getString(Section.WEEK_SHOPPINGLIST.getTitleKey());
         } else if (frg instanceof CourseFragment) {
             mTitle = getString(Section.COURSES.getTitleKey());
+        } else if (frg instanceof SettingsFragment) {
+            mTitle = getString(Section.SETTINGS.getTitleKey());
         }
     }
 

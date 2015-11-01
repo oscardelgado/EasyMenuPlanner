@@ -23,7 +23,7 @@ public class EMPApplication extends Application {
     private static final String LOG_TAG = EMPApplication.class.getSimpleName();
 
     //TODO: remove constant and do settings
-    public final static int USER_WEEK_START_DAY = Calendar.SATURDAY;
+    public final static int USER_WEEK_START_DAY = Calendar.MONDAY;
 
     @Override
     public void onCreate() {

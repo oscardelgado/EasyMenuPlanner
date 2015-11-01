@@ -1,0 +1,44 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="com.oscardelgado83.easymenuplanner.ui.fragments.SettingsFragment">
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textAppearance="?android:attr/textAppearanceSmall"-->
+        <!--android:text="@string/power_ups"-->
+        <!--android:id="@+id/power_ups_header"-->
+        <!--android:layout_alignParentTop="true"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:layout_marginLeft="30dp"-->
+        <!--android:layout_marginStart="30dp"-->
+        <!--android:layout_marginTop="49dp"-->
+        <!--android:textColor="@color/accent"-->
+        <!--android:layout_marginBottom="10dp"/>-->
+
+    <!--<Button-->
+        <!--android:id="@+id/remove_adds_button"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:checked="false"-->
+        <!--android:text="@string/purchase"-->
+        <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+        <!--android:layout_alignBaseline="@+id/remove_ads_label"-->
+        <!--android:layout_marginRight="30dp"-->
+        <!--android:layout_alignParentRight="true"/>-->
+
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
+        <!--android:text="@string/remove_ads"-->
+        <!--android:id="@+id/remove_ads_label"-->
+        <!--android:layout_below="@+id/power_ups_header"-->
+        <!--android:layout_alignLeft="@+id/power_ups_header"-->
+        <!--android:layout_alignStart="@+id/power_ups_header"/>-->
+
+
+</RelativeLayout>

@@ -68,7 +68,8 @@ public class NavigationDrawerFragment extends Fragment {
         WEEK_MENU(R.string.title_section_week),
         WEEK_SHOPPINGLIST(R.string.title_section_shopping_list),
         COURSES(R.string.title_section_course),
-        HELP(R.string.help);
+        HELP(R.string.help),
+        SETTINGS(R.string.title_activity_settings);
 
         private final int titleKey;
 
@@ -129,6 +130,7 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(Section.values()[1].getTitleKey()),
                         getString(Section.values()[2].getTitleKey()),
                         getString(Section.values()[3].getTitleKey()),
+                        getString(Section.values()[4].getTitleKey()),
                 }) {
             @Override
             public int getViewTypeCount() {

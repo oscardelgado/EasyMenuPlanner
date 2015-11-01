@@ -70,4 +70,5 @@
     <string name="include_breakfast">Include breakfast</string>
     <string name="breakfast">Breakfast</string>
     <string name="breakfast_dishes_will_be_lost">The courses you had set for breakfast will be lost</string>
+    <string name="title_activity_settings">Options</string>
 </resources>

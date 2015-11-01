@@ -66,4 +66,5 @@
         <item quantity="one">Te falta %1$d ingrediente: %2$s</item>
         <item quantity="other">Te faltan %1$d ingredientes: %2$s</item>
     </plurals>
+    <string name="title_activity_settings">Opciones</string>
 </resources>
