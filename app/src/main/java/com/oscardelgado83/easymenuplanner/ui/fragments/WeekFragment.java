@@ -165,7 +165,7 @@ public class WeekFragment extends Fragment {
             View placeholderDinner = findById(tr, R.id.card_view_dinner).findViewById(R.id.badge_placeholder);
             View placeholderBreakfast = findById(tr, R.id.card_view_breakfast).findViewById(R.id.badge_placeholder);
 
-            int indexWithCurrentOrder = (i + Calendar.getInstance().getFirstDayOfWeek() - 1) % (dayNames.length - 1) + 1;
+            int indexWithCurrentOrder = (i + EMPApplication.USER_WEEK_START_DAY - 1) % (dayNames.length - 1) + 1;
             weekDayName.setText(dayNames[indexWithCurrentOrder]);
 
             if (indexWithCurrentOrder == currentDayOfWeek) {

@@ -10,6 +10,7 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import com.activeandroid.query.Select;
+import com.oscardelgado83.easymenuplanner.EMPApplication;
 import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Course;
 import com.oscardelgado83.easymenuplanner.model.Day;
@@ -76,38 +77,27 @@ public class CourseAdapter extends ArrayAdapter<Course> implements SectionIndexe
 
         int weekdayIndexWithCurrentOrder = ((MainActivity) getContext()).getWeekdayIndexWithCurrentOrder();
 
-//        List<Day> days = new Select().from(Day.class)
-//                .where("(Days.firstCourse = ? OR Days.secondCourse = ? OR Days.dinner = ? OR Days.breakfast = ?)", course.getId(), course.getId(), course.getId(), course.getId())
-//                .and("Days.Id = ? + 1", weekdayIndexWithCurrentOrder)
-//                .execute();
-//        if (days.isEmpty()) {
-//            holder.daysTV.setText("");
-//        } else {
-//            holder.daysTV.setText(getContext().getString(R.string.assigned_to)
-//                    + StringUtils.join(days, ", "));
-//        }
-
         List<String> coursesStrings = new LinkedList<>();
 
         boolean inCurrentDay = new Select().from(Day.class)
                 .where("(Days.firstCourse = ? OR Days.secondCourse = ? OR Days.dinner = ? OR Days.breakfast = ?)", course.getId(), course.getId(), course.getId(), course.getId())
-                .and("Days.Id = ? + 1", weekdayIndexWithCurrentOrder)
+                .and("(Days.Id + 7 - " + EMPApplication.USER_WEEK_START_DAY + ")%7 = " + weekdayIndexWithCurrentOrder)//0-6 sunday==0 /D.Id 1-7
                 .exists();
 
         boolean tomorrow = new Select().from(Day.class)
                 .where("(Days.firstCourse = ? OR  Days.secondCourse = ? OR Days.dinner = ? OR Days.breakfast = ?)", course.getId(), course.getId(), course.getId(), course.getId())
-                .and("Days.Id = ? + 2", weekdayIndexWithCurrentOrder)
+                .and("(Days.Id + 7 - " + EMPApplication.USER_WEEK_START_DAY + ")%7 = " + (weekdayIndexWithCurrentOrder + 1))//0-6 sunday==0 /D.Id 1-7
                 .exists();
 
         List<Day> futureDays = new Select().from(Day.class)
                 .where("(Days.firstCourse = ? OR  Days.secondCourse = ? OR Days.dinner = ? OR Days.breakfast = ?)", course.getId(), course.getId(), course.getId(), course.getId())
-                .and("Days.Id > ? + 2", weekdayIndexWithCurrentOrder)
+                .and("(Days.Id + 7 - " + EMPApplication.USER_WEEK_START_DAY + ")%7 > " + (weekdayIndexWithCurrentOrder + 1))//0-6 sunday==0 /D.Id 1-7
                 .execute();
 
 
         if (inCurrentDay) {
             coursesStrings.add("<b><font color='#3B5A01'>" + context.getString(R.string.today) + "</font></b>");
-        } if (tomorrow) {
+        } else if (tomorrow) {
             coursesStrings.add(context.getString(R.string.tomorrow));
         } else if ( ! futureDays.isEmpty()) {
             String daysString = context.getString(R.string.shoppinglist_ingredient_on_days) + " "

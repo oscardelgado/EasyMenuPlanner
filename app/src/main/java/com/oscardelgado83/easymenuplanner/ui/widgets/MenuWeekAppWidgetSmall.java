@@ -62,7 +62,7 @@ public class MenuWeekAppWidgetSmall extends AppWidgetProvider {
             L M MiJ V S D
             2 3 4 5 6 7 1
         */
-        int firstDay = Calendar.getInstance().getFirstDayOfWeek();
+        int firstDay = EMPApplication.USER_WEEK_START_DAY;
         for (int i = 0; i < WEEKDAYS; i++) {
             daysCurrOrder.add((i + firstDay - 1) % WEEKDAYS + 1);
         }

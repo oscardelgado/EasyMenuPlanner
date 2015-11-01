@@ -4,9 +4,9 @@ import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
+import com.oscardelgado83.easymenuplanner.EMPApplication;
 
 import java.text.DateFormatSymbols;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +17,6 @@ import java.util.List;
 public class Day extends Model {
 
     private final String[] dayNames = new DateFormatSymbols().getShortWeekdays();
-    private final int firstDay = Calendar.getInstance().getFirstDayOfWeek();
 
     @Column (index = true)
     public Date date;
@@ -35,12 +34,13 @@ public class Day extends Model {
     public Course breakfast;
 
     public static List<Day> findAll() {
-        return new Select().from(Day.class).orderBy("date ASC").execute();
+        return new Select().from(Day.class).orderBy(
+                "(Id + 7 - " + EMPApplication.USER_WEEK_START_DAY + ") % 7 ASC")
+                .execute();
     }
 
     @Override
     public String toString() {
-        int indexWithCurrentOrder = (int) (((getId() - 1) + firstDay - 1) % (dayNames.length - 1) + 1);
-        return dayNames[indexWithCurrentOrder];
+        return dayNames[getId().intValue()];
     }
 }

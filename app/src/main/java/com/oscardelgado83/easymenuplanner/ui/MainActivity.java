@@ -32,6 +32,7 @@ import com.activeandroid.query.Select;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.oscardelgado83.easymenuplanner.EMPApplication;
 import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.Course;
 import com.oscardelgado83.easymenuplanner.model.CourseIngredient;
@@ -486,7 +487,7 @@ public class MainActivity extends AppCompatActivity
             }
 
             int currentDayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK); //Sunday is 1, Saturday is 7.
-            int firstDay = Calendar.getInstance().getFirstDayOfWeek();
+            int firstDay = EMPApplication.USER_WEEK_START_DAY;
             weekdayIndexWithCurrentOrder = (currentDayOfWeek - firstDay + 7) % 7;
         }
     }

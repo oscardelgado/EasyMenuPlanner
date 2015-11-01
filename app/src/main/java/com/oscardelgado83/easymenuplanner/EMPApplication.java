@@ -8,6 +8,8 @@ import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
 import com.squareup.leakcanary.LeakCanary;
 
+import java.util.Calendar;
+
 import static com.oscardelgado83.easymenuplanner.util.Cons.DEBUGGING;
 
 /**
@@ -19,6 +21,9 @@ public class EMPApplication extends Application {
     public static Tracker tracker;
 
     private static final String LOG_TAG = EMPApplication.class.getSimpleName();
+
+    //TODO: remove constant and do settings
+    public final static int USER_WEEK_START_DAY = Calendar.SATURDAY;
 
     @Override
     public void onCreate() {

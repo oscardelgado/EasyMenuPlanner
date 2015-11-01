@@ -12,6 +12,7 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.activeandroid.query.Select;
+import com.oscardelgado83.easymenuplanner.EMPApplication;
 import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.model.CourseIngredient;
 import com.oscardelgado83.easymenuplanner.model.Day;
@@ -42,7 +43,7 @@ public class ShoppingListWidgetViewsFactory implements RemoteViewsService.Remote
     @DebugLog
     private List<Ingredient> queryIngredients() {
         int currentDayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK); //Sunday is 1, Saturday is 7.
-        int firstDay = Calendar.getInstance().getFirstDayOfWeek();
+        int firstDay = EMPApplication.USER_WEEK_START_DAY;
         int weekdayIndexWithCurrentOrder = (currentDayOfWeek - firstDay + 7) % 7;
 
         return new Select().from(Ingredient.class)
