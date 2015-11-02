@@ -1,6 +1,8 @@
 package com.oscardelgado83.easymenuplanner;
 
 import android.app.Application;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.activeandroid.ActiveAndroid;
@@ -19,17 +21,20 @@ public class EMPApplication extends Application {
 
     public static GoogleAnalytics analytics;
     public static Tracker tracker;
-
     private static final String LOG_TAG = EMPApplication.class.getSimpleName();
 
-    //TODO: remove constant and do settings
-    public final static int USER_WEEK_START_DAY = Calendar.MONDAY;
+    private static final String PREFERENCE_WEEK_START_DAY = "weekStartDay";
+    public static int USER_WEEK_START_DAY;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
         DEBUGGING = getResources().getBoolean(R.bool.debug_mode);
+
+        // Restore preferences
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        USER_WEEK_START_DAY = prefs.getInt(PREFERENCE_WEEK_START_DAY, Calendar.getInstance().getFirstDayOfWeek());
 
         ActiveAndroid.initialize(this);
 
@@ -51,5 +56,16 @@ public class EMPApplication extends Application {
             tracker.enableAutoActivityTracking(true);
         }
         return tracker;
+    }
+
+    public void setUserWeekStartDay(int weekDay) {
+        Log.i(LOG_TAG, "User week start day will change to " + weekDay);
+        USER_WEEK_START_DAY = weekDay; //Sunday = 1, Monday = 7
+
+        // We need an Editor object to make preference changes.
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(PREFERENCE_WEEK_START_DAY, weekDay);
+        editor.apply();
     }
 }

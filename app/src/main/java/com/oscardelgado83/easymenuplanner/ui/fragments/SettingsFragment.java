@@ -9,12 +9,22 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.oscardelgado83.easymenuplanner.EMPApplication;
 import com.oscardelgado83.easymenuplanner.R;
 import com.oscardelgado83.easymenuplanner.ui.MainActivity;
 import com.oscardelgado83.easymenuplanner.util.GA;
 
+import java.text.DateFormatSymbols;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
+
+import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
@@ -27,6 +37,9 @@ public class SettingsFragment extends Fragment {
     private static final String LOG_TAG = FRAGMENT_NAME;
 
     private SharedPreferences settings;
+
+    @Bind(R.id.week_start_day_spinner)
+    Spinner weekStartDaySpinner;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,6 +56,26 @@ public class SettingsFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         ButterKnife.bind(this, view);
+
+        List<String> weekDaysList = Arrays.asList(new DateFormatSymbols().getWeekdays()).subList(1, 8);
+        Collections.rotate(weekDaysList, -(Calendar.getInstance().getFirstDayOfWeek() - 1));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),
+                android.R.layout.simple_spinner_item, weekDaysList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        weekStartDaySpinner.setAdapter(adapter);
+        weekStartDaySpinner.setSelection(EMPApplication.USER_WEEK_START_DAY -(Calendar.getInstance().getFirstDayOfWeek() - 1) - 1);
+        weekStartDaySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                int day = position + Calendar.getInstance().getFirstDayOfWeek();
+                ((EMPApplication) getActivity().getApplication()).setUserWeekStartDay(day);
+                ((MainActivity) getActivity()).updateWeek();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
         return view;
     }

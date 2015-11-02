@@ -133,9 +133,6 @@ public class MainActivity extends AppCompatActivity
             prePopulateDB();
         }
 
-        week = Day.findAll();
-        if (DEBUGGING) Log.d(LOG_TAG, "week: " + week);
-
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getSupportFragmentManager().findFragmentById(R.id.navigation_drawer);
 
@@ -491,9 +488,7 @@ public class MainActivity extends AppCompatActivity
                 mNavigationDrawerFragment.selectItem(Section.WEEK_MENU.ordinal());
             }
 
-            int currentDayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK); //Sunday is 1, Saturday is 7.
-            int firstDay = EMPApplication.USER_WEEK_START_DAY;
-            weekdayIndexWithCurrentOrder = (currentDayOfWeek - firstDay + 7) % 7;
+            updateWeek();
         }
     }
 
@@ -616,5 +611,13 @@ public class MainActivity extends AppCompatActivity
 
     public boolean isDinnerEnabled() {
         return dinnerEnabled;
+    }
+
+    public void updateWeek() {
+        week = Day.findAll();
+        if (DEBUGGING) Log.d(LOG_TAG, "week: " + week);
+        int currentDayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK); //Sunday is 1, Saturday is 7.
+        int firstDay = EMPApplication.USER_WEEK_START_DAY;
+        weekdayIndexWithCurrentOrder = (currentDayOfWeek - firstDay + 7) % 7;
     }
 }

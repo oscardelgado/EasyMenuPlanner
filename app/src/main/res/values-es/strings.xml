@@ -67,4 +67,6 @@
         <item quantity="other">Te faltan %1$d ingredientes: %2$s</item>
     </plurals>
     <string name="title_activity_settings">Opciones</string>
+    <string name="settings_week_menu_header">AJUSTES DEL MENÚ SEMANAL</string>
+    <string name="settings_week_start">Comienzo de la semana</string>
 </resources>

@@ -28,7 +28,8 @@
         <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
         <!--android:layout_alignBaseline="@+id/remove_ads_label"-->
         <!--android:layout_marginRight="30dp"-->
-        <!--android:layout_alignParentRight="true"/>-->
+        <!--android:layout_marginEnd="30dp"-->
+    <!--android:layout_alignParentRight="true"/>-->
 
     <!--<TextView-->
         <!--android:layout_width="wrap_content"-->
@@ -40,5 +41,39 @@
         <!--android:layout_alignLeft="@+id/power_ups_header"-->
         <!--android:layout_alignStart="@+id/power_ups_header"/>-->
 
+    <TextView
+        android:id="@+id/week_menu_settings_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="49dp"
+        android:text="@string/settings_week_menu_header"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/accent"/>
 
+    <TextView
+        android:id="@+id/week_start_day_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/week_menu_settings_header"
+        android:layout_alignStart="@+id/week_menu_settings_header"
+        android:layout_below="@+id/week_menu_settings_header"
+        android:text="@string/settings_week_start"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:singleLine="false"/>
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/week_start_day_spinner"
+        android:layout_alignBaseline="@+id/week_start_day_tv"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="30dp"
+        android:layout_marginEnd="30dp"/>
 </RelativeLayout>

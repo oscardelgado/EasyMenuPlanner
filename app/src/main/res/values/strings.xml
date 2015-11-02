@@ -71,4 +71,6 @@
     <string name="breakfast">Breakfast</string>
     <string name="breakfast_dishes_will_be_lost">The courses you had set for breakfast will be lost</string>
     <string name="title_activity_settings">Options</string>
+    <string name="settings_week_menu_header">WEEK MENU SETTINGS</string>
+    <string name="settings_week_start">Start of week</string>
 </resources>
