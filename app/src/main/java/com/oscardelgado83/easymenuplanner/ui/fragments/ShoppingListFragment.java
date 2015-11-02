@@ -66,7 +66,7 @@ public class ShoppingListFragment extends ListFragment {
                 .innerJoin(CourseIngredient.class).on("CourseIngredients.ingredient = Ingredients.Id")
                 .innerJoin(Day.class).on("(CourseIngredients.course = Days.firstCourse OR CourseIngredients.course = Days.secondCourse OR CourseIngredients.course = Days.dinner OR CourseIngredients.course = Days.breakfast)")
                 .where("(Days.Id + 7 - " + EMPApplication.USER_WEEK_START_DAY + ")%7 >= " + weekdayIndexWithCurrentOrder)//0-6 sunday==0 /D.Id 1-7
-                .orderBy("Days.Id, UPPER (name) ASC")
+                .orderBy("(Days.Id + 7 - " + EMPApplication.USER_WEEK_START_DAY + ") % 7 ASC, UPPER (name) ASC")
                 .execute();
     }
 
@@ -81,7 +81,7 @@ public class ShoppingListFragment extends ListFragment {
                 .innerJoin(Day.class).on("(CourseIngredients.course = Days.firstCourse OR CourseIngredients.course = Days.secondCourse OR CourseIngredients.course = Days.dinner OR CourseIngredients.course = Days.breakfast)")
                 .where("Ingredients.checked = 0")
                 .where("(Days.Id + 7 - " + EMPApplication.USER_WEEK_START_DAY + ")%7 >= " + weekdayIndexWithCurrentOrder)//0-6 sunday==0 /D.Id 1-7
-                .orderBy("Days.Id, UPPER (name) ASC")
+                .orderBy("(Days.Id + 7 - " + EMPApplication.USER_WEEK_START_DAY + ") % 7 ASC, UPPER (name) ASC")
                 .execute();
     }
 
