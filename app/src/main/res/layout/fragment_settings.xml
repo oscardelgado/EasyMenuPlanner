@@ -71,9 +71,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/week_start_day_spinner"
-        android:layout_alignBaseline="@+id/week_start_day_tv"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/week_start_day_tv"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="30dp"
         android:layout_marginRight="30dp"
-        android:layout_marginEnd="30dp"/>
+        android:layout_alignLeft="@+id/week_start_day_tv"
+        android:layout_alignStart="@+id/week_start_day_tv"/>
 </RelativeLayout>
