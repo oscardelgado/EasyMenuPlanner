@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -170,7 +171,7 @@ public class MenuWeekAppWidgetSmall extends AppWidgetProvider {
                 if (course != null) subviews[i - firstPos].setTextViewText(R.id.right_text, course.name);
             }
             if (indexWithCurrentOrder == currentDayOfWeek) {
-                subviews[i - firstPos].setTextColor(R.id.week_day_name, context.getResources().getColor(R.color.primary));
+                subviews[i - firstPos].setTextColor(R.id.week_day_name, ContextCompat.getColor(context, R.color.primary));
             }
             views.addView(R.id.linear_layout, subviews[i - firstPos]);
         }

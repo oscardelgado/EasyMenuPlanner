@@ -1,6 +1,6 @@
 package com.oscardelgado83.easymenuplanner.ui.fragments;
 
-import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
@@ -86,9 +86,12 @@ public class ShoppingListFragment extends ListFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        ((MainActivity) activity).onSectionAttached(this);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof MainActivity){
+            ((MainActivity) context).onSectionAttached(this);
+        }
     }
 
     @Override

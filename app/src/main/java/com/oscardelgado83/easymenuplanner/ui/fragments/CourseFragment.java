@@ -1,7 +1,6 @@
 package com.oscardelgado83.easymenuplanner.ui.fragments;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -183,10 +182,11 @@ public class CourseFragment extends ListFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        if (activity instanceof MainActivity) {
-            ((MainActivity) activity).onSectionAttached(this);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof MainActivity){
+            ((MainActivity) context).onSectionAttached(this);
         }
     }
 
@@ -241,8 +241,8 @@ public class CourseFragment extends ListFragment {
                         dialog.cancel();
                     }
                 })
-                .setInverseBackgroundForced(true)
                 .create();
+        d.setInverseBackgroundForced(true);
         d.show();
         Button positiveButton = d.getButton(AlertDialog.BUTTON_POSITIVE);
         positiveButton.setOnClickListener(new View.OnClickListener() {
@@ -360,12 +360,13 @@ public class CourseFragment extends ListFragment {
         final DialogInterface.OnClickListener dialogClickListener =
                 new DeleteBtnClickListener(checkedItemPositions, (CourseAdapter) getListAdapter());
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(getString(R.string.dialog_delete_confirmation))
+        AlertDialog d = new AlertDialog.Builder(getActivity())
+                .setMessage(getString(R.string.dialog_delete_confirmation))
                 .setPositiveButton(android.R.string.yes, dialogClickListener)
                 .setNegativeButton(android.R.string.no, dialogClickListener)
-                .setInverseBackgroundForced(true)
-                .show();
+                .create();
+        d.setInverseBackgroundForced(true);
+        d.show();
         GA.sendEvent(
                 ((EMPApplication) getActivity().getApplication()).getTracker(),
                 FRAGMENT_NAME,
@@ -422,10 +423,11 @@ public class CourseFragment extends ListFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(context.getString(R.string.days_with_this_course_exist, deletedCourse.name))
                 .setPositiveButton(R.string.delete_it_anyway, new ConfirmDeleteCourseOnClickListener(daysWithCourseAsFirst, daysWithCourseAsSecond, deletedCourse))
-                .setNegativeButton(android.R.string.cancel, null)
-                .setInverseBackgroundForced(true);
+                .setNegativeButton(android.R.string.cancel, null);
+        AlertDialog d = builder.create();
+        d.setInverseBackgroundForced(true);
         if (!(daysWithCourseAsFirst.isEmpty() && daysWithCourseAsSecond.isEmpty())) {
-            builder.show();
+            d.show();
         } else {
             deletedCourse.delete();
             listAdapter.remove(deletedCourse);
@@ -487,8 +489,9 @@ public class CourseFragment extends ListFragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 dialog.cancel();
                             }
-                        }).setInverseBackgroundForced(true)
+                        })
                         .create();
+        d.setInverseBackgroundForced(true);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             capitalizeLabels(editCourseView);

@@ -2,12 +2,14 @@ package com.oscardelgado83.easymenuplanner.ui.fragments;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -169,19 +171,19 @@ public class WeekFragment extends Fragment {
             weekDayName.setText(dayNames[indexWithCurrentOrder]);
 
             if (indexWithCurrentOrder == currentDayOfWeek) {
-                tr.setBackgroundColor(getResources().getColor(R.color.background));
-                weekDayName.setTextColor(getResources().getColor(android.R.color.white));
+                tr.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.background));
+                weekDayName.setTextColor(ContextCompat.getColor(getContext(), android.R.color.white));
                 dayIsPast = false;
             } else {
-                tr.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-                weekDayName.setTextColor(getResources().getColor(R.color.accent));
+                tr.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.transparent));
+                weekDayName.setTextColor(ContextCompat.getColor(getContext(), R.color.accent));
             }
 
             if (week == null || week.isEmpty()) {
                 if (DEBUGGING) Log.w(LOG_TAG, "The week has not been initialized.");
             } else {
                 if (dayIsPast)
-                    weekDayName.setTextColor(getResources().getColor(R.color.light_text));
+                    weekDayName.setTextColor(ContextCompat.getColor(getContext(), R.color.light_text));
                 if (week.get(i).firstCourse != null) {
                     final Course course = week.get(i).firstCourse;
                     tvFirstCourse.setText(course.name);
@@ -451,9 +453,17 @@ public class WeekFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        ((MainActivity) activity).onSectionAttached(this);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof Activity){
+            Activity activity = (Activity) context;
+            try {
+                ((MainActivity) activity).onSectionAttached(this);
+            } catch (ClassCastException e) {
+                throw new ClassCastException("Activity must implement NavigationDrawerCallbacks.");
+            }
+        }
     }
 
     @Override
