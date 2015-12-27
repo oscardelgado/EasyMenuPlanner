@@ -376,7 +376,17 @@ public class MainActivity extends AppCompatActivity
             exportDB();
         } else if (currentFrg instanceof WeekFragment) {
             if (id == R.id.action_clear_all) {
-                ((WeekFragment) currentFrg).clearAllCourses();
+                new AlertDialog.Builder(this)
+                        .setMessage(getString(R.string.confirm_clear_planning))
+                        .setPositiveButton(getString(android.R.string.ok),
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        ((WeekFragment) currentFrg).clearAllCourses();
+                                    }
+                                })
+                        .setNegativeButton(getString(android.R.string.cancel), null)
+                        .show();
                 return true;
             } else if (item.getItemId() == R.id.action_automatic_fill) {
                 ((WeekFragment) currentFrg).randomFillAllCourses();
