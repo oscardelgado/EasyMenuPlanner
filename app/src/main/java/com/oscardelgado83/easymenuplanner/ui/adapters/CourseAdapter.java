@@ -153,7 +153,7 @@ public class CourseAdapter extends ArrayAdapter<Course> implements SectionIndexe
      * <p/>
      * For example, consider an indexer where the section at array index 0
      * starts at adapter position 100. Calling this method with position 10,
-     * which is before the first section, must return index 0.
+     * which is before the firstCourse section, must return index 0.
      *
      * @param position the position within the adapter for which to return the
      *                 corresponding section index

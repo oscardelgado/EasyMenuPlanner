@@ -1,27 +1,27 @@
-Sopa, 1, Sobres sopa
-Filetes, 2, Filetes, Aceite
-San jacobos, 2, San jacobos, Aceite
-Espárragos, 1, Espárragos, Mayonesa
-Tallarines, 1, Tallarines, Tomate frito
-Ensalada, 1, Lechuga, Tomates, Aceite, Vinagre
-Espinacas, 1, Espinacas
-Alubias verdes, 1, Alubias verdes
-Macarrones, 1, Macarrones, Tomate frito
-Arroz, 1, Arroz, Tomate frito
-Puré, 1, Patatas
-Calamares, 2, Calamares
-Pizza, 3, Pizza
-Bacalao, 2, Bacalao
-Gazpacho (natural), 1, Tomates, Pepino, Pimiento, Cebolla, Ajo
-Patatas, 1, Patatas
-Lentejas, 1, Lentejas
-Pimientos rellenos, 3, Pimientos rellenos
-Pechugas de pollo, 2, Pechugas de pollo
-Trucha, 2, Trucha
-Hamburguesa, 2, Hamburguesa
-Pollo asado, 2, Pollo
-Tortilla, 3, Huevos, Patata
-Chuletas Sajonia, 2, Chuletas Sajonia
-Salchichas, 2, Salchichas
-Alitas de pollo, 2, Alitas de pollo
-Garbanzos, 1, Garbanzos
+Sopa, 1, 0, 0, 0, Sobres sopa
+Filetes, 0, 1, 0, 0, Filetes, Aceite
+San jacobos, 0, 1, 0, 0, San jacobos, Aceite
+Espárragos, 1, 0, 0, 0, Espárragos, Mayonesa
+Tallarines, 1, 0, 0, 0, Tallarines, Tomate frito
+Ensalada, 1, 0, 0, 0, Lechuga, Tomates, Aceite, Vinagre
+Espinacas, 1, 0, 0, 0, Espinacas
+Alubias verdes, 1, 0, 0, 0, Alubias verdes
+Macarrones, 1, 0, 0, 0, Macarrones, Tomate frito
+Arroz, 1, 0, 0, 0, Arroz, Tomate frito
+Puré, 1, 0, 0, 0, Patatas
+Calamares, 0, 1, 0, 0, Calamares
+Pizza, 1, 1, 0, 0, Pizza
+Bacalao, 0, 1, 0, 0, Bacalao
+Gazpacho (natural), 1, 0, 0, 0, Tomates, Pepino, Pimiento, Cebolla, Ajo
+Patatas, 1, 0, 0, 0, Patatas
+Lentejas, 1, 0, 0, 0, Lentejas
+Pimientos rellenos, 1, 1, 0, 0, Pimientos rellenos
+Pechugas de pollo, 0, 1, 0, 0, Pechugas de pollo
+Trucha, 0, 1, 0, 0, Trucha
+Hamburguesa, 0, 1, 0, 0, Hamburguesa
+Pollo asado, 0, 1, 0, 0, Pollo
+Tortilla, 1, 1, 0, 0, Huevos, Patata
+Chuletas Sajonia, 0, 1, 0, 0, Chuletas Sajonia
+Salchichas, 0, 1, 0, 0, Salchichas
+Alitas de pollo, 0, 1, 0, 0, Alitas de pollo
+Garbanzos, 1, 0, 0, 0, Garbanzos

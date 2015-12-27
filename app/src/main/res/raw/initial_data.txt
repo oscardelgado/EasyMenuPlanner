@@ -1,26 +1,26 @@
-Soup, 1, Packet soup
-Steak, 2, Steak, Oil
-Escalope with cheese filling, 2, Escalope with cheese filling
-Asparagus, 1, Asparagus, Mayonnaise
-Noodles, 1, Noodles, Fried tomato
-Salad, 1, Lettuce, Tomatoes, Oil, Vinegar
-Spinach, 1, Spinach
-Green beans, 1, Green beans
-Macaroni, 1, macaroni, Fried tomato
-Rice, 1, Rice, Fried tomato
-Mashed potatoes, 1, Potatoes
-Squid, 2, Squid
-Pizza, 3, Pizza
-Cod, 2, Cod
-Gazpacho (natural), 1, Tomatoes, Cucumber, Bell pepper, Onion, Garlic
-Potatoes, 1, Potatoes
-Lentils, 1, Lentils
-Stuffed peppers, 3, Peppers
-Chicken breasts, 2, Chicken breasts
-Trout, 2, Trout
-Hamburger, 2, Hamburger
-Grilled chicken, 2, Chicken
-Omelet, 3, Eggs, Potatoes
-Sausages, 2, Sausages
-Chicken wings, 2, Chicken wings
-Chickpeas, 1, Chickpeas
+Soup, 1, 0, 0, 0, Packet soup
+Steak, 0, 1, 0, 0, Steak, Oil
+Escalope with cheese filling, 0, 1, 0, 0, Escalope with cheese filling
+Asparagus, 1, 0, 0, 0, Asparagus, Mayonnaise
+Noodles, 1, 0, 0, 0, Noodles, Fried tomato
+Salad, 1, 0, 0, 0, Lettuce, Tomatoes, Oil, Vinegar
+Spinach, 1, 0, 0, 0, Spinach
+Green beans, 1, 0, 0, 0, Green beans
+Macaroni, 1, 0, 0, 0, macaroni, Fried tomato
+Rice, 1, 0, 0, 0, Rice, Fried tomato
+Mashed potatoes, 1, 0, 0, 0, Potatoes
+Squid, 0, 1, 0, 0, Squid
+Pizza, 1, 1, 0, 0, Pizza
+Cod, 0, 1, 0, 0, Cod
+Gazpacho (natural), 1, 0, 0, 0, Tomatoes, Cucumber, Bell pepper, Onion, Garlic
+Potatoes, 1, 0, 0, 0, Potatoes
+Lentils, 1, 0, 0, 0, Lentils
+Stuffed peppers, 1, 1, 0, 0, Peppers
+Chicken breasts, 0, 1, 0, 0, Chicken breasts
+Trout, 0, 1, 0, 0, Trout
+Hamburger, 0, 1, 0, 0, Hamburger
+Grilled chicken, 0, 1, 0, 0, Chicken
+Omelet, 1, 1, 0, 0, Eggs, Potatoes
+Sausages, 0, 1, 0, 0, Sausages
+Chicken wings, 0, 1, 0, 0, Chicken wings
+Chickpeas, 1, 0, 0, 0, Chickpeas

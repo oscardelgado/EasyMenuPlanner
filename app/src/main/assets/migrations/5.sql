@@ -1,0 +1,10 @@
+CREATE TABLE Courses_backup(Id, courseType, name);
+INSERT INTO Courses_backup SELECT Id, courseType, name FROM Courses;
+DROP TABLE Courses;
+CREATE TABLE Courses(Id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, firstCourse INTEGER, secondCourse INTEGER, breakfast INTEGER, dinner INTEGER);
+INSERT INTO Courses(Id, name) SELECT Id, name FROM Courses_backup;
+UPDATE Courses SET firstCourse = 1 WHERE (SELECT courseType FROM Courses_backup B WHERE B.Id = Courses.Id) = 'FIRST';
+UPDATE Courses SET firstCourse = 1 WHERE (SELECT courseType FROM Courses_backup B WHERE B.Id = Courses.Id) = 'NONE';
+UPDATE Courses SET secondCourse = 1 WHERE (SELECT courseType FROM Courses_backup B WHERE B.Id = Courses.Id) = 'SECOND';
+UPDATE Courses SET secondCourse = 1 WHERE (SELECT courseType FROM Courses_backup B WHERE B.Id = Courses.Id) = 'NONE';
+DROP TABLE Courses_backup;

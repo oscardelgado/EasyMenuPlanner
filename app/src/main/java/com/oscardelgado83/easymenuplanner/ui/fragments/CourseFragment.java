@@ -20,9 +20,9 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,9 +46,6 @@ import java.util.List;
 import butterknife.ButterKnife;
 import hugo.weaving.DebugLog;
 
-import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.FIRST;
-import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.NONE;
-import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.SECOND;
 import static com.oscardelgado83.easymenuplanner.util.Cons.DEBUGGING;
 
 /**
@@ -260,7 +257,7 @@ public class CourseFragment extends ListFragment {
 
                     String courseName = nameET.getText().toString().trim();
                     courseName = courseName.substring(0, 1).toUpperCase() + courseName.substring(1);
-                    createCourse(courseName, completionView.getObjects(), getCourseType(d));
+                    createCourse(courseName, completionView.getObjects(), newCourseView);
 
                     d.dismiss();
                 }
@@ -277,24 +274,6 @@ public class CourseFragment extends ListFragment {
     private void capitalizeLabels(View v) {
         ((TextView) ButterKnife.findById(v, R.id.name_label)).setAllCaps(true);
         ((TextView) ButterKnife.findById(v, R.id.ingredient_label)).setAllCaps(true);
-    }
-
-    private Course.CourseType getCourseType(AlertDialog d) {
-        Course.CourseType courseType;
-        RadioGroup courseTypeRG = ButterKnife.findById(d, R.id.course_type_radio);
-        switch (courseTypeRG.getCheckedRadioButtonId()) {
-            case R.id.radio_btn_first:
-                courseType = FIRST;
-                break;
-            case R.id.radio_btn_second:
-                courseType = SECOND;
-                break;
-            case R.id.radio_btn_both:
-            default:
-                courseType = NONE;
-                break;
-        }
-        return courseType;
     }
 
     // If the last item wasn't confirmed, we manually confirm it so it doesn't get lost
@@ -318,10 +297,13 @@ public class CourseFragment extends ListFragment {
         return completionView;
     }
 
-    private void createCourse(String name, List<Object> ingredients, Course.CourseType courseType) {
+    private void createCourse(String name, List<Object> ingredients, View newCourseView) {
         Course course = new Course();
         course.name = name;
-        course.courseType = courseType;
+        course.firstCourse = ((CheckBox) ButterKnife.findById(newCourseView, R.id.course_option_first)).isChecked();
+        course.secondCourse = ((CheckBox) ButterKnife.findById(newCourseView, R.id.course_option_second)).isChecked();
+        course.breakfast = ((CheckBox) ButterKnife.findById(newCourseView, R.id.course_option_breakfast)).isChecked();
+        course.dinner = ((CheckBox) ButterKnife.findById(newCourseView, R.id.course_option_dinner)).isChecked();
 
         ActiveAndroid.beginTransaction();
         try {
@@ -449,12 +431,12 @@ public class CourseFragment extends ListFragment {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             for (Day day : daysWithCourseAsFirst) {
-                if (DEBUGGING) Log.i(LOG_TAG, "Removing first course assigned to day: " + day);
+                if (DEBUGGING) Log.i(LOG_TAG, "Removing firstCourse course assigned to day: " + day);
                 day.firstCourse = null;
                 day.save();
             }
             for (Day day : daysWithCourseAsSecond) {
-                if (DEBUGGING) Log.i(LOG_TAG, "Removing second course assigned to day: " + day);
+                if (DEBUGGING) Log.i(LOG_TAG, "Removing secondCourse course assigned to day: " + day);
                 day.secondCourse = null;
                 day.save();
             }
@@ -499,14 +481,10 @@ public class CourseFragment extends ListFragment {
 
         d.show();
 
-        RadioGroup courseTypeRG = ButterKnife.findById(d, R.id.course_type_radio);
-        if (c.courseType == FIRST) {
-            courseTypeRG.check(R.id.radio_btn_first);
-        } else if (c.courseType == SECOND) {
-            courseTypeRG.check(R.id.radio_btn_second);
-        } else if (c.courseType == NONE) {
-            courseTypeRG.check(R.id.radio_btn_both);
-        }
+        ((CheckBox) ButterKnife.findById(editCourseView, R.id.course_option_first)).setChecked(c.firstCourse);
+        ((CheckBox) ButterKnife.findById(editCourseView, R.id.course_option_second)).setChecked(c.secondCourse);
+        ((CheckBox) ButterKnife.findById(editCourseView, R.id.course_option_breakfast)).setChecked(c.breakfast);
+        ((CheckBox) ButterKnife.findById(editCourseView, R.id.course_option_dinner)).setChecked(c.dinner);
 
         Button positiveButton = d.getButton(AlertDialog.BUTTON_POSITIVE);
         positiveButton.setOnClickListener(new View.OnClickListener() {
@@ -520,7 +498,7 @@ public class CourseFragment extends ListFragment {
                     IngredientsCompletionView completionView = ButterKnife.findById(d, R.id.ingredients_edit_text);
                     addUnconfirmedIngredient(completionView);
 
-                    updateCourse(c, nameET.getText().toString(), completionView.getObjects(), getCourseType(d));
+                    updateCourse(c, nameET.getText().toString(), completionView.getObjects(), editCourseView);
 
                     d.dismiss();
 
@@ -535,7 +513,7 @@ public class CourseFragment extends ListFragment {
                 "edit course");
     }
 
-    private void updateCourse(Course c, String newName, List<Object> ingredients, Course.CourseType courseType) {
+    private void updateCourse(Course c, String newName, List<Object> ingredients, View editCourseView) {
         ActiveAndroid.beginTransaction();
         try {
             c.name = newName;
@@ -549,7 +527,10 @@ public class CourseFragment extends ListFragment {
                 ci.course = c;
                 ci.save();
             }
-            c.courseType = courseType;
+            c.firstCourse = ((CheckBox) ButterKnife.findById(editCourseView, R.id.course_option_first)).isChecked();
+            c.secondCourse = ((CheckBox) ButterKnife.findById(editCourseView, R.id.course_option_second)).isChecked();
+            c.breakfast = ((CheckBox) ButterKnife.findById(editCourseView, R.id.course_option_breakfast)).isChecked();
+            c.dinner = ((CheckBox) ButterKnife.findById(editCourseView, R.id.course_option_dinner)).isChecked();
             c.save();
             ActiveAndroid.setTransactionSuccessful();
         } finally {

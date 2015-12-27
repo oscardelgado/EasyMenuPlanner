@@ -88,7 +88,7 @@ public class MenuWeekAppWidgetSmall extends AppWidgetProvider {
     @DebugLog
     @Override
     public void onEnabled(Context context) {
-        // Enter relevant functionality for when the first widget is created
+        // Enter relevant functionality for when the firstCourse widget is created
 
         GA.sendEvent(
                 ((EMPApplication) context.getApplicationContext()).getTracker(),

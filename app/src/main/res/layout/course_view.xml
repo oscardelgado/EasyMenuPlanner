@@ -32,30 +32,27 @@
         android:hint="@string/ingredients"
         android:textColor="@android:color/black"/>
 
-    <RadioGroup
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:baselineAligned="false"
-        android:orientation="vertical"
-        android:id="@+id/course_type_radio"
-        android:paddingTop="12dp">
-
-        <RadioButton
+        <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/first_course"
-            android:id="@+id/radio_btn_first" />
+            android:id="@+id/course_option_first"/>
 
-        <RadioButton
+        <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/second_course"
-            android:id="@+id/radio_btn_second" />
+            android:id="@+id/course_option_second"/>
 
-        <RadioButton
+        <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/second_both"
-            android:id="@+id/radio_btn_both" />
-    </RadioGroup>
+            android:text="@string/breakfast"
+            android:id="@+id/course_option_breakfast"/>
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/dinner"
+            android:id="@+id/course_option_dinner"/>
 </LinearLayout>

@@ -14,15 +14,13 @@ import java.util.List;
 @Table(name = "Courses")
 public class Course extends Model {
 
-    public enum CourseType {
-        FIRST, SECOND, NONE;
-    };
-
     @Column (index = true)
     public String name;
 
-    @Column
-    public CourseType courseType;
+    @Column public boolean firstCourse;
+    @Column public boolean secondCourse;
+    @Column public boolean breakfast;
+    @Column public boolean dinner;
 
     public List<CourseIngredient> getIngredients() {
         return new Select().from(CourseIngredient.class)
@@ -56,7 +54,10 @@ public class Course extends Model {
     public String toString() {
         return "Course{" +
                 "name='" + name + '\'' +
-                ", courseType=" + courseType +
+                ", firstCourse=" + firstCourse +
+                ", secondCourse=" + secondCourse +
+                ", breakfast=" + breakfast +
+                ", dinner=" + dinner +
                 '}';
     }
 }

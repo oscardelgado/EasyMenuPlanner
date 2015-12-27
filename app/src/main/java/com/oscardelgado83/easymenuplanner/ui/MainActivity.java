@@ -71,9 +71,6 @@ import static com.google.android.gms.common.ConnectionResult.SERVICE_DISABLED;
 import static com.google.android.gms.common.ConnectionResult.SERVICE_MISSING;
 import static com.google.android.gms.common.ConnectionResult.SERVICE_VERSION_UPDATE_REQUIRED;
 import static com.google.android.gms.common.ConnectionResult.SUCCESS;
-import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.FIRST;
-import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.NONE;
-import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.SECOND;
 import static com.oscardelgado83.easymenuplanner.util.Cons.DEBUGGING;
 
 
@@ -152,7 +149,7 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-        // TODO: On first open, after returning from Tutorial, the drawer should be opened.
+        // TODO: On firstCourse open, after returning from Tutorial, the drawer should be opened.
     }
 
     @DebugLog
@@ -177,17 +174,11 @@ public class MainActivity extends AppCompatActivity
                 } else {
                     Course course = new Course();
                     course.name = courseName;
-                    switch (Integer.parseInt(tknzr.nextToken().trim())) {
-                        case 1:
-                            course.courseType = FIRST;
-                            break;
-                        case 2:
-                            course.courseType = SECOND;
-                            break;
-                        default:
-                            course.courseType = NONE;
-                            break;
-                    }
+                    course.firstCourse = Integer.parseInt(tknzr.nextToken().trim()) == 1;
+                    course.secondCourse = Integer.parseInt(tknzr.nextToken().trim()) == 1;
+                    course.breakfast = Integer.parseInt(tknzr.nextToken().trim()) == 1;
+                    course.dinner = Integer.parseInt(tknzr.nextToken().trim()) == 1;
+
                     course.save();
 
                     while (tknzr.hasMoreElements()) {

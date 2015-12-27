@@ -45,9 +45,6 @@ import hugo.weaving.DebugLog;
 
 import static butterknife.ButterKnife.findById;
 import static butterknife.ButterKnife.unbind;
-import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.FIRST;
-import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.NONE;
-import static com.oscardelgado83.easymenuplanner.model.Course.CourseType.SECOND;
 import static com.oscardelgado83.easymenuplanner.ui.fragments.NavigationDrawerFragment.Section.COURSES;
 import static com.oscardelgado83.easymenuplanner.util.Cons.DEBUGGING;
 
@@ -109,13 +106,13 @@ public class WeekFragment extends Fragment {
     private void refreshWeekData() {
         allFirstCourses = new Select()
                 .from(Course.class)
-                .where("courseType in (?, ?)", FIRST, NONE)
+                .where("firstCourse = 1")
                 .orderBy("UPPER(name)")
                 .execute();
 
         allSecondCourses = new Select()
                 .from(Course.class)
-                .where("courseType in (?, ?)", SECOND, NONE)
+                .where("secondCourse = 1")
                 .orderBy("UPPER(name)")
                 .execute();
 
