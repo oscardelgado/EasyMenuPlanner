@@ -139,7 +139,7 @@ public class ShoppingListFragment extends ListFragment {
 
         List<Ingredient> allUncheckedItems = new Select().from(Ingredient.class)
                 .where("Id IN (SELECT CI.ingredient FROM CourseIngredients CI, Days D " +
-                        "WHERE (CI.course = D.firstCourse OR CI.course = D.secondCourse) " +
+                        "WHERE (CI.course = D.firstCourse OR CI.course = D.secondCourse OR CI.course = D.breakfast OR CI.course = D.dinner) " +
                         "AND checked = 0 " +
                         "AND (D.Id + 7 - " + EMPApplication.USER_WEEK_START_DAY + ")%7 >= " + weekdayIndexWithCurrentOrder + ")")//0-6 sunday==0 /D.Id 1-7
                 .execute();

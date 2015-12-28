@@ -402,9 +402,15 @@ public class CourseFragment extends ListFragment {
         List<Day> daysWithCourseAsSecond = new Select().from(Day.class)
                 .where("secondCourse = ?", deletedCourse.getId())
                 .execute();
+        List<Day> daysWithCourseAsBreakfast = new Select().from(Day.class)
+                .where("breakfast = ?", deletedCourse.getId())
+                .execute();
+        List<Day> daysWithCourseAsDinner = new Select().from(Day.class)
+                .where("dinner = ?", deletedCourse.getId())
+                .execute();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(context.getString(R.string.days_with_this_course_exist, deletedCourse.name))
-                .setPositiveButton(R.string.delete_it_anyway, new ConfirmDeleteCourseOnClickListener(daysWithCourseAsFirst, daysWithCourseAsSecond, deletedCourse))
+                .setPositiveButton(R.string.delete_it_anyway, new ConfirmDeleteCourseOnClickListener(daysWithCourseAsFirst, daysWithCourseAsSecond, daysWithCourseAsBreakfast, daysWithCourseAsDinner, deletedCourse))
                 .setNegativeButton(android.R.string.cancel, null);
         AlertDialog d = builder.create();
         d.setInverseBackgroundForced(true);
@@ -420,12 +426,17 @@ public class CourseFragment extends ListFragment {
 
         private final List<Day> daysWithCourseAsFirst;
         private final List<Day> daysWithCourseAsSecond;
+        private final List<Day> daysWithCourseAsBreakfast;
+        private final List<Day> daysWithCourseAsDinner;
         private final Course deletedCourse;
 
-        public ConfirmDeleteCourseOnClickListener(List<Day> daysWithCourseAsFirst, List<Day> daysWithCourseAsSecond, Course deletedCourse) {
+        public ConfirmDeleteCourseOnClickListener(List<Day> daysWithCourseAsFirst, List<Day> daysWithCourseAsSecond,
+                                                  List<Day> daysWithCourseAsBreakfast, List<Day> daysWithCourseAsDinner, Course deletedCourse) {
             this.daysWithCourseAsFirst = daysWithCourseAsFirst;
             this.deletedCourse = deletedCourse;
             this.daysWithCourseAsSecond = daysWithCourseAsSecond;
+            this.daysWithCourseAsBreakfast = daysWithCourseAsBreakfast;
+            this.daysWithCourseAsDinner = daysWithCourseAsDinner;
         }
 
         @Override
@@ -438,6 +449,16 @@ public class CourseFragment extends ListFragment {
             for (Day day : daysWithCourseAsSecond) {
                 if (DEBUGGING) Log.i(LOG_TAG, "Removing secondCourse course assigned to day: " + day);
                 day.secondCourse = null;
+                day.save();
+            }
+            for (Day day : daysWithCourseAsBreakfast) {
+                if (DEBUGGING) Log.i(LOG_TAG, "Removing breakfast course assigned to day: " + day);
+                day.breakfast = null;
+                day.save();
+            }
+            for (Day day : daysWithCourseAsDinner) {
+                if (DEBUGGING) Log.i(LOG_TAG, "Removing dinner course assigned to day: " + day);
+                day.dinner = null;
                 day.save();
             }
             ((CourseAdapter) getListAdapter()).remove(deletedCourse);
