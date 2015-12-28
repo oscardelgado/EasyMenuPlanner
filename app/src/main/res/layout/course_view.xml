@@ -32,27 +32,30 @@
         android:hint="@string/ingredients"
         android:textColor="@android:color/black"/>
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/first_course"
-            android:id="@+id/course_option_first"/>
+    <CheckBox
+        android:id="@+id/course_option_breakfast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/breakfast"/>
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/second_course"
-            android:id="@+id/course_option_second"/>
+    <CheckBox
+        android:id="@+id/course_option_first"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="@string/first_course"/>
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/breakfast"
-            android:id="@+id/course_option_breakfast"/>
+    <CheckBox
+        android:id="@+id/course_option_second"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="@string/second_course"/>
 
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/dinner"
-            android:id="@+id/course_option_dinner"/>
+
+    <CheckBox
+        android:id="@+id/course_option_dinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/dinner"/>
 </LinearLayout>

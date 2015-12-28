@@ -62,7 +62,6 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="4dp"
         android:layout_marginTop="4dp"
-        android:singleLine="true"
         android:layout_weight="1"/>
 
     <TextView
@@ -76,7 +75,6 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="4dp"
         android:layout_marginTop="4dp"
-        android:singleLine="true"
         android:layout_weight="1"/>
 
     <TextView
