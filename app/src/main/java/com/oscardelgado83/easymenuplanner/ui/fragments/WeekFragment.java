@@ -56,6 +56,10 @@ public class WeekFragment extends Fragment {
     // Instead of class.getSimpleName() to avoid proGuard changing it.
     private static final String FRAGMENT_NAME = "WeekFragment";
     private static final String LOG_TAG = FRAGMENT_NAME;
+    private static final int FIRST_COURSE = 0;
+    private static final int SECOND_COURSE = 1;
+    private static final int DINNER = 2;
+    private static final int BREAKFAST = 3;
 
     @Bind(R.id.headers)
     TableRow headers;
@@ -355,13 +359,13 @@ public class WeekFragment extends Fragment {
                     default:
                         break;
                 }
-                if (col == 0) {
+                if (col == FIRST_COURSE) {
                     selectedDay.firstCourse = newCourse;
-                } else if (col == 1) {
+                } else if (col == SECOND_COURSE) {
                     selectedDay.secondCourse = newCourse;
-                } else if (col == 2) { //TODO: constants
+                } else if (col == DINNER) {
                     selectedDay.dinner = newCourse;
-                } else if (col == 3) {
+                } else if (col == BREAKFAST) {
                     selectedDay.breakfast = newCourse;
                 }
                 tv.setText(newCourse != null ? newCourse.name : "");
@@ -384,13 +388,13 @@ public class WeekFragment extends Fragment {
                     case 1:
                         List<Day> week = ((MainActivity) getActivity()).getWeek();
                         Day selectedDay = week.get(row);
-                        if (col == 0) {
+                        if (col == FIRST_COURSE) {
                             selectedDay.firstCourse = null;
-                        } else if (col == 1) {
+                        } else if (col == SECOND_COURSE) {
                             selectedDay.secondCourse = null;
-                        } else if (col == 2) { //TODO: constants
+                        } else if (col == DINNER) {
                             selectedDay.dinner = null;
-                        } else if (col == 3) {
+                        } else if (col == BREAKFAST) {
                             selectedDay.breakfast = null;
                         }
                         tv.setText("");
