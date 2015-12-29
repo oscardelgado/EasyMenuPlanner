@@ -178,6 +178,7 @@ public class MainActivity extends AppCompatActivity
                     course.secondCourse = Integer.parseInt(tknzr.nextToken().trim()) == 1;
                     course.breakfast = Integer.parseInt(tknzr.nextToken().trim()) == 1;
                     course.dinner = Integer.parseInt(tknzr.nextToken().trim()) == 1;
+                    course.dinnerSecondCourse = Integer.parseInt(tknzr.nextToken().trim()) == 1;
 
                     course.save();
 

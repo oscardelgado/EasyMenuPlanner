@@ -21,6 +21,7 @@ public class Course extends Model {
     @Column public boolean secondCourse;
     @Column public boolean breakfast;
     @Column public boolean dinner;
+    @Column public boolean dinnerSecondCourse;
 
     public List<CourseIngredient> getIngredients() {
         return new Select().from(CourseIngredient.class)
@@ -58,6 +59,7 @@ public class Course extends Model {
                 ", secondCourse=" + secondCourse +
                 ", breakfast=" + breakfast +
                 ", dinner=" + dinner +
+                ", dinnerSecondCourse=" + dinnerSecondCourse +
                 '}';
     }
 }

@@ -1,27 +1,28 @@
-Sopa, 1, 0, 0, 0, Sobres sopa
-Filetes, 0, 1, 0, 0, Filetes, Aceite
-San jacobos, 0, 1, 0, 0, San jacobos, Aceite
-Espárragos, 1, 0, 0, 0, Espárragos, Mayonesa
-Tallarines, 1, 0, 0, 0, Tallarines, Tomate frito
-Ensalada, 1, 0, 0, 0, Lechuga, Tomates, Aceite, Vinagre
-Espinacas, 1, 0, 0, 0, Espinacas
-Alubias verdes, 1, 0, 0, 0, Alubias verdes
-Macarrones, 1, 0, 0, 0, Macarrones, Tomate frito
-Arroz, 1, 0, 0, 0, Arroz, Tomate frito
-Puré, 1, 0, 0, 0, Patatas
-Calamares, 0, 1, 0, 0, Calamares
-Pizza, 1, 1, 0, 0, Pizza
-Bacalao, 0, 1, 0, 0, Bacalao
-Gazpacho (natural), 1, 0, 0, 0, Tomates, Pepino, Pimiento, Cebolla, Ajo
-Patatas, 1, 0, 0, 0, Patatas
-Lentejas, 1, 0, 0, 0, Lentejas
-Pimientos rellenos, 1, 1, 0, 0, Pimientos rellenos
-Pechugas de pollo, 0, 1, 0, 0, Pechugas de pollo
-Trucha, 0, 1, 0, 0, Trucha
-Hamburguesa, 0, 1, 0, 0, Hamburguesa
-Pollo asado, 0, 1, 0, 0, Pollo
-Tortilla, 1, 1, 0, 0, Huevos, Patata
-Chuletas Sajonia, 0, 1, 0, 0, Chuletas Sajonia
-Salchichas, 0, 1, 0, 0, Salchichas
-Alitas de pollo, 0, 1, 0, 0, Alitas de pollo
-Garbanzos, 1, 0, 0, 0, Garbanzos
+Sopa, 1, 0, 0, 1, 0, Sobres sopa
+Filetes, 0, 1, 0, 0, 1, Filetes, Aceite
+San jacobos, 0, 1, 0, 0, 1, San jacobos, Aceite
+Espárragos, 1, 0, 0, 1, 0, Espárragos, Mayonesa
+Tallarines, 1, 0, 0, 1, 0, Tallarines, Tomate frito
+Ensalada, 1, 0, 0, 1, 0, Lechuga, Tomates, Aceite, Vinagre
+Espinacas, 1, 0, 0, 1, 0, Espinacas
+Alubias verdes, 1, 0, 0, 1, 0, Alubias verdes
+Macarrones, 1, 0, 0, 1, 0, Macarrones, Tomate frito
+Arroz, 1, 0, 0, 1, 0, Arroz, Tomate frito
+Puré, 1, 0, 0, 1, 0, Patatas
+Calamares, 0, 1, 0, 0, 1, Calamares
+Pizza, 1, 1, 0, 1, 1, Pizza
+Bacalao, 0, 1, 0, 0, 1, Bacalao
+Gazpacho (natural), 1, 0, 0, 1, 0, Tomates, Pepino, Pimiento, Cebolla, Ajo
+Patatas, 1, 0, 0, 1, 0, Patatas
+Lentejas, 1, 0, 0, 1, 0, Lentejas
+Pimientos rellenos, 1, 1, 0, 1, 1, Pimientos rellenos
+Pechugas de pollo, 0, 1, 0, 0, 1, Pechugas de pollo
+Trucha, 0, 1, 0, 0, 1, Trucha
+Hamburguesa, 0, 1, 0, 0, 1, Hamburguesa
+Pollo asado, 0, 1, 0, 0, 1, Pollo
+Tortilla, 1, 1, 1, 1, 1, Huevos, Patata
+Chuletas Sajonia, 0, 1, 0, 0, 1, Chuletas Sajonia
+Salchichas, 0, 1, 0, 0, 1, Salchichas
+Alitas de pollo, 0, 1, 0, 0, 1, Alitas de pollo
+Garbanzos, 1, 0, 0, 1, 0, Garbanzos
+Huevos revueltos, 1, 1, 1, 1, 1, Huevos

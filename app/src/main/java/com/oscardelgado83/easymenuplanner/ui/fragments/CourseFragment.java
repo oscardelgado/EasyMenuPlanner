@@ -304,6 +304,7 @@ public class CourseFragment extends ListFragment {
         course.secondCourse = ((CheckBox) ButterKnife.findById(newCourseView, R.id.course_option_second)).isChecked();
         course.breakfast = ((CheckBox) ButterKnife.findById(newCourseView, R.id.course_option_breakfast)).isChecked();
         course.dinner = ((CheckBox) ButterKnife.findById(newCourseView, R.id.course_option_dinner)).isChecked();
+        course.dinnerSecondCourse = ((CheckBox) ButterKnife.findById(newCourseView, R.id.course_option_dinner_second)).isChecked();
 
         ActiveAndroid.beginTransaction();
         try {
@@ -408,9 +409,12 @@ public class CourseFragment extends ListFragment {
         List<Day> daysWithCourseAsDinner = new Select().from(Day.class)
                 .where("dinner = ?", deletedCourse.getId())
                 .execute();
+        List<Day> daysWithCourseAsDinnerSecond = new Select().from(Day.class)
+                .where("dinnerSecondCourse = ?", deletedCourse.getId())
+                .execute();
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(context.getString(R.string.days_with_this_course_exist, deletedCourse.name))
-                .setPositiveButton(R.string.delete_it_anyway, new ConfirmDeleteCourseOnClickListener(daysWithCourseAsFirst, daysWithCourseAsSecond, daysWithCourseAsBreakfast, daysWithCourseAsDinner, deletedCourse))
+                .setPositiveButton(R.string.delete_it_anyway, new ConfirmDeleteCourseOnClickListener(daysWithCourseAsFirst, daysWithCourseAsSecond, daysWithCourseAsBreakfast, daysWithCourseAsDinner, daysWithCourseAsDinnerSecond, deletedCourse))
                 .setNegativeButton(android.R.string.cancel, null);
         AlertDialog d = builder.create();
         d.setInverseBackgroundForced(true);
@@ -428,15 +432,18 @@ public class CourseFragment extends ListFragment {
         private final List<Day> daysWithCourseAsSecond;
         private final List<Day> daysWithCourseAsBreakfast;
         private final List<Day> daysWithCourseAsDinner;
+        private final List<Day> daysWithCourseAsDinnerSecond;
         private final Course deletedCourse;
 
         public ConfirmDeleteCourseOnClickListener(List<Day> daysWithCourseAsFirst, List<Day> daysWithCourseAsSecond,
-                                                  List<Day> daysWithCourseAsBreakfast, List<Day> daysWithCourseAsDinner, Course deletedCourse) {
+                                                  List<Day> daysWithCourseAsBreakfast, List<Day> daysWithCourseAsDinner,
+                                                  List<Day> daysWithCourseAsDinnerSecond, Course deletedCourse) {
             this.daysWithCourseAsFirst = daysWithCourseAsFirst;
             this.deletedCourse = deletedCourse;
             this.daysWithCourseAsSecond = daysWithCourseAsSecond;
             this.daysWithCourseAsBreakfast = daysWithCourseAsBreakfast;
             this.daysWithCourseAsDinner = daysWithCourseAsDinner;
+            this.daysWithCourseAsDinnerSecond = daysWithCourseAsDinnerSecond;
         }
 
         @Override
@@ -459,6 +466,11 @@ public class CourseFragment extends ListFragment {
             for (Day day : daysWithCourseAsDinner) {
                 if (DEBUGGING) Log.i(LOG_TAG, "Removing dinner course assigned to day: " + day);
                 day.dinner = null;
+                day.save();
+            }
+            for (Day day : daysWithCourseAsDinnerSecond) {
+                if (DEBUGGING) Log.i(LOG_TAG, "Removing dinner second course assigned to day: " + day);
+                day.dinnerSecondCourse = null;
                 day.save();
             }
             ((CourseAdapter) getListAdapter()).remove(deletedCourse);
@@ -506,6 +518,7 @@ public class CourseFragment extends ListFragment {
         ((CheckBox) ButterKnife.findById(editCourseView, R.id.course_option_second)).setChecked(c.secondCourse);
         ((CheckBox) ButterKnife.findById(editCourseView, R.id.course_option_breakfast)).setChecked(c.breakfast);
         ((CheckBox) ButterKnife.findById(editCourseView, R.id.course_option_dinner)).setChecked(c.dinner);
+        ((CheckBox) ButterKnife.findById(editCourseView, R.id.course_option_dinner_second)).setChecked(c.dinnerSecondCourse);
 
         Button positiveButton = d.getButton(AlertDialog.BUTTON_POSITIVE);
         positiveButton.setOnClickListener(new View.OnClickListener() {
@@ -552,6 +565,7 @@ public class CourseFragment extends ListFragment {
             c.secondCourse = ((CheckBox) ButterKnife.findById(editCourseView, R.id.course_option_second)).isChecked();
             c.breakfast = ((CheckBox) ButterKnife.findById(editCourseView, R.id.course_option_breakfast)).isChecked();
             c.dinner = ((CheckBox) ButterKnife.findById(editCourseView, R.id.course_option_dinner)).isChecked();
+            c.dinnerSecondCourse = ((CheckBox) ButterKnife.findById(editCourseView, R.id.course_option_dinner_second)).isChecked();
             c.save();
             ActiveAndroid.setTransactionSuccessful();
         } finally {

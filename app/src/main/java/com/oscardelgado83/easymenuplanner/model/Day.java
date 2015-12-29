@@ -31,6 +31,9 @@ public class Day extends Model {
     public Course dinner;
 
     @Column(onDelete = Column.ForeignKeyAction.SET_NULL)
+    public Course dinnerSecondCourse;
+
+    @Column(onDelete = Column.ForeignKeyAction.SET_NULL)
     public Course breakfast;
 
     public static List<Day> findAll() {

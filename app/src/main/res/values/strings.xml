@@ -32,6 +32,9 @@
     <string name="first_courses_needed">You need to add some more first courses.</string>
     <string name="not_enough_courses">Not enough courses exist!</string>
     <string name="second_course_needed">You need to add some more second courses.</string>
+    <string name="breakfast_needed">You need to add some more breakfasts.</string>
+    <string name="dinner_needed">You need to add some more dinner courses.</string>
+    <string name="dinner_second_needed">You need to add some more dinner second courses.</string>
     <string name="go_to_courses">Go to Courses</string>
     <string name="action_restore_default_courses">Restore default courses</string>
     <string name="second_both">Both</string>
@@ -64,7 +67,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="finish_tutorial">Skip the tutorial</string>
     <string name="go_to_the_app">Go to the app</string>
-    <string name="dinner">Dinner</string>
+    <string name="dinner">Dinner: \nMain Dish</string>
+    <string name="dinner_second">Dinner: \nSide Dish</string>
     <string name="include_dinner">Include dinner</string>
     <string name="dinner_dishes_will_be_lost">The courses you had set for dinner will be lost</string>
     <string name="include_breakfast">Include breakfast</string>

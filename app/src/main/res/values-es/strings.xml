@@ -29,6 +29,9 @@
     <string name="first_courses_needed">Es necesario que añadas algún primer plato más.</string>
     <string name="not_enough_courses">¡No hay suficientes platos!</string>
     <string name="second_course_needed">Es necesario que añadas algún segundo plato más.</string>
+    <string name="breakfast_needed">Es necesario que añadas algún desayuno más.</string>
+    <string name="dinner_needed">Es necesario que añadas alguna opción más para cenar.</string>
+    <string name="dinner_second_needed">Es necesario que añadas alguna opción más para cenar como segundo plato.</string>
     <string name="go_to_courses">Ir a Platos</string>
     <string name="action_restore_default_courses">Volver a cargar platos por defecto</string>
     <string name="second_both">Ambos</string>
@@ -57,6 +60,7 @@
     <string name="finish_tutorial">Salir del tutorial</string>
     <string name="go_to_the_app">Ir a la app</string>
     <string name="dinner">Cena</string>
+    <string name="dinner_second">Cena: \Segundo plato</string>
     <string name="include_dinner">Incluir cenas</string>
     <string name="dinner_dishes_will_be_lost">Tu selección de platos para las cenas se perderá</string>
     <string name="include_breakfast">Incluir desayunos</string>

@@ -57,5 +57,13 @@
         android:id="@+id/course_option_dinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:singleLine="true"
         android:text="@string/dinner"/>
+
+    <CheckBox
+        android:id="@+id/course_option_dinner_second"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:text="@string/dinner_second"/>
 </LinearLayout>

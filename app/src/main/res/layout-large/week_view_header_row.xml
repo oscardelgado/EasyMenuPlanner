@@ -89,6 +89,22 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="4dp"
         android:layout_marginTop="4dp"
-        android:singleLine="true"
+        android:singleLine="false"
         android:layout_weight="1"/>
+
+    <TextView
+        android:id="@+id/dinner_second_header"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="@string/dinner_second"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/accent"
+        android:textSize="@dimen/abc_text_size_medium_material"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="4dp"
+        android:singleLine="false"
+        android:layout_weight="1"/>
+
 </TableRow>
