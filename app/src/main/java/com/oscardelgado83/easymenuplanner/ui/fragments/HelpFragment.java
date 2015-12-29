@@ -8,10 +8,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import com.oscardelgado83.easymenuplanner.EMPApplication;
 import com.oscardelgado83.easymenuplanner.R;
@@ -41,6 +44,7 @@ public class HelpFragment extends Fragment {
     private ViewPager mPager;
     private ScreenSlidePagerAdapter mPagerAdapter;
     private Button exitBTN;
+    private CheckBox checkBox;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,6 +54,8 @@ public class HelpFragment extends Fragment {
 
         final ActionBar supportActionBar = ((MainActivity) getActivity()).getSupportActionBar();
         if (supportActionBar != null) supportActionBar.hide();
+
+        checkBox = findById(view, R.id.tutorial_checkBox);
 
         // Instantiate a ViewPager and a PagerAdapter.
         mPager = ButterKnife.findById(view, R.id.pager);
@@ -103,6 +109,15 @@ public class HelpFragment extends Fragment {
         GA.sendScreenHit(
                 ((EMPApplication) getActivity().getApplication()).getTracker(),
                 FRAGMENT_NAME);
+
+        checkBox.setChecked(! PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .getBoolean(Cons.FIRST_TIME_HELP_VIEWED, false));
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                saveHelpViewedPreference(! isChecked);
+            }
+        });
     }
 
     @Override
@@ -162,12 +177,7 @@ public class HelpFragment extends Fragment {
 
     @DebugLog
     private void tutorialCompleted() {
-        // We need an Editor object to make preference changes.
-        // All objects are from android.context.Context
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putBoolean(Cons.FIRST_TIME_HELP_VIEWED, true);
-        editor.apply();
+        saveHelpViewedPreference(true);
 
         exitBTN.setText(R.string.go_to_the_app);
 
@@ -176,5 +186,18 @@ public class HelpFragment extends Fragment {
                 "tutorial",
                 "last slide viewed",
                 "tutorial completed");
+
+        checkBox.setChecked(false);
+    }
+
+    private void saveHelpViewedPreference(boolean value) {
+        // We need an Editor object to make preference changes.
+        // All objects are from android.context.Context
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean(Cons.FIRST_TIME_HELP_VIEWED, value);
+        editor.apply();
+
+        Log.i(LOG_TAG, "FIRST_TIME_HELP_VIEWED set to: " + value);
     }
 }

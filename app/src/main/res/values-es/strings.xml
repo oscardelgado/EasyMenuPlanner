@@ -70,4 +70,5 @@
     <string name="settings_week_menu_header">AJUSTES DEL MENÚ SEMANAL</string>
     <string name="settings_week_start">Comenzar planning desde el:</string>
     <string name="confirm_clear_planning">¿Quitar todos los platos de este planning?</string>
+    <string name="show_at_start">Mostrar tutorial al inicio</string>
 </resources>

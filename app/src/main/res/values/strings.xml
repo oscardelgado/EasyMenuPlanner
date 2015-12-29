@@ -74,4 +74,5 @@
     <string name="settings_week_menu_header">WEEK MENU SETTINGS</string>
     <string name="settings_week_start">Start week planning from:</string>
     <string name="confirm_clear_planning">Clear the planning?</string>
+    <string name="show_at_start">Show tutorial on startup</string>
 </resources>
