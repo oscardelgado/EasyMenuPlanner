@@ -142,8 +142,6 @@ public class WeekFragment extends Fragment {
                 .orderBy("UPPER(name)")
                 .execute();
 
-        checkEnoughCoursesExist();
-
         allTableRows = new TableRow[]{tableRow1, tableRow2, tableRow3, tableRow4, tableRow5, tableRow6, tableRow7};
         dayNames = new DateFormatSymbols().getShortWeekdays();
     }
@@ -475,40 +473,44 @@ public class WeekFragment extends Fragment {
         } else if (col == DINNER_SECOND) {
             allCourses = allDinnerSecondCourses;
         }
-        final List<Course> finalAllCourses = allCourses;
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.select_course);
-        ArrayAdapter<Course> adapter = new CourseAdapter(getActivity(), allCourses);
-        builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Course selectedCourse = finalAllCourses.get(which);
-                List<Day> week = ((MainActivity) getActivity()).getWeek();
-                Day selectedDay = week.get(row);
-                if (col == FIRST_COURSE) {
-                    selectedDay.firstCourse = selectedCourse;
-                } else if (col == SECOND_COURSE) {
-                    selectedDay.secondCourse = selectedCourse;
-                } else if (col == BREAKFAST) {
-                    selectedDay.breakfast = selectedCourse;
-                } else if (col == DINNER) {
-                    selectedDay.dinner = selectedCourse;
-                } else if (col == DINNER_SECOND) {
-                    selectedDay.dinnerSecondCourse = selectedCourse;
-                }
-                tv.setText(selectedCourse.name);
-                if (!(boolean) placeholder.getTag(R.id.DAY_IS_PAST_KEY)) {
-                    prepareBadge(placeholder, selectedCourse);
-                }
-                dirty = true;
-            }
-        });
-        AlertDialog alert = builder.create();
-        alert.show();
 
-        alert.getListView().setFastScrollEnabled(true);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            alert.getListView().setFastScrollAlwaysVisible(true);
+        if (checkEnoughCoursesExist()) {
+
+            final List<Course> finalAllCourses = allCourses;
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setTitle(R.string.select_course);
+            ArrayAdapter<Course> adapter = new CourseAdapter(getActivity(), allCourses);
+            builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Course selectedCourse = finalAllCourses.get(which);
+                    List<Day> week = ((MainActivity) getActivity()).getWeek();
+                    Day selectedDay = week.get(row);
+                    if (col == FIRST_COURSE) {
+                        selectedDay.firstCourse = selectedCourse;
+                    } else if (col == SECOND_COURSE) {
+                        selectedDay.secondCourse = selectedCourse;
+                    } else if (col == BREAKFAST) {
+                        selectedDay.breakfast = selectedCourse;
+                    } else if (col == DINNER) {
+                        selectedDay.dinner = selectedCourse;
+                    } else if (col == DINNER_SECOND) {
+                        selectedDay.dinnerSecondCourse = selectedCourse;
+                    }
+                    tv.setText(selectedCourse.name);
+                    if (!(boolean) placeholder.getTag(R.id.DAY_IS_PAST_KEY)) {
+                        prepareBadge(placeholder, selectedCourse);
+                    }
+                    dirty = true;
+                }
+            });
+            AlertDialog alert = builder.create();
+            alert.show();
+
+            alert.getListView().setFastScrollEnabled(true);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+                alert.getListView().setFastScrollAlwaysVisible(true);
+            }
         }
     }
 
