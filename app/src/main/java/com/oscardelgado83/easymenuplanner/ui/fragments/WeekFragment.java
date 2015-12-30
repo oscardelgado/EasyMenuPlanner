@@ -174,6 +174,47 @@ public class WeekFragment extends Fragment {
         return true;
     }
 
+    private boolean checkEnoughCoursesExist(int col) {
+        String message = null;
+        switch (col) {
+            case BREAKFAST:
+                if (((MainActivity) getActivity()).isBreakfastEnabled() && allBreakfasts.size() < 2) {
+                    message = getString(R.string.breakfast_needed);
+                }
+                break;
+            case FIRST_COURSE:
+                if (allFirstCourses.size() < 2) {
+                    message = getString(R.string.first_courses_needed);
+                }
+                break;
+            case SECOND_COURSE:
+                if (allSecondCourses.size() < 2) {
+                    message = getString(R.string.second_course_needed);
+                }
+                break;
+            case DINNER:
+                if (((MainActivity) getActivity()).isDinnerEnabled() && allDinners.size() < 2) {
+                    message = getString(R.string.dinner_needed);
+                }
+                break;
+            case DINNER_SECOND:
+                if (((MainActivity) getActivity()).isDinnerEnabled() && allDinnerSecondCourses.size() < 2) {
+                    message = getString(R.string.dinner_second_needed);
+                }
+                break;
+        }
+        if (message != null) {
+            new AlertDialog.Builder(getActivity())
+                    .setTitle(getString(R.string.not_enough_courses))
+                    .setMessage(message)
+                    .setPositiveButton(getString(R.string.go_to_courses), dialogClickListener)
+                    .create().show();
+            return false;
+        } else {
+            return true;
+        }
+    }
+
     private void repaintWeekRows() {
         final List<Day> week = ((MainActivity) getActivity()).getWeek();
 
@@ -480,7 +521,7 @@ public class WeekFragment extends Fragment {
             allCourses = allDinnerSecondCourses;
         }
 
-        if (checkEnoughCoursesExist()) {
+        if (checkEnoughCoursesExist(col)) {
 
             final List<Course> finalAllCourses = allCourses;
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -765,7 +806,7 @@ public class WeekFragment extends Fragment {
                             int randomInt = rand.nextInt(notUsedBreakfasts.size());
                             course = notUsedBreakfasts.get(randomInt);
                         } else {
-                            int randomInt = rand.nextInt(allBreakfasts.size());//FIXME: java.lang.IllegalArgumentException
+                            int randomInt = rand.nextInt(allBreakfasts.size());
                             course = allBreakfasts.get(randomInt);
                         }
                         week.get(i).breakfast = course;
