@@ -71,7 +71,9 @@
     <string name="dinner_second">Dinner: \nSide Dish</string>
     <string name="include_dinner">Include dinner</string>
     <string name="dinner_dishes_will_be_lost">The courses you had set for dinner will be lost</string>
+    <string name="lunch_dishes_will_be_lost">The courses you had set for lunch will be lost</string>
     <string name="include_breakfast">Include breakfast</string>
+    <string name="include_lunch">Include lunch</string>
     <string name="breakfast">Breakfast</string>
     <string name="breakfast_dishes_will_be_lost">The courses you had set for breakfast will be lost</string>
     <string name="title_activity_settings">Options</string>

@@ -177,23 +177,29 @@ public class WeekFragment extends Fragment {
     private void repaintWeekRows() {
         final List<Day> week = ((MainActivity) getActivity()).getWeek();
 
-        boolean includeDinner = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(Cons.INCLUDE_DINNER, false);
         boolean includeBreakfast = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(Cons.INCLUDE_BREAKFAST, false);
-        int dinnerVisibility = includeDinner ? View.VISIBLE : View.GONE;
+        boolean includeLunch = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(Cons.INCLUDE_LUNCH, true);
+        boolean includeDinner = PreferenceManager.getDefaultSharedPreferences(getActivity()).getBoolean(Cons.INCLUDE_DINNER, false);
         int breakfastVisibility = includeBreakfast ? View.VISIBLE : View.GONE;
+        int lunchVisibility = includeLunch ? View.VISIBLE : View.GONE;
+        int dinnerVisibility = includeDinner ? View.VISIBLE : View.GONE;
 
+        headers.findViewById(R.id.breakfast_header).setVisibility(breakfastVisibility);
+        headers.findViewById(R.id.first_course_header).setVisibility(lunchVisibility);
+        headers.findViewById(R.id.second_course_header).setVisibility(lunchVisibility);
         headers.findViewById(R.id.dinner_header).setVisibility(dinnerVisibility);
         headers.findViewById(R.id.dinner_second_header).setVisibility(dinnerVisibility);
-        headers.findViewById(R.id.breakfast_header).setVisibility(breakfastVisibility);
 
         int currentDayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK); //Sunday is 1, Saturday is 7.
         boolean dayIsPast = true;
         for (int i = 0; i < allTableRows.length; i++) {
             TableRow tr = allTableRows[i];
 
+            findById(tr, R.id.card_view_breakfast).setVisibility(breakfastVisibility);
             findById(tr, R.id.card_view_dinner).setVisibility(dinnerVisibility);
             findById(tr, R.id.card_view_dinner_second).setVisibility(dinnerVisibility);
-            findById(tr, R.id.card_view_breakfast).setVisibility(breakfastVisibility);
+            findById(tr, R.id.card_view_first_course).setVisibility(lunchVisibility);
+            findById(tr, R.id.card_view_second_course).setVisibility(lunchVisibility);
 
             TextView tvFirstCourse = (TextView) findById(tr, R.id.card_view_first_course).findViewById(R.id.textView);
             TextView tvSecondCourse = (TextView) findById(tr, R.id.card_view_second_course).findViewById(R.id.textView);
@@ -872,6 +878,29 @@ public class WeekFragment extends Fragment {
                 tv = (TextView) findById(tr, R.id.card_view_dinner_second).findViewById(R.id.textView);
                 tv.setText("");
                 placeholder = findById(tr, R.id.card_view_dinner_second).findViewById(R.id.badge_placeholder);
+                clearBadge(placeholder);
+            }
+            dirty = true;
+        }
+        repaintWeekRows();
+    }
+
+    public void setLunchVisibility(boolean includeLunch) {
+        final List<Day> week = ((MainActivity) getActivity()).getWeek();
+        if (! includeLunch) {
+            for (int i = 0; i < allTableRows.length; i++) {
+                week.get(i).firstCourse = null;
+                week.get(i).secondCourse = null;
+                TableRow tr = allTableRows[i];
+
+                TextView tv = (TextView) findById(tr, R.id.card_view_first_course).findViewById(R.id.textView);
+                tv.setText("");
+                View placeholder = findById(tr, R.id.card_view_first_course).findViewById(R.id.badge_placeholder);
+                clearBadge(placeholder);
+
+                tv = (TextView) findById(tr, R.id.card_view_second_course).findViewById(R.id.textView);
+                tv.setText("");
+                placeholder = findById(tr, R.id.card_view_second_course).findViewById(R.id.badge_placeholder);
                 clearBadge(placeholder);
             }
             dirty = true;

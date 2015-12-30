@@ -63,7 +63,9 @@
     <string name="dinner_second">Cena: \Segundo plato</string>
     <string name="include_dinner">Incluir cenas</string>
     <string name="dinner_dishes_will_be_lost">Tu selección de platos para las cenas se perderá</string>
+    <string name="lunch_dishes_will_be_lost">Tu selección de platos para las comidas se perderá</string>
     <string name="include_breakfast">Incluir desayunos</string>
+    <string name="include_lunch">Incluir comidas</string>
     <string name="breakfast">Desayuno</string>
     <string name="breakfast_dishes_will_be_lost">Tu selección de platos para los desayunos se perderá</string>
     <plurals name="intredients_missing">

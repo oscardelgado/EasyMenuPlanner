@@ -52,6 +52,7 @@
         android:visibility="gone"/>
 
     <TextView
+        android:id="@+id/first_course_header"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center_vertical|center_horizontal"
@@ -65,6 +66,7 @@
         android:layout_weight="1"/>
 
     <TextView
+        android:id="@+id/second_course_header"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:gravity="center_vertical|center_horizontal"

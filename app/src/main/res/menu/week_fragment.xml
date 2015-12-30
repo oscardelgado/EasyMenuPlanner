@@ -10,6 +10,10 @@
         android:checkable="true"
         android:title="@string/include_breakfast" />
     <item
+        android:id="@+id/lunch_option"
+        android:checkable="true"
+        android:title="@string/include_lunch" />
+    <item
         android:id="@+id/dinner_option"
         android:checkable="true"
         android:title="@string/include_dinner" />

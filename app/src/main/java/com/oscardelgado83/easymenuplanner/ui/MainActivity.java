@@ -101,8 +101,9 @@ public class MainActivity extends AppCompatActivity
     private boolean dbStarted;
     private int weekdayIndexWithCurrentOrder;
 
-    private boolean dinnerEnabled;
     private boolean breakfastEnabled;
+    private boolean lunchEnabled;
+    private boolean dinnerEnabled;
 
     @Override
     @DebugLog
@@ -329,10 +330,12 @@ public class MainActivity extends AppCompatActivity
             // decide what to show in the action bar.
             if (currentFrg instanceof WeekFragment) {
                 getMenuInflater().inflate(R.menu.week_fragment, menu);
-                dinnerEnabled = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Cons.INCLUDE_DINNER, false);
-                menu.findItem(R.id.dinner_option).setChecked(dinnerEnabled);
                 breakfastEnabled = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Cons.INCLUDE_BREAKFAST, false);
                 menu.findItem(R.id.breakfast_option).setChecked(breakfastEnabled);
+                lunchEnabled = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Cons.INCLUDE_LUNCH, true);
+                menu.findItem(R.id.lunch_option).setChecked(lunchEnabled);
+                dinnerEnabled = PreferenceManager.getDefaultSharedPreferences(this).getBoolean(Cons.INCLUDE_DINNER, false);
+                menu.findItem(R.id.dinner_option).setChecked(dinnerEnabled);
             } else if (currentFrg instanceof CourseFragment) {
                 getMenuInflater().inflate(R.menu.courses_fragment, menu);
             } else if (currentFrg instanceof ShoppingListFragment) {
@@ -382,6 +385,25 @@ public class MainActivity extends AppCompatActivity
                 return true;
             } else if (item.getItemId() == R.id.action_automatic_fill) {
                 ((WeekFragment) currentFrg).randomFillAllCourses();
+                return true;
+            } else if (item.getItemId() == R.id.lunch_option) {
+                if (item.isChecked()) {
+                    new AlertDialog.Builder(this)
+                            .setMessage(getString(R.string.lunch_dishes_will_be_lost))
+                            .setPositiveButton(getString(android.R.string.ok),
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            setLunchVisible(false);
+                                            item.setChecked(false);
+                                        }
+                                    })
+                            .setNegativeButton(getString(android.R.string.cancel), null)
+                            .show();
+                } else {
+                    setLunchVisible(true);
+                    item.setChecked(true);
+                }
                 return true;
             } else if (item.getItemId() == R.id.dinner_option) {
                 if (item.isChecked()) {
@@ -455,6 +477,19 @@ public class MainActivity extends AppCompatActivity
         breakfastEnabled = visible;
 
         ((WeekFragment) currentFrg).setBreakfastVisibility(visible);
+    }
+
+    private void setLunchVisible(boolean visible) {
+        // We need an Editor object to make preference changes.
+        // All objects are from android.context.Context
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putBoolean(Cons.INCLUDE_LUNCH, visible);
+        editor.apply();
+
+        lunchEnabled = visible;
+
+        ((WeekFragment) currentFrg).setLunchVisibility(visible);
     }
 
     private void setDinnerVisible(boolean visible) {

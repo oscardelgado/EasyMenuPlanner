@@ -9,5 +9,6 @@ public final class Cons {
     public static Boolean DEBUGGING = null;
     public static final String FIRST_TIME_HELP_VIEWED = "firstTimeHelpViewed";
     public static final String INCLUDE_DINNER = "includeDinner";
+    public static final String INCLUDE_LUNCH = "includeLunch";
     public static final String INCLUDE_BREAKFAST = "includeBreakfast";
 }
