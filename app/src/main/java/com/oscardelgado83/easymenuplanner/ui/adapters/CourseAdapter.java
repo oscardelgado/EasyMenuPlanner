@@ -80,17 +80,17 @@ public class CourseAdapter extends ArrayAdapter<Course> implements SectionIndexe
         List<String> coursesStrings = new LinkedList<>();
 
         boolean inCurrentDay = new Select().from(Day.class)
-                .where("(Days.firstCourse = ? OR Days.secondCourse = ? OR Days.dinner = ? OR Days.breakfast = ?)", course.getId(), course.getId(), course.getId(), course.getId())
+                .where("(Days.firstCourse = ? OR Days.secondCourse = ? OR Days.dinner = ? OR Days.dinnerSecondCourse = ? OR Days.breakfast = ?)", course.getId(), course.getId(), course.getId(), course.getId(), course.getId())
                 .and("(Days.Id + 7 - " + EMPApplication.USER_WEEK_START_DAY + ")%7 = " + weekdayIndexWithCurrentOrder)//0-6 sunday==0 /D.Id 1-7
                 .exists();
 
         boolean tomorrow = new Select().from(Day.class)
-                .where("(Days.firstCourse = ? OR  Days.secondCourse = ? OR Days.dinner = ? OR Days.breakfast = ?)", course.getId(), course.getId(), course.getId(), course.getId())
+                .where("(Days.firstCourse = ? OR  Days.secondCourse = ? OR Days.dinner = ? OR Days.dinnerSecondCourse = ? OR Days.breakfast = ?)", course.getId(), course.getId(), course.getId(), course.getId(), course.getId())
                 .and("(Days.Id + 7 - " + EMPApplication.USER_WEEK_START_DAY + ")%7 = " + (weekdayIndexWithCurrentOrder + 1))//0-6 sunday==0 /D.Id 1-7
                 .exists();
 
         List<Day> futureDays = new Select().from(Day.class)
-                .where("(Days.firstCourse = ? OR  Days.secondCourse = ? OR Days.dinner = ? OR Days.breakfast = ?)", course.getId(), course.getId(), course.getId(), course.getId())
+                .where("(Days.firstCourse = ? OR  Days.secondCourse = ? OR Days.dinner = ? OR Days.dinnerSecondCourse = ? OR Days.breakfast = ?)", course.getId(), course.getId(), course.getId(), course.getId(), course.getId())
                 .and("(Days.Id + 7 - " + EMPApplication.USER_WEEK_START_DAY + ")%7 > " + (weekdayIndexWithCurrentOrder + 1))//0-6 sunday==0 /D.Id 1-7
                 .execute();
 

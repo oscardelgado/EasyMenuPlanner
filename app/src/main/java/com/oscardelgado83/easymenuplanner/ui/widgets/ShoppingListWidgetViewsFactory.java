@@ -48,7 +48,7 @@ public class ShoppingListWidgetViewsFactory implements RemoteViewsService.Remote
 
         return new Select().from(Ingredient.class)
                 .innerJoin(CourseIngredient.class).on("CourseIngredients.ingredient = Ingredients.Id")
-                .innerJoin(Day.class).on("(CourseIngredients.course = Days.firstCourse OR CourseIngredients.course = Days.secondCourse OR CourseIngredients.course = Days.breakfast OR CourseIngredients.course = Days.dinner)")
+                .innerJoin(Day.class).on("(CourseIngredients.course = Days.firstCourse OR CourseIngredients.course = Days.secondCourse OR CourseIngredients.course = Days.breakfast OR CourseIngredients.course = Days.dinner OR CourseIngredients.course = Days.dinnerSecondCourse)")
                 .where("(Days.Id + 7 - " + EMPApplication.USER_WEEK_START_DAY + ")%7 >= " + weekdayIndexWithCurrentOrder)//0-6 sunday==0 /D.Id 1-7
                 .orderBy("checked ASC, (Days.Id + 7 - " + EMPApplication.USER_WEEK_START_DAY + ") % 7 ASC, UPPER (name) ASC")
                 .execute();

@@ -80,7 +80,7 @@ public class ShoppingListAdapter extends ArrayAdapter<Ingredient> {
         List<Course> courses = new Select(new String[]{"Courses.Id,Courses.name"}).distinct().from(Course.class)
                 .innerJoin(CourseIngredient.class).on("CourseIngredients.course = Courses.Id")
                 .and("CourseIngredients.ingredient = ?", ingredient.getId())
-                .innerJoin(Day.class).on("Days.firstCourse = Courses.Id OR Days.secondCourse = Courses.Id OR Days.dinner = Courses.Id OR Days.breakfast = Courses.Id")
+                .innerJoin(Day.class).on("Days.firstCourse = Courses.Id OR Days.secondCourse = Courses.Id OR Days.dinner = Courses.Id OR Days.dinnerSecondCourse = ? OR Days.breakfast = Courses.Id")
                 .where("(Days.Id + 7 - " + EMPApplication.USER_WEEK_START_DAY + ")%7 >= " + weekdayIndexWithCurrentOrder)//0-6 sunday==0 /D.Id 1-7
                 .execute();
 
@@ -88,17 +88,17 @@ public class ShoppingListAdapter extends ArrayAdapter<Ingredient> {
         for (Course course : courses) {
 
             boolean inCurrentDay = new Select().from(Day.class)
-                    .where("(Days.firstCourse = ? OR  Days.secondCourse = ? OR Days.dinner = ? OR Days.breakfast = ?)", course.getId(), course.getId(), course.getId(), course.getId())
+                    .where("(Days.firstCourse = ? OR  Days.secondCourse = ? OR Days.dinner = ? OR Days.dinnerSecondCourse = ? OR Days.breakfast = ?)", course.getId(), course.getId(), course.getId(), course.getId(), course.getId())
                     .and("(Days.Id + 7 - " + EMPApplication.USER_WEEK_START_DAY + ")%7 = " + weekdayIndexWithCurrentOrder)//0-6 sunday==0 /D.Id 1-7
                     .exists();
 
             boolean tomorrow = new Select().from(Day.class)
-                    .where("(Days.firstCourse = ? OR Days.secondCourse = ? OR Days.dinner = ? OR Days.breakfast = ?)", course.getId(), course.getId(), course.getId(), course.getId())
+                    .where("(Days.firstCourse = ? OR Days.secondCourse = ? OR Days.dinner = ? OR Days.dinnerSecondCourse = ? OR Days.breakfast = ?)", course.getId(), course.getId(), course.getId(), course.getId(), course.getId())
                     .and("(Days.Id + 7 - " + EMPApplication.USER_WEEK_START_DAY + ")%7 = " + (weekdayIndexWithCurrentOrder + 1))//0-6 sunday==0 /D.Id 1-7
                     .exists();
 
             List<Day> futureDays = new Select().from(Day.class)
-                    .where("(Days.firstCourse = ? OR Days.secondCourse = ? OR Days.dinner = ? OR Days.breakfast = ?)", course.getId(), course.getId(), course.getId(), course.getId())
+                    .where("(Days.firstCourse = ? OR Days.secondCourse = ? OR Days.dinner = ? OR Days.dinnerSecondCourse = ? OR Days.breakfast = ?)", course.getId(), course.getId(), course.getId(), course.getId(), course.getId())
                     .and("(Days.Id + 7 - " + EMPApplication.USER_WEEK_START_DAY + ")%7 > " + (weekdayIndexWithCurrentOrder + 1))//0-6 sunday==0 /D.Id 1-7
                     .execute();
 

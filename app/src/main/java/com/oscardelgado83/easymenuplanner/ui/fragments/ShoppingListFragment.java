@@ -64,7 +64,7 @@ public class ShoppingListFragment extends ListFragment {
         // Day -> Course <- CI -> Ingredient
         return new Select(new String[]{"Ingredients.Id, Ingredients.name, Ingredients.checked"}).distinct().from(Ingredient.class)
                 .innerJoin(CourseIngredient.class).on("CourseIngredients.ingredient = Ingredients.Id")
-                .innerJoin(Day.class).on("(CourseIngredients.course = Days.firstCourse OR CourseIngredients.course = Days.secondCourse OR CourseIngredients.course = Days.dinner OR CourseIngredients.course = Days.breakfast)")
+                .innerJoin(Day.class).on("(CourseIngredients.course = Days.firstCourse OR CourseIngredients.course = Days.secondCourse OR CourseIngredients.course = Days.dinner OR CourseIngredients.course = Days.dinnerSecondCourse OR CourseIngredients.course = Days.breakfast)")
                 .where("(Days.Id + 7 - " + EMPApplication.USER_WEEK_START_DAY + ")%7 >= " + weekdayIndexWithCurrentOrder)//0-6 sunday==0 /D.Id 1-7
                 .orderBy("(Days.Id + 7 - " + EMPApplication.USER_WEEK_START_DAY + ") % 7 ASC, UPPER (name) ASC")
                 .execute();
@@ -78,7 +78,7 @@ public class ShoppingListFragment extends ListFragment {
         // Day -> Course <- CI -> Ingredient
         return new Select(new String[]{"Ingredients.Id"}).distinct().from(Ingredient.class)
                 .innerJoin(CourseIngredient.class).on("CourseIngredients.ingredient = Ingredients.Id")
-                .innerJoin(Day.class).on("(CourseIngredients.course = Days.firstCourse OR CourseIngredients.course = Days.secondCourse OR CourseIngredients.course = Days.dinner OR CourseIngredients.course = Days.breakfast)")
+                .innerJoin(Day.class).on("(CourseIngredients.course = Days.firstCourse OR CourseIngredients.course = Days.secondCourse OR CourseIngredients.course = Days.dinner OR CourseIngredients.course = Days.dinnerSecondCourse OR CourseIngredients.course = Days.breakfast)")
                 .where("Ingredients.checked = 0")
                 .where("(Days.Id + 7 - " + EMPApplication.USER_WEEK_START_DAY + ")%7 >= " + weekdayIndexWithCurrentOrder)//0-6 sunday==0 /D.Id 1-7
                 .orderBy("(Days.Id + 7 - " + EMPApplication.USER_WEEK_START_DAY + ") % 7 ASC, UPPER (name) ASC")
@@ -139,7 +139,7 @@ public class ShoppingListFragment extends ListFragment {
 
         List<Ingredient> allUncheckedItems = new Select().from(Ingredient.class)
                 .where("Id IN (SELECT CI.ingredient FROM CourseIngredients CI, Days D " +
-                        "WHERE (CI.course = D.firstCourse OR CI.course = D.secondCourse OR CI.course = D.breakfast OR CI.course = D.dinner) " +
+                        "WHERE (CI.course = D.firstCourse OR CI.course = D.secondCourse OR CI.course = D.breakfast OR CI.course = D.dinner OR CI.course = D.dinnerSecondCourse) " +
                         "AND checked = 0 " +
                         "AND (D.Id + 7 - " + EMPApplication.USER_WEEK_START_DAY + ")%7 >= " + weekdayIndexWithCurrentOrder + ")")//0-6 sunday==0 /D.Id 1-7
                 .execute();
